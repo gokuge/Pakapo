@@ -11,6 +11,7 @@ import Cocoa
 class PakapoViewController: NSViewController {
     
     let WINDOW_FULL_SCREEN: String = "windowFullScreen"
+    let WINDOW_SCREEN_SIZE: String = "windowScreenSize"
     
     var pakapoImageView: PakapoImageView!
     let pakapoImageModel: PakapoImageModel = PakapoImageModel()
@@ -65,7 +66,7 @@ class PakapoViewController: NSViewController {
             openPanel()
         }
         
-        //キー入力
+        //キー入力有効化
         window.makeFirstResponder(self)
         
         makeAppdelegateClosure()
@@ -75,9 +76,15 @@ class PakapoViewController: NSViewController {
         let appdelegate: AppDelegate = NSApplication.shared.delegate as! AppDelegate
         
         appdelegate.initFullScreenMode = {
-            if UserDefaults.standard.bool(forKey: self.WINDOW_FULL_SCREEN) {
-                self.pushFullScreenCommand()
+            if !UserDefaults.standard.bool(forKey: self.WINDOW_FULL_SCREEN) {
+                return
             }
+            
+            guard let window: NSWindow = self.view.window else {
+                return
+            }
+            
+            self.fullScreenSizeMode(window: window)
         }
 
         appdelegate.menuFileOpenClosure = {
@@ -208,15 +215,61 @@ class PakapoViewController: NSViewController {
             return
         }
         
-        if window.styleMask.contains(.fullScreen) {
-            //フルスクリーン状態なので解除する
-            window.toggleFullScreen(nil)
-            UserDefaults.standard.set(false, forKey: WINDOW_FULL_SCREEN)
+        if window.styleMask.contains(NSWindow.StyleMask.fullScreen) {
+            //トグル一発で戻す
+//            window.toggleFullScreen(nil)
+            
+            //cooViewerっぽいフルスクリーンを解除
+            defaultWindowSizeMode(window: window)
         } else {
-            //フルスクリーン状態へ
-            window.toggleFullScreen(self)
-            UserDefaults.standard.set(true, forKey: WINDOW_FULL_SCREEN)
+            //トグル一発でFullScreen
+//            window.toggleFullScreen(self)
+            
+            //自分の意思で切り替えた場合にのみセーブさせる
+            //fullScreenSizeModeは起動時にも呼ばれる。フルスクリーン状態で終了していると WINDOW_SCREEN_SIZE に NSScreen.main!.frame がセーブされてしまう為
+            UserDefaults.standard.set(NSStringFromRect(window.frame), forKey: WINDOW_SCREEN_SIZE)
+
+            //cooViewerっぽくフルスクリーン
+            fullScreenSizeMode(window: window)
         }
+    }
+    
+    func defaultWindowSizeMode(window: NSWindow) {
+        window.styleMask = [NSWindow.StyleMask.borderless,
+                            NSWindow.StyleMask.titled,
+                            NSWindow.StyleMask.miniaturizable,
+                            NSWindow.StyleMask.resizable,
+                            NSWindow.StyleMask.closable]
+
+        NSApplication.shared.presentationOptions = NSApplication.PresentationOptions.init()
+
+        window.collectionBehavior = NSWindow.CollectionBehavior.init()
+        
+        if let unwrappedFrame = UserDefaults.standard.string(forKey: WINDOW_SCREEN_SIZE) {
+            window.setFrame(NSRectFromString(unwrappedFrame), display: true)
+        }
+        
+        //非アクティブ時にもwindowを出す
+        window.hidesOnDeactivate = false
+        
+        UserDefaults.standard.set(false, forKey: WINDOW_FULL_SCREEN)
+    }
+    
+    func fullScreenSizeMode(window: NSWindow) {
+        window.styleMask = [NSWindow.StyleMask.fullScreen]
+
+        let presentationOptions: NSApplication.PresentationOptions = [NSApplication.PresentationOptions.autoHideDock,
+                                                                     NSApplication.PresentationOptions.autoHideMenuBar]
+        
+        NSApplication.shared.presentationOptions = presentationOptions
+
+        window.collectionBehavior = NSWindow.CollectionBehavior.fullScreenPrimary
+        window.setFrame(NSScreen.main!.frame, display: true)
+        
+        //非アクティブ時にwindowを隠す
+        window.hidesOnDeactivate = true
+        
+        UserDefaults.standard.set(true, forKey: WINDOW_FULL_SCREEN)
     }
 }
 
