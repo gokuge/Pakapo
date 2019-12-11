@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class PakapoViewController: NSViewController {
+class PakapoViewController: NSViewController, NSWindowDelegate {
     
     let WINDOW_FULL_SCREEN: String = "windowFullScreen"
     let WINDOW_SCREEN_SIZE: String = "windowScreenSize"
@@ -27,26 +27,19 @@ class PakapoViewController: NSViewController {
         super.viewDidAppear()
         makeView()
     }
-    
-    override func viewWillDisappear() {
-        super.viewWillDisappear()
-        
-        saveFileURL()
-    }
 
     func willMakeView() {
-        //ウィンドウサイズ変更検知
-        NotificationCenter.default.addObserver(self, selector: #selector(windowResize), name: NSWindow.didResizeNotification, object: nil)
+        view.window?.delegate = self
     }
 
     func makeView() {
         
-        guard let window = self.view.window else {
+        guard let window = view.window else {
             return
         }
         
         if pakapoImageView == nil {
-            pakapoImageView = PakapoImageView(frame: self.view.frame)
+            pakapoImageView = PakapoImageView(frame: view.frame)
             
             pakapoImageView.getFileURLClosure = {
                 return self.pakapoImageModel.getFileURL()
@@ -105,26 +98,12 @@ class PakapoViewController: NSViewController {
     }
     
     // MARK: -
-    @objc func windowResize() {
-        
-        guard let frame = self.view.window?.frame else {
-            return
-        }
-
-        pakapoImageView.resizeFrame(frame: CGRect(x: 0,
-                                                  y: 0,
-                                                  width: frame.width,
-                                                  height: frame.height))
-    }
-    
     func openPanel() {
         
         guard let window = self.view.window else {
             return
         }
 
-        //NSOpenPanel()、beginSheetModalの実行時にNSWindow.didResizeNotificationが発行され、windowResizeが呼ばれてしまうので一旦登録を削除
-        NotificationCenter.default.removeObserver(self)
         let openImagePanel: NSOpenPanel = NSOpenPanel()
 
         openImagePanel.allowsMultipleSelection = false
@@ -136,9 +115,6 @@ class PakapoViewController: NSViewController {
         openImagePanel.allowedFileTypes        = NSImage.imageTypes
         
         openImagePanel.beginSheetModal(for: window, completionHandler: { (response) in
-            
-            //リサイズのNotification再登録
-            NotificationCenter.default.addObserver(self, selector: #selector(self.windowResize), name: NSWindow.didResizeNotification, object: nil)
             
             if response != NSApplication.ModalResponse.OK {
                 return
@@ -164,12 +140,31 @@ class PakapoViewController: NSViewController {
         pakapoImageModel.saveFileURL()
     }
     
+    // MARK: - window delegate
+    func windowWillClose(_ notification: Notification) {
+        saveFileURL()
+    }
+    
+    func windowDidResize(_ notification: Notification) {
+        guard let frame = self.view.window?.frame else {
+            return
+        }
+
+        pakapoImageView.resizeFrame(frame: CGRect(x: 0,
+                                                  y: 0,
+                                                  width: frame.width,
+                                                  height: frame.height))
+    }
+    
     // MARK: - key event
     override func keyDown(with event: NSEvent) {
         print(String(format: "keyCode:%d", event.keyCode))
         print(String(format: "key:%@", event.charactersIgnoringModifiers!))
         
         switch Int(event.keyCode) {
+        case 53:
+            print("esc")
+            pushEsc()
         case 123:
             print("left")
             pushPrevPage()
@@ -191,6 +186,16 @@ class PakapoViewController: NSViewController {
             pushFullScreenCommand()
         default:
             break
+        }
+    }
+    
+    func pushEsc() {
+        guard let window: NSWindow = view.window else {
+            return
+        }
+        
+        if window.styleMask.contains(NSWindow.StyleMask.fullScreen) {
+            defaultWindowSizeMode(window: window)
         }
     }
 
@@ -235,6 +240,10 @@ class PakapoViewController: NSViewController {
     }
     
     func defaultWindowSizeMode(window: NSWindow) {
+        
+        //ツールバーのresizeボタン等でtoggleFullScreen(self)でのフルスクリーン状態になっている可能性があるので、強制的にnilへ
+        window.toggleFullScreen(nil)
+        
         window.styleMask = [NSWindow.StyleMask.borderless,
                             NSWindow.StyleMask.titled,
                             NSWindow.StyleMask.miniaturizable,
