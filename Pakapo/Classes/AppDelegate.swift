@@ -21,6 +21,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     var menuFileOpenClosure:(() -> Void)!
     var menuQuitPakapoClosure:(() -> Void)!
+    var menuPageFeedClosure:((_ isRight: Bool) -> Void)!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         initFullScreenMode()
@@ -66,10 +67,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             rightFeedItem?.state = NSControl.StateValue.on
             leftFeedItem?.state = NSControl.StateValue.off
             UserDefaults.standard.set(PAGE_FEED_RIGHT, forKey: PAGE_FEED)
+            menuPageFeedClosure(true)
         } else {
             rightFeedItem?.state = NSControl.StateValue.off
             leftFeedItem?.state = NSControl.StateValue.on
             UserDefaults.standard.set(PAGE_FEED_LEFT, forKey: PAGE_FEED)
+            menuPageFeedClosure(false)
         }
     }
 }

@@ -10,19 +10,12 @@ import Cocoa
 
 class PakapoViewController: NSViewController, NSWindowDelegate {
     
-    enum PageFeed: Int {
-        case right = 0
-        case left
-    }
-    
     let WINDOW_FULL_SCREEN: String = "windowFullScreen"
     let WINDOW_SCREEN_SIZE: String = "windowScreenSize"
     
-    var pageFeed: PageFeed?
-    
     var pakapoImageView: PakapoImageView!
     let pakapoImageModel: PakapoImageModel = PakapoImageModel()
-    
+    var isPageFeedRight: Bool!
     
     // MARK: - makeView
     override func viewWillAppear() {
@@ -37,8 +30,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
 
     func willMakeView() {
         view.window?.delegate = self
-        
-        pageFeed = PageFeed.left
     }
 
     func makeView() {
@@ -96,6 +87,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         appdelegate.menuQuitPakapoClosure = {
             self.saveFileURL()
             NSApplication.shared.terminate(self)
+        }
+        
+        appdelegate.menuPageFeedClosure = {(isRigt: Bool) -> Void in
+            self.isPageFeedRight = isRigt
         }
     }
     
@@ -176,14 +171,14 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pushEsc()
         case 123:
             print("left")
-            if (pageFeed == PageFeed.right) {
+            if isPageFeedRight {
                 pushPrevPage()
             } else {
                 pushNextPage()
             }
         case 124:
             print("right")
-            if (pageFeed == PageFeed.right) {
+            if isPageFeedRight {
                 pushNextPage()
             } else {
                 pushPrevPage()
