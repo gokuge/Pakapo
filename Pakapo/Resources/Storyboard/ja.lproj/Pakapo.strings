@@ -75,7 +75,7 @@
 "Bw7-FT-i3A.title" = "Save As…";
 
 /* Class = "NSMenuItem"; title = "Close"; ObjectID = "DVo-aG-piG"; */
-"DVo-aG-piG.title" = "Close";
+"DVo-aG-piG.title" = "閉じる";
 
 /* Class = "NSMenuItem"; title = "Spelling and Grammar"; ObjectID = "Dv1-io-Yv7"; */
 "Dv1-io-Yv7.title" = "Spelling and Grammar";
@@ -123,7 +123,7 @@
 "I0S-gh-46l.title" = "Subscript";
 
 /* Class = "NSMenuItem"; title = "Open…"; ObjectID = "IAo-SY-fd9"; */
-"IAo-SY-fd9.title" = "Open…";
+"IAo-SY-fd9.title" = "開く…";
 
 /* Class = "NSWindow"; title = "Window"; ObjectID = "IQv-IB-iLA"; */
 "IQv-IB-iLA.title" = "Window";
@@ -159,7 +159,7 @@
 "Nop-cj-93Q.title" = "\tDefault";
 
 /* Class = "NSMenuItem"; title = "Minimize"; ObjectID = "OY7-WF-poV"; */
-"OY7-WF-poV.title" = "Minimize";
+"OY7-WF-poV.title" = "しまう";
 
 /* Class = "NSMenuItem"; title = "Baseline"; ObjectID = "OaQ-X3-Vso"; */
 "OaQ-X3-Vso.title" = "Baseline";
@@ -351,7 +351,7 @@
 "tRr-pd-1PS.title" = "Data Detectors";
 
 /* Class = "NSMenuItem"; title = "Open Recent"; ObjectID = "tXI-mr-wws"; */
-"tXI-mr-wws.title" = "Open Recent";
+"tXI-mr-wws.title" = "最近開いた本";
 
 /* Class = "NSMenu"; title = "Kern"; ObjectID = "tlD-Oa-oAM"; */
 "tlD-Oa-oAM.title" = "Kern";
