@@ -10,7 +10,7 @@
 		E71E357F239A40530021E1A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E357E239A40530021E1A2 /* AppDelegate.swift */; };
 		E71E3581239A40530021E1A2 /* PakapoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3580239A40530021E1A2 /* PakapoViewController.swift */; };
 		E71E3583239A40540021E1A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E71E3582239A40540021E1A2 /* Assets.xcassets */; };
-		E71E3586239A40540021E1A2 /* Pakapo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E71E3584239A40540021E1A2 /* Pakapo.storyboard */; };
+		E71E3586239A40540021E1A2 /* Pakapo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E71E3584239A40540021E1A2 /* Pakapo.storyboard */; settings = {ASSET_TAGS = (0, ); }; };
 		E71E3595239A42600021E1A2 /* PakapoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3594239A42600021E1A2 /* PakapoImageView.swift */; };
 		E71E3597239A428D0021E1A2 /* PakapoImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3596239A428D0021E1A2 /* PakapoImageModel.swift */; };
 /* End PBXBuildFile section */
@@ -144,6 +144,9 @@
 		E71E3573239A40530021E1A2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					0,
+				);
 				LastSwiftUpdateCheck = 1110;
 				LastUpgradeCheck = 1110;
 				ORGANIZATIONNAME = gokuge;
