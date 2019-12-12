@@ -174,88 +174,22 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
                                                   height: frame.height))
     }
     
-    // MARK: - key event
-    override func keyDown(with event: NSEvent) {
-        print(String(format: "keyCode:%d", event.keyCode))
-        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
-        
-        switch Int(event.keyCode) {
-        case 53:
-            print("esc")
-            pushEsc()
-        case 123:
-            print("left")
-            if isPageFeedRight {
-                pushPrevPage()
-            } else {
-                pushNextPage()
-            }
-        case 124:
-            print("right")
-            if isPageFeedRight {
-                pushNextPage()
-            } else {
-                pushPrevPage()
-            }
-        case 125:
-            print("down")
-            pushNextDir()
-        case 126:
-            print("up")
-            pushPrevDir()
-        default:break
-        }
-
-        //複数の修飾キーを取得する場合は[.command]を[.command, .shift]とすれば良い
-//        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
-//        case [.command] where event.keyCode == 3:
-//            pushFullScreenCommand()
-//        default:
-//            break
-//        }
-    }
-    
-    func pushEsc() {
-        guard let window: NSWindow = view.window else {
-            return
-        }
-        
-        if window.styleMask.contains(NSWindow.StyleMask.fullScreen) {
-            defaultWindowSizeMode(window: window)
-        }
-    }
-
-    func pushNextPage() {
-        refreshImageView(image: pakapoImageModel.loadNextImage())
-    }
-
-    func pushPrevPage() {
-        refreshImageView(image: pakapoImageModel.loadPrevImage())
-    }
-    
-    func pushNextDir() {
-        refreshImageView(image: pakapoImageModel.loadNextDir())
-    }
-    
-    func pushPrevDir() {
-        refreshImageView(image: pakapoImageModel.loadPrevDir())
-    }
-    
+    // MARK: - window
     func pushFullScreenCommand() {
         guard let window: NSWindow = view.window else {
             return
         }
-        
+            
         if window.styleMask.contains(NSWindow.StyleMask.fullScreen) {
             //トグル一発で戻す
 //            window.toggleFullScreen(nil)
-            
+                
             //cooViewerっぽいフルスクリーンを解除
             defaultWindowSizeMode(window: window)
         } else {
             //トグル一発でFullScreen
 //            window.toggleFullScreen(self)
-            
+
             //自分の意思で切り替えた場合にのみセーブさせる
             //fullScreenSizeModeは起動時にも呼ばれる。フルスクリーン状態で終了していると WINDOW_SCREEN_SIZE に NSScreen.main!.frame がセーブされてしまう為
             UserDefaults.standard.set(NSStringFromRect(window.frame), forKey: WINDOW_SCREEN_SIZE)
@@ -306,5 +240,95 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
         UserDefaults.standard.set(true, forKey: WINDOW_FULL_SCREEN)
     }
+    
+    // MARK: - key event
+    override func keyDown(with event: NSEvent) {
+        print(String(format: "keyCode:%d", event.keyCode))
+        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
+        
+        switch Int(event.keyCode) {
+        case 53:
+            print("esc")
+            pushEsc()
+        case 123:
+            print("left")
+            pushLeftArrow()
+        case 124:
+            print("right")
+            pushRightArrow()
+        case 125:
+            print("down")
+            pushNextDir()
+        case 126:
+            print("up")
+            pushPrevDir()
+        default:break
+        }
+
+        //複数の修飾キーを取得する場合は[.command]を[.command, .shift]とすれば良い
+//        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+//        case [.command] where event.keyCode == 3:
+//            pushFullScreenCommand()
+//        default:
+//            break
+//        }
+    }
+    
+    func pushEsc() {
+        guard let window: NSWindow = view.window else {
+            return
+        }
+        
+        if window.styleMask.contains(NSWindow.StyleMask.fullScreen) {
+            defaultWindowSizeMode(window: window)
+        }
+    }
+    
+    func pushRightArrow() {
+        if isPageFeedRight {
+            pushNextPage()
+        } else {
+            pushPrevPage()
+        }
+    }
+    
+    func pushLeftArrow() {
+        if isPageFeedRight {
+            pushPrevPage()
+        } else {
+            pushNextPage()
+        }
+    }
+
+    func pushNextPage() {
+        refreshImageView(image: pakapoImageModel.loadNextImage())
+    }
+
+    func pushPrevPage() {
+        refreshImageView(image: pakapoImageModel.loadPrevImage())
+    }
+    
+    func pushNextDir() {
+        refreshImageView(image: pakapoImageModel.loadNextDir())
+    }
+    
+    func pushPrevDir() {
+        refreshImageView(image: pakapoImageModel.loadPrevDir())
+    }
+    
+    // MARK: - mouse
+    override func mouseUp(with event: NSEvent) {
+        
+        guard let window: NSWindow = view.window else {
+            return
+        }
+        
+        if (window.frame.width / 2) < event.locationInWindow.x {
+            pushRightArrow()
+        } else {
+            pushLeftArrow()
+        }
+        
+    }    
 }
 
