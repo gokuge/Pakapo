@@ -25,6 +25,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     //file
     var menuFileOpenClosure:(() -> Void)!
     
+    //edit
+    var menuCopyOpenClosure:(() -> Void)!
+    
     //view
     var menuPageFeedClosure:((_ right: Bool) -> Void)!
     var menuSearchChildEnableClosure:((_ enable: Bool) -> Void)!
@@ -58,14 +61,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
 
+    //Pakapo
     @IBAction func menuQuitApplication(_ sender: Any) {
         menuQuitPakapoClosure()
     }
     
+    //file
     @IBAction func menuOpenImage(_ sender: NSMenuItem) {
         menuFileOpenClosure()
     }
 
+    //edit
+    @IBAction func menuCopy(_ sender: Any) {
+        menuCopyOpenClosure()
+    }
+    
+    //view
     @IBAction func menuPageFeedRight(_ sender: Any) {
         selectPageFeed(right: true)
     }
@@ -78,6 +89,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         toggleSearchChildEnableItem(enable: NSNumber(value: (sender as! NSMenuItem).state.rawValue).boolValue)
     }
     
+    //window
     @IBAction func menuToggleFullScreen(_ sender: Any) {
         menuFullScreenClosure()
     }

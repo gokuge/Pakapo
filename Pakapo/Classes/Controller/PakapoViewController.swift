@@ -91,6 +91,11 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         appdelegate.menuFileOpenClosure = {
             self.openPanel()
         }
+        
+        //eidt
+        appdelegate.menuCopyOpenClosure = {
+            self.pakapoImageView.clickCopyFile()
+        }
                 
         //view
         appdelegate.menuPageFeedClosure = {(right: Bool) -> Void in

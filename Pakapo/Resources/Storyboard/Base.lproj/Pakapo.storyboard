@@ -110,9 +110,9 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="編集" id="W48-6f-4Dl">
                                     <items>
-                                        <menuItem title="Copy" keyEquivalent="c" id="x3v-GG-iWU">
+                                        <menuItem title="ファイルをコピー" keyEquivalent="c" id="x3v-GG-iWU">
                                             <connections>
-                                                <action selector="copy:" target="Ady-hI-5gd" id="G1f-GL-Joy"/>
+                                                <action selector="menuCopy:" target="Voe-Tx-rLC" id="ykY-5T-B8W"/>
                                             </connections>
                                         </menuItem>
                                     </items>
