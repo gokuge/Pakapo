@@ -12,6 +12,9 @@ class PakapoImageModel: NSObject {
     
     let ROOT_DIRECTORY_URL: String = "rootDirectoryURL"
     let LAST_PAGE_URL: String = "lastPageURL"
+    let OPEN_RECENT_DIRECTORIES: String = "openRecentDirectories"
+    let OPEN_RECENT_MAX_COUNT: Int = 10
+    
     var isSearchChild: Bool!
     
     var rootDirURL: URL?
@@ -136,6 +139,40 @@ class PakapoImageModel: NSObject {
         
         return unwrappedURL
     }
+    
+    func addOpenRecentDirectories() {
+        
+        guard let unwrappedCurrentDirURL = currentDirURL else {
+            return
+        }
+
+        if var openRecentDirectories = getOpenRecentDirectories() {
+            if openRecentDirectories.contains(unwrappedCurrentDirURL.absoluteString) {
+                return
+            }
+            
+            if openRecentDirectories.count >= OPEN_RECENT_MAX_COUNT {
+                openRecentDirectories.removeFirst()
+            }
+            
+            openRecentDirectories.insert(unwrappedCurrentDirURL.absoluteString, at: 0)
+            
+            UserDefaults.standard.set(openRecentDirectories, forKey: OPEN_RECENT_DIRECTORIES)
+
+        } else {
+            let openRecentDirectories: [String] = [unwrappedCurrentDirURL.absoluteString]
+            
+            UserDefaults.standard.set(openRecentDirectories, forKey: OPEN_RECENT_DIRECTORIES)
+        }
+    }
+    
+    func getOpenRecentDirectories() -> [String]? {
+        guard let openRecentDirectories: [String] = UserDefaults.standard.array(forKey: OPEN_RECENT_DIRECTORIES) as? [String] else {
+            return nil
+        }
+        
+        return openRecentDirectories
+    }
 
     // MARK: -
     func loadPageTitle() -> String {
@@ -217,7 +254,13 @@ class PakapoImageModel: NSObject {
             //dir内でContentsを作成
             refreshContents(dirURL: contentURL)
             
-            return loadValidImage(contents: fileContents)
+            guard let unwrappedImage = loadValidImage(contents: fileContents) else {
+                return nil
+            }
+            
+            addOpenRecentDirectories()
+            
+            return unwrappedImage
         } else {
             //fileが入っているdir内のContentsを作成
             refreshContents(dirURL: contentURL.deletingLastPathComponent())
@@ -232,6 +275,8 @@ class PakapoImageModel: NSObject {
             guard let unwrappedImage = NSImage(contentsOf: contentURL) else {
                 return nil
             }
+            
+            addOpenRecentDirectories()
             
             return unwrappedImage
         }
@@ -313,7 +358,13 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
-        return NSImage(contentsOf: fileURL)
+        guard let image = NSImage(contentsOf: fileURL) else {
+            return nil
+        }
+        
+        addOpenRecentDirectories()
+        
+        return image
     }
     
     func loadPrevImage() -> NSImage? {
@@ -373,7 +424,13 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
-        return NSImage(contentsOf: fileURL)
+        guard let image = NSImage(contentsOf: fileURL) else {
+            return nil
+        }
+        
+        addOpenRecentDirectories()
+        
+        return image
     }
     
     // MARK: - directory

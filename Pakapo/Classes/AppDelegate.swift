@@ -17,26 +17,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     @IBOutlet weak var mainMenu: NSMenu!
     
-    var initFullScreenMode:(() -> Void)!
+    var initFullScreenMode: (() -> Void)!
     
     //Pakapo
-    var menuQuitPakapoClosure:(() -> Void)!
+    var menuQuitPakapoClosure: (() -> Void)!
     
     //file
-    var menuFileOpenClosure:(() -> Void)!
+    var menuFileOpenClosure: (() -> Void)!
     
-    var initRootSameDirectoriesClosure:(() -> (currentIndex: Int?, directories: [URL]?))!
-    var menuSameDirectoriesClosure:((_ index: Int) -> Void)!
+    var initRootSameDirectoriesClosure: (() -> (currentIndex: Int?, directories: [URL]?))!
+    var menuSameDirectoriesClosure: ((_ index: Int) -> Void)!
+    
+    var initOpenRecentDirectoriesClosure: (() -> [String]?)!
     
     //edit
-    var menuCopyOpenClosure:(() -> Void)!
+    var menuCopyOpenClosure: (() -> Void)!
     
     //view
-    var menuPageFeedClosure:((_ right: Bool) -> Void)!
-    var menuSearchChildEnableClosure:((_ enable: Bool) -> Void)!
+    var menuPageFeedClosure: ((_ right: Bool) -> Void)!
+    var menuSearchChildEnableClosure: ((_ enable: Bool) -> Void)!
     
     //window
-    var menuFullScreenClosure:(() -> Void)!
+    var menuFullScreenClosure: (() -> Void)!
 
     // MARK: - appdelegate
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -52,6 +54,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     func initFirstLaunchMenu() {
         initSameDirectories()
+        initOpenRecentDirectories()
         selectPageFeed(right: true)
         toggleSearchChildEnableItem(enable: false)
         
@@ -60,6 +63,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     func loadMenu() {
         initSameDirectories()
+        initOpenRecentDirectories()
         selectPageFeed(right: UserDefaults.standard.bool(forKey: PAGE_FEED_RIGHT))
         toggleSearchChildEnableItem(enable: !UserDefaults.standard.bool(forKey: SEARCH_CHILD_ENABLE))
     }
@@ -80,7 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         case sameDirectoriesItem.title:
             initSameDirectories()
         case openRecentItem.title:
-            print("")
+            initOpenRecentDirectories()
         default:
             break
         }
@@ -109,7 +113,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             return
         }
         
-        for (index, dir) in unwrappedDirectories.enumerated() {
+        for (index, dir) in unwrappedDirectories.reversed().enumerated() {
             let menuItem = NSMenuItem(title: dir.lastPathComponent, action: #selector(pushSameDirectory(_:)), keyEquivalent: "")
             menuItem.tag = index
             sameDirectoriesMenu.addItem(menuItem)
@@ -117,6 +121,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         
         if let unwrappedCurrentIndex = result.currentIndex {
             sameDirectoriesMenu.item(withTag: unwrappedCurrentIndex)?.state = NSControl.StateValue.on
+        }
+    }
+    
+    func initOpenRecentDirectories() {
+        let fileItem: NSMenuItem! = mainMenu.item(withTag: 1)
+        let openRecentItem: NSMenuItem! = fileItem.submenu?.item(withTag: 3)
+        let openRecentMenu: NSMenu! = openRecentItem.submenu
+        openRecentMenu.delegate = self
+        openRecentMenu.removeAllItems()
+        
+        let openRecentDirectories: [String]? = initOpenRecentDirectoriesClosure()
+        
+        guard let unwrappedOpenRecentDirectories = openRecentDirectories else {
+            return
+        }
+        
+        for (index, url_str) in unwrappedOpenRecentDirectories.enumerated() {
+            let dir: URL = URL(string: url_str)!
+            let menuItem = NSMenuItem(title: dir.lastPathComponent, action: #selector(pushSameDirectory(_:)), keyEquivalent: "")
+            menuItem.tag = index
+            openRecentMenu.addItem(menuItem)
         }
     }
 
