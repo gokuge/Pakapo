@@ -20,11 +20,11 @@
 		E71E357E239A40530021E1A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E71E3580239A40530021E1A2 /* PakapoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoViewController.swift; sourceTree = "<group>"; };
 		E71E3582239A40540021E1A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		E71E3585239A40540021E1A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Pakapo.storyboard; sourceTree = "<group>"; };
 		E71E3587239A40540021E1A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E71E3588239A40540021E1A2 /* Pakapo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pakapo.entitlements; sourceTree = "<group>"; };
 		E71E3594239A42600021E1A2 /* PakapoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageView.swift; sourceTree = "<group>"; };
 		E71E3596239A428D0021E1A2 /* PakapoImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageModel.swift; sourceTree = "<group>"; };
+		E73EB81B23A1FDFA00C661C7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ja; path = ja.lproj/Pakapo.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +162,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = E71E3572239A40530021E1A2;
 			productRefGroup = E71E357C239A40530021E1A2 /* Products */;
@@ -203,7 +204,7 @@
 		E71E3584239A40540021E1A2 /* Pakapo.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				E71E3585239A40540021E1A2 /* Base */,
+				E73EB81B23A1FDFA00C661C7 /* ja */,
 			);
 			name = Pakapo.storyboard;
 			sourceTree = "<group>";
