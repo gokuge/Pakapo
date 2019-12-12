@@ -15,6 +15,7 @@ class PakapoImageModel: NSObject {
     var isSearchChild: Bool!
     
     var rootDirURL: URL?
+    var rootDirectories: [URL]?
     var currentDirURL: URL?
     
     var fileContents: [URL]?
@@ -32,7 +33,6 @@ class PakapoImageModel: NSObject {
     
     // MARK: - UserDefault
     func saveRootDirectoryURL(root: URL) -> Bool {
-        
         var isDir: ObjCBool = false
         if !FileManager.default.fileExists(atPath: root.path, isDirectory: &isDir) {
             //指定したURLが存在しないってことはこのタイミングではないはず
@@ -75,6 +75,39 @@ class PakapoImageModel: NSObject {
         return unwrappedURL
     }
     
+    func initRootSameDirectories() -> (currentIndex: Int?, directories: [URL]?) {
+        guard let unwrappedRootDirURL = rootDirURL,
+              let unwrappedCurrentDirURL = currentDirURL else {
+            return(nil, nil)
+        }
+
+        //root直下のdirectoryを確保したいので一旦rootでrefresh
+        refreshContents(dirURL: unwrappedRootDirURL)
+        
+        //rootのdirectoryを退避
+        rootDirectories = dirContents
+        
+        //元の位置でrefresh
+        refreshContents(dirURL: unwrappedCurrentDirURL)
+        
+        guard let unwrappedTmpRootDirectories = rootDirectories else {
+            return (nil, nil)
+        }
+        
+        //rootとcurrentが一致していた場合、チェックをつけるべきdirectoryはなし
+        if unwrappedRootDirURL.absoluteString == unwrappedCurrentDirURL.absoluteString {
+            return (nil, unwrappedTmpRootDirectories)
+        }
+        
+        for (currentIndex, dirURL) in unwrappedTmpRootDirectories.enumerated() {
+            if unwrappedCurrentDirURL.absoluteString.hasPrefix(dirURL.absoluteString) {
+                return (currentIndex, unwrappedTmpRootDirectories)
+            }
+        }
+        
+        return (nil, nil)
+    }
+    
     func getFileURL() -> URL? {
         guard let unwrappedFileContentsIndex = fileContentsIndex,
               let unwrappedFileContents = fileContents else {
@@ -89,7 +122,6 @@ class PakapoImageModel: NSObject {
     }
     
     func saveFileURL() {
-        
         guard let fileURL = getFileURL() else {
             return
         }
@@ -107,7 +139,6 @@ class PakapoImageModel: NSObject {
 
     // MARK: -
     func loadPageTitle() -> String {
-        
         guard let unwrappedCurrentDirURL = currentDirURL else {
             return ""
         }
@@ -176,7 +207,6 @@ class PakapoImageModel: NSObject {
 
     // MARK: - image
     func loadInitImage(contentURL: URL) -> NSImage? {
-        
         var isDir: ObjCBool = false
         if !FileManager.default.fileExists(atPath: contentURL.path, isDirectory: &isDir) {
             //指定したURLが存在しないってことはこのタイミングではないはず
@@ -208,7 +238,6 @@ class PakapoImageModel: NSObject {
     }
     
     func loadValidImage(contents: [URL]?) -> NSImage? {
-        
         guard let unwrappedContents = contents else {
             return nil
         }
@@ -227,7 +256,6 @@ class PakapoImageModel: NSObject {
     }
     
     func loadNextImage() -> NSImage? {
-        
         guard var unwrappedFileContentsIndex = fileContentsIndex,
               let unwrappedCurrentDirURL = currentDirURL,
               let unwrappedRootDirURL = rootDirURL else {
@@ -289,7 +317,6 @@ class PakapoImageModel: NSObject {
     }
     
     func loadPrevImage() -> NSImage? {
-        
         guard var unwrappedFileContentsIndex = fileContentsIndex,
               let unwrappedCurrentDirURL = currentDirURL,
               let unwrappedRootDirURL = rootDirURL else {
@@ -350,8 +377,21 @@ class PakapoImageModel: NSObject {
     }
     
     // MARK: - directory
-    func loadNextDir() -> NSImage? {
+    func jumpSameDirectory(index: Int) -> NSImage? {
+        guard let unwrappedRootDirectories = rootDirectories else {
+            return nil
+        }
         
+        return jumpDirectory(url: unwrappedRootDirectories[index])
+    }
+    
+    func jumpDirectory(url: URL) -> NSImage? {
+        lastDisplayChildDirURL = nil
+        
+        return loadInitImage(contentURL: url)
+    }
+    
+    func loadNextDirectory() -> NSImage? {
         guard let unwrappedFileContents = fileContents else {
             return nil
         }
@@ -362,7 +402,7 @@ class PakapoImageModel: NSObject {
         return loadNextImage()
     }
     
-    func loadPrevDir() -> NSImage? {
+    func loadPrevDirectory() -> NSImage? {
         //現在のdirectoryの頭まで表示した事にして、一旦loadPrevImageを実行する
         fileContentsIndex = 0
         
@@ -378,7 +418,6 @@ class PakapoImageModel: NSObject {
     }
     
     func makeNextSearchDirectory() -> [URL]? {
-        
         guard var unwrappedDirContents = dirContents else {
             return nil
         }
@@ -402,7 +441,6 @@ class PakapoImageModel: NSObject {
     }
     
     func makePrevSearchDirectory() -> [URL]? {
-        
         guard var unwrappedDirContents = dirContents else {
             return nil
         }
@@ -428,7 +466,6 @@ class PakapoImageModel: NSObject {
     }
     
     func loadChildNextDirectory(dirURL: URL) -> URL? {
-        
         if !isSearchChildDirectory() {
             return nil
         }
@@ -456,7 +493,6 @@ class PakapoImageModel: NSObject {
     }
     
     func loadChildPrevDirectory(dirURL: URL) -> URL? {
-        
         if !isSearchChildDirectory() {
             return nil
         }
@@ -490,7 +526,6 @@ class PakapoImageModel: NSObject {
     }
     
     func isSearchChildDirectory() -> Bool {
-        
         guard let unwrappedRootDirURL = rootDirURL,
               let unwrappedCurrentDirURL = currentDirURL else {
             return false
@@ -505,7 +540,6 @@ class PakapoImageModel: NSObject {
     }
     
     func loadNextValidDirectory(dirURL: URL) -> URL? {
-
         guard let unwrappedRootDirURL = rootDirURL else {
             return nil
         }
@@ -540,7 +574,6 @@ class PakapoImageModel: NSObject {
     }
     
     func loadPrevValidDirectory(dirURL: URL) -> URL? {
-        
         guard let unwrappedRootDirURL = rootDirURL else {
             return nil
         }

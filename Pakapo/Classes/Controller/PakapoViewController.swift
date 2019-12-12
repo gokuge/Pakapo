@@ -17,7 +17,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     let pakapoImageModel: PakapoImageModel = PakapoImageModel()
     var isPageFeedRight: Bool!
     
-    // MARK: - makeView
+    // MARK: - init
     override func viewWillAppear() {
         super.viewWillAppear()
         willMakeView()
@@ -32,8 +32,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         view.window?.delegate = self
     }
 
+    // MARK: - makeView
     func makeView() {
-        
         guard let window = view.window else {
             return
         }
@@ -88,6 +88,15 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         }
 
         //file
+        appdelegate.initRootSameDirectoriesClosure = {
+            
+            return self.pakapoImageModel.initRootSameDirectories()
+        }
+        
+        appdelegate.menuSameDirectoriesClosure = {(index: Int) -> Void in
+            self.refreshImageView(image: self.pakapoImageModel.jumpSameDirectory(index: index))
+        }
+        
         appdelegate.menuFileOpenClosure = {
             self.openPanel()
         }
@@ -114,7 +123,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     }
     
     func refreshImageView(image: NSImage?) {
-        
         pakapoImageView.setImage(image: image)
         
         view.window?.title = pakapoImageModel.loadPageTitle()
@@ -122,7 +130,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     
     // MARK: -
     func openPanel() {
-        
         guard let window = self.view.window else {
             return
         }
@@ -205,7 +212,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     }
     
     func defaultWindowSizeMode(window: NSWindow) {
-        
         //ツールバーのresizeボタン等でtoggleFullScreen(self)でのフルスクリーン状態になっている可能性があるので、強制的にnilへ
         window.toggleFullScreen(nil)
         
@@ -314,16 +320,15 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     }
     
     func pushNextDir() {
-        refreshImageView(image: pakapoImageModel.loadNextDir())
+        refreshImageView(image: pakapoImageModel.loadNextDirectory())
     }
     
     func pushPrevDir() {
-        refreshImageView(image: pakapoImageModel.loadPrevDir())
+        refreshImageView(image: pakapoImageModel.loadPrevDirectory())
     }
     
     // MARK: - mouse
     override func mouseUp(with event: NSEvent) {
-        
         guard let window: NSWindow = view.window else {
             return
         }

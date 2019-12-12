@@ -9,7 +9,7 @@
 import Cocoa
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     let FIRST_LAUNCH: String = "firstLaunch"
     let PAGE_FEED_RIGHT: String = "pageFeedRight"
@@ -25,6 +25,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     //file
     var menuFileOpenClosure:(() -> Void)!
     
+    var initRootSameDirectoriesClosure:(() -> (currentIndex: Int?, directories: [URL]?))!
+    var menuSameDirectoriesClosure:((_ index: Int) -> Void)!
+    
     //edit
     var menuCopyOpenClosure:(() -> Void)!
     
@@ -35,7 +38,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     //window
     var menuFullScreenClosure:(() -> Void)!
 
+    // MARK: - appdelegate
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        
         if UserDefaults.standard.string(forKey: FIRST_LAUNCH) == nil {
             initFirstLaunchMenu()
         } else {
@@ -46,6 +51,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func initFirstLaunchMenu() {
+        initSameDirectories()
         selectPageFeed(right: true)
         toggleSearchChildEnableItem(enable: false)
         
@@ -53,6 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func loadMenu() {
+        initSameDirectories()
         selectPageFeed(right: UserDefaults.standard.bool(forKey: PAGE_FEED_RIGHT))
         toggleSearchChildEnableItem(enable: !UserDefaults.standard.bool(forKey: SEARCH_CHILD_ENABLE))
     }
@@ -61,6 +68,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
 
+    // MARK: - menu
+    func menuWillOpen(_ menu: NSMenu) {
+        
+        let fileItem: NSMenuItem! = mainMenu.item(withTag: 1)
+        let sameDirectoriesItem: NSMenuItem! = fileItem.submenu?.item(withTag: 2)
+        let openRecentItem: NSMenuItem! = fileItem.submenu?.item(withTag: 3)
+        
+        //tagがないのでタイトルで比較。特定のNSMenuを開いた場合に処理を行いたいが、それが複数ある場合どうするのがいいのか
+        switch menu.title {
+        case sameDirectoriesItem.title:
+            initSameDirectories()
+        case openRecentItem.title:
+            print("")
+        default:
+            break
+        }
+    }
+    
     //Pakapo
     @IBAction func menuQuitApplication(_ sender: Any) {
         menuQuitPakapoClosure()
@@ -70,7 +95,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBAction func menuOpenImage(_ sender: NSMenuItem) {
         menuFileOpenClosure()
     }
+    
+    func initSameDirectories() {
+        let fileItem: NSMenuItem! = mainMenu.item(withTag: 1)
+        let sameDirectoriesItem: NSMenuItem! = fileItem.submenu?.item(withTag: 2)
+        let sameDirectoriesMenu: NSMenu! = sameDirectoriesItem.submenu
+        sameDirectoriesMenu.delegate = self
+        sameDirectoriesMenu.removeAllItems()
+        
+        let result = initRootSameDirectoriesClosure()
+        
+        guard let unwrappedDirectories = result.directories else {
+            return
+        }
+        
+        for (index, dir) in unwrappedDirectories.enumerated() {
+            let menuItem = NSMenuItem(title: dir.lastPathComponent, action: #selector(pushSameDirectory(_:)), keyEquivalent: "")
+            menuItem.tag = index
+            sameDirectoriesMenu.addItem(menuItem)
+        }
+        
+        if let unwrappedCurrentIndex = result.currentIndex {
+            sameDirectoriesMenu.item(withTag: unwrappedCurrentIndex)?.state = NSControl.StateValue.on
+        }
+    }
 
+    @objc func pushSameDirectory(_ sender: NSMenuItem) {
+        menuSameDirectoriesClosure(sender.tag)
+    }
+    
     //edit
     @IBAction func menuCopy(_ sender: Any) {
         menuCopyOpenClosure()
@@ -95,37 +148,42 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func selectPageFeed(right: Bool) {
-        let viewItem = mainMenu.item(withTag: 3)
-        let rightFeedItem = viewItem?.submenu?.item(withTag: 0)
-        let leftFeedItem = viewItem?.submenu?.item(withTag: 1)
+        let viewItem: NSMenuItem! = mainMenu.item(withTag: 3)
+        let rightFeedItem: NSMenuItem! = viewItem.submenu?.item(withTag: 0)
+        let leftFeedItem: NSMenuItem! = viewItem.submenu?.item(withTag: 1)
         
         if right {
-            rightFeedItem?.state = NSControl.StateValue.on
-            leftFeedItem?.state = NSControl.StateValue.off
+            rightFeedItem.state = NSControl.StateValue.on
+            leftFeedItem.state = NSControl.StateValue.off
             UserDefaults.standard.set(true, forKey: PAGE_FEED_RIGHT)
             menuPageFeedClosure(true)
         } else {
-            rightFeedItem?.state = NSControl.StateValue.off
-            leftFeedItem?.state = NSControl.StateValue.on
+            rightFeedItem.state = NSControl.StateValue.off
+            leftFeedItem.state = NSControl.StateValue.on
             UserDefaults.standard.set(false, forKey: PAGE_FEED_RIGHT)
             menuPageFeedClosure(false)
         }
     }
     
     func toggleSearchChildEnableItem(enable: Bool) {
-        let viewItem = mainMenu.item(withTag: 3)
-        let searchChildEnableItem = viewItem?.submenu?.item(withTag: 2)
+        let viewItem: NSMenuItem! = mainMenu.item(withTag: 3)
+        let searchChildEnableItem: NSMenuItem! = viewItem.submenu?.item(withTag: 2)
         
         if enable {
-            searchChildEnableItem?.state = NSControl.StateValue.off
+            searchChildEnableItem.state = NSControl.StateValue.off
             UserDefaults.standard.set(false, forKey: SEARCH_CHILD_ENABLE)
             menuSearchChildEnableClosure(false)
         } else {
-            searchChildEnableItem?.state = NSControl.StateValue.on
+            searchChildEnableItem.state = NSControl.StateValue.on
             UserDefaults.standard.set(true, forKey: SEARCH_CHILD_ENABLE)
             menuSearchChildEnableClosure(true)
         }
         
+    }
+    
+    //help
+    @IBAction func menuHelp(_ sender: Any) {
+        NSWorkspace.shared.open(URL(string: "https://github.com/gokuge/Pakapo/blob/master/README.md")!)
     }
 }
 

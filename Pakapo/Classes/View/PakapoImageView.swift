@@ -41,7 +41,6 @@ class PakapoImageView: NSView {
     }
     
     func setImage(image: NSImage?) {
-
         guard let unwrappedImage = image else {
             displayNoImage()
             return

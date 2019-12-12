@@ -65,26 +65,14 @@
                                                 <action selector="menuOpenImage:" target="Voe-Tx-rLC" id="u9K-gV-Vcy"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="最後に開いたページを開く" keyEquivalent="O" id="PsB-qK-WC4">
+                                        <menuItem title="最後に開いたページを開く" tag="1" keyEquivalent="O" id="PsB-qK-WC4">
                                             <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                         </menuItem>
-                                        <menuItem title="同じフォルダのフォルダ/アーカイブ" id="IG1-4K-R8v">
+                                        <menuItem title="同じフォルダのフォルダ/アーカイブ" tag="2" id="IG1-4K-R8v">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="同じフォルダのフォルダ/アーカイブ" id="hog-ow-cIl">
-                                                <items>
-                                                    <menuItem title="Item 1" id="gIQ-Qq-AQ2">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                    </menuItem>
-                                                    <menuItem title="Item 2" id="UkK-zW-SXK">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                    </menuItem>
-                                                    <menuItem title="Item 3" id="GFt-Ce-1B6">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                    </menuItem>
-                                                </items>
-                                            </menu>
+                                            <menu key="submenu" title="同じフォルダのフォルダ/アーカイブ" id="hog-ow-cIl"/>
                                         </menuItem>
-                                        <menuItem title="最近開いた本" id="tXI-mr-wws">
+                                        <menuItem title="最近開いた本" tag="3" id="tXI-mr-wws">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="最近開いた本" systemMenu="recentDocuments" id="oas-Oc-fiZ">
                                                 <items>
@@ -98,7 +86,7 @@
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
-                                        <menuItem title="閉じる" keyEquivalent="w" id="DVo-aG-piG">
+                                        <menuItem title="閉じる" tag="4" keyEquivalent="w" id="DVo-aG-piG">
                                             <connections>
                                                 <action selector="performClose:" target="Ady-hI-5gd" id="HmO-Ls-i7Q"/>
                                             </connections>
@@ -167,7 +155,7 @@
                                     <items>
                                         <menuItem title="Pakapo Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
-                                                <action selector="showHelp:" target="Ady-hI-5gd" id="y7X-2Q-9no"/>
+                                                <action selector="menuHelp:" target="Voe-Tx-rLC" id="3UG-bK-k5f"/>
                                             </connections>
                                         </menuItem>
                                     </items>
