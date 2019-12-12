@@ -92,6 +92,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         appdelegate.menuPageFeedClosure = {(isRigt: Bool) -> Void in
             self.isPageFeedRight = isRigt
         }
+        
+        appdelegate.menuFullScreenClosure = {
+            self.pushFullScreenCommand()
+        }
     }
     
     func refreshImageView(image: NSImage?) {
@@ -193,12 +197,12 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         }
 
         //複数の修飾キーを取得する場合は[.command]を[.command, .shift]とすれば良い
-        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
-        case [.command] where event.keyCode == 3:
-            pushFullScreenCommand()
-        default:
-            break
-        }
+//        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+//        case [.command] where event.keyCode == 3:
+//            pushFullScreenCommand()
+//        default:
+//            break
+//        }
     }
     
     func pushEsc() {

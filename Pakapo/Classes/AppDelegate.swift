@@ -19,9 +19,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     var initFullScreenMode:(() -> Void)!
     
-    var menuFileOpenClosure:(() -> Void)!
+    //Pakapo
     var menuQuitPakapoClosure:(() -> Void)!
+    
+    //file
+    var menuFileOpenClosure:(() -> Void)!
+    
+    //view
     var menuPageFeedClosure:((_ isRight: Bool) -> Void)!
+    
+    //window
+    var menuFullScreenClosure:(() -> Void)!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         initFullScreenMode()
@@ -56,6 +64,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func manuPageFeedLeft(_ sender: Any) {
         selectPageFeed(isRight: false)
+    }
+    
+    @IBAction func manuToggleFullScreen(_ sender: Any) {
+        menuFullScreenClosure()
     }
     
     func selectPageFeed(isRight: Bool) {
