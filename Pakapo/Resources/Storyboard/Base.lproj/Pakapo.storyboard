@@ -131,7 +131,14 @@
                                         <menuItem title="ページ左送り" tag="1" id="F7x-D5-vdy">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="manuPageFeedLeft:" target="Voe-Tx-rLC" id="psb-ax-b2Z"/>
+                                                <action selector="menuPageFeedLeft:" target="Voe-Tx-rLC" id="c1C-Ft-HSz"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="k9n-6F-wJS"/>
+                                        <menuItem title="サブフォルダを読み込む" tag="2" id="4G2-kA-hFe">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="menuSearchChildEnable:" target="Voe-Tx-rLC" id="BRi-M3-gBO"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -143,7 +150,7 @@
                                     <items>
                                         <menuItem title="フルスクリーン切替" keyEquivalent="f" id="Zje-x6-kZ7" userLabel="フルスクリーン切替">
                                             <connections>
-                                                <action selector="manuToggleFullScreen:" target="Voe-Tx-rLC" id="kgx-fc-xTj"/>
+                                                <action selector="menuToggleFullScreen:" target="Voe-Tx-rLC" id="1Wn-ee-RIz"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="しまう" keyEquivalent="m" id="OY7-WF-poV">

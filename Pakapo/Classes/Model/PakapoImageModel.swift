@@ -12,6 +12,7 @@ class PakapoImageModel: NSObject {
     
     let ROOT_DIRECTORY_URL: String = "rootDirectoryURL"
     let LAST_PAGE_URL: String = "lastPageURL"
+    var isSearchChild: Bool!
     
     var rootDirURL: URL?
     var currentDirURL: URL?
@@ -362,13 +363,16 @@ class PakapoImageModel: NSObject {
     }
     
     func loadPrevDir() -> NSImage? {
-        //現在のdirectoryの頭まで表示した事にして、後はloadPrevImageに任せる
+        //現在のdirectoryの頭まで表示した事にして、一旦loadPrevImageを実行する
         fileContentsIndex = 0
         
         if loadPrevImage() == nil {
             return nil
         }
         
+        //loadPrevImageは前のdirectoryの最後のindexを指す様にfileContentsIndexを変えてしまうので、頭を指す様にしておく
+        fileContentsIndex = 0
+
         //loadPrevImageがnilじゃない時点で確実に表示出来るfileがある
         return NSImage(contentsOf: fileContents!.first!)
     }
@@ -425,6 +429,10 @@ class PakapoImageModel: NSObject {
     
     func loadChildNextDirectory(dirURL: URL) -> URL? {
         
+        if !isSearchChildDirectory() {
+            return nil
+        }
+        
         guard let searchDirectories = makeNextSearchDirectory() else {
             return nil
         }
@@ -448,6 +456,10 @@ class PakapoImageModel: NSObject {
     }
     
     func loadChildPrevDirectory(dirURL: URL) -> URL? {
+        
+        if !isSearchChildDirectory() {
+            return nil
+        }
 
         guard let searchDirectories = makePrevSearchDirectory() else {
             return nil
@@ -459,10 +471,9 @@ class PakapoImageModel: NSObject {
 
             if dirContents != nil {
                 lastDisplayChildDirURL = dir
-                guard let validURL = loadChildPrevDirectory(dirURL: dir) else {
-                    continue
+                if let validURL = loadChildPrevDirectory(dirURL: dir) {
+                    return validURL
                 }
-                return validURL
             }
             
             guard let unwrappedFileContents = fileContents else {
@@ -476,6 +487,21 @@ class PakapoImageModel: NSObject {
         }
 
         return nil
+    }
+    
+    func isSearchChildDirectory() -> Bool {
+        
+        guard let unwrappedRootDirURL = rootDirURL,
+              let unwrappedCurrentDirURL = currentDirURL else {
+            return false
+        }
+        
+        //rootの子は有効
+        if unwrappedRootDirURL.absoluteString == unwrappedCurrentDirURL.absoluteString {
+            return true
+        }
+        
+        return isSearchChild
     }
     
     func loadNextValidDirectory(dirURL: URL) -> URL? {

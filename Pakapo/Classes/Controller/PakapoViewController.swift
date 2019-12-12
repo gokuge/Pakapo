@@ -68,6 +68,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     func makeAppdelegateClosure() {
         let appdelegate: AppDelegate = NSApplication.shared.delegate as! AppDelegate
         
+        //init
         appdelegate.initFullScreenMode = {
             if !UserDefaults.standard.bool(forKey: self.WINDOW_FULL_SCREEN) {
                 return
@@ -79,23 +80,32 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             
             self.fullScreenSizeMode(window: window)
         }
-
-        appdelegate.menuFileOpenClosure = {
-            self.openPanel()
-        }
         
+        //pakapo
         appdelegate.menuQuitPakapoClosure = {
             self.saveFileURL()
             NSApplication.shared.terminate(self)
         }
-        
-        appdelegate.menuPageFeedClosure = {(isRigt: Bool) -> Void in
-            self.isPageFeedRight = isRigt
+
+        //file
+        appdelegate.menuFileOpenClosure = {
+            self.openPanel()
         }
-        
+                
+        //view
+        appdelegate.menuPageFeedClosure = {(right: Bool) -> Void in
+            self.isPageFeedRight = right
+        }
+
+        appdelegate.menuSearchChildEnableClosure = {(enable: Bool) -> Void in
+            self.pakapoImageModel.isSearchChild = enable
+        }
+
+        //window
         appdelegate.menuFullScreenClosure = {
             self.pushFullScreenCommand()
         }
+        
     }
     
     func refreshImageView(image: NSImage?) {

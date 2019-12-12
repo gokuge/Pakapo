@@ -11,9 +11,9 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
-    let PAGE_FEED: String = "pageFeed"
-    let PAGE_FEED_RIGHT: String = "right"
-    let PAGE_FEED_LEFT: String = "left"
+    let FIRST_LAUNCH: String = "firstLaunch"
+    let PAGE_FEED_RIGHT: String = "pageFeedRight"
+    let SEARCH_CHILD_ENABLE: String = "searchChildEnable"
     
     @IBOutlet weak var mainMenu: NSMenu!
     
@@ -26,24 +26,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var menuFileOpenClosure:(() -> Void)!
     
     //view
-    var menuPageFeedClosure:((_ isRight: Bool) -> Void)!
+    var menuPageFeedClosure:((_ right: Bool) -> Void)!
+    var menuSearchChildEnableClosure:((_ enable: Bool) -> Void)!
     
     //window
     var menuFullScreenClosure:(() -> Void)!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        initFullScreenMode()
-        
-        if let unwrappedPageFeed = UserDefaults.standard.string(forKey: PAGE_FEED) {
-            if unwrappedPageFeed == PAGE_FEED_RIGHT {
-                selectPageFeed(isRight: true)
-            } else {
-                selectPageFeed(isRight: false)
-            }
+        if UserDefaults.standard.string(forKey: FIRST_LAUNCH) == nil {
+            initFirstLaunchMenu()
         } else {
-            //初回起動時を想定
-            selectPageFeed(isRight: true)
+            loadMenu()
         }
+        
+        initFullScreenMode()
+    }
+    
+    func initFirstLaunchMenu() {
+        selectPageFeed(right: true)
+        toggleSearchChildEnableItem(enable: false)
+        
+        UserDefaults.standard.set("finishFirstLaunch", forKey: FIRST_LAUNCH)
+    }
+    
+    func loadMenu() {
+        selectPageFeed(right: UserDefaults.standard.bool(forKey: PAGE_FEED_RIGHT))
+        toggleSearchChildEnableItem(enable: !UserDefaults.standard.bool(forKey: SEARCH_CHILD_ENABLE))
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -59,33 +67,53 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction func menuPageFeedRight(_ sender: Any) {
-        selectPageFeed(isRight: true)
+        selectPageFeed(right: true)
     }
     
-    @IBAction func manuPageFeedLeft(_ sender: Any) {
-        selectPageFeed(isRight: false)
+    @IBAction func menuPageFeedLeft(_ sender: Any) {
+        selectPageFeed(right: false)
     }
     
-    @IBAction func manuToggleFullScreen(_ sender: Any) {
+    @IBAction func menuSearchChildEnable(_ sender: Any) {
+        toggleSearchChildEnableItem(enable: NSNumber(value: (sender as! NSMenuItem).state.rawValue).boolValue)
+    }
+    
+    @IBAction func menuToggleFullScreen(_ sender: Any) {
         menuFullScreenClosure()
     }
     
-    func selectPageFeed(isRight: Bool) {
+    func selectPageFeed(right: Bool) {
         let viewItem = mainMenu.item(withTag: 3)
         let rightFeedItem = viewItem?.submenu?.item(withTag: 0)
         let leftFeedItem = viewItem?.submenu?.item(withTag: 1)
         
-        if isRight {
+        if right {
             rightFeedItem?.state = NSControl.StateValue.on
             leftFeedItem?.state = NSControl.StateValue.off
-            UserDefaults.standard.set(PAGE_FEED_RIGHT, forKey: PAGE_FEED)
+            UserDefaults.standard.set(true, forKey: PAGE_FEED_RIGHT)
             menuPageFeedClosure(true)
         } else {
             rightFeedItem?.state = NSControl.StateValue.off
             leftFeedItem?.state = NSControl.StateValue.on
-            UserDefaults.standard.set(PAGE_FEED_LEFT, forKey: PAGE_FEED)
+            UserDefaults.standard.set(false, forKey: PAGE_FEED_RIGHT)
             menuPageFeedClosure(false)
         }
+    }
+    
+    func toggleSearchChildEnableItem(enable: Bool) {
+        let viewItem = mainMenu.item(withTag: 3)
+        let searchChildEnableItem = viewItem?.submenu?.item(withTag: 2)
+        
+        if enable {
+            searchChildEnableItem?.state = NSControl.StateValue.off
+            UserDefaults.standard.set(false, forKey: SEARCH_CHILD_ENABLE)
+            menuSearchChildEnableClosure(false)
+        } else {
+            searchChildEnableItem?.state = NSControl.StateValue.on
+            UserDefaults.standard.set(true, forKey: SEARCH_CHILD_ENABLE)
+            menuSearchChildEnableClosure(true)
+        }
+        
     }
 }
 
