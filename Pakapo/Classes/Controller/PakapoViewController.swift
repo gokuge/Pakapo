@@ -272,24 +272,19 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)
         
-        print(String(format: "keyCode:%d", event.keyCode))
-        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
+//        print(String(format: "keyCode:%d", event.keyCode))
+//        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
         
         switch Int(event.keyCode) {
         case 53:
-            print("esc")
             pushEsc()
         case 123:
-            print("left")
             pushLeftArrow()
         case 124:
-            print("right")
             pushRightArrow()
         case 125:
-            print("down")
             pushNextDir()
         case 126:
-            print("up")
             pushPrevDir()
         default:break
         }

@@ -289,8 +289,6 @@ class PakapoImageModel: NSObject {
             //これが起こった場合、fileContentsIndexとcurrentDirが有効な値になっていないので、file名で見てリカバリする
             if fileContentsIndex == nil {
                 for (index, file) in unwrappedFileContents.enumerated() {
-                    print(contentURL.lastPathComponent)
-                    print(file.lastPathComponent)
                     if contentURL.lastPathComponent == file.lastPathComponent {
                         fileContentsIndex = index
                         currentDirURL = file.deletingLastPathComponent()
