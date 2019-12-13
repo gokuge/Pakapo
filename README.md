@@ -5,8 +5,8 @@ Mac OSで愛用していた偉大なcooViewerが、catalinaの登場により利
 主に自分の使っていた機能の範囲で、cooViewerっぽいものを作りました
 
 ## インストール
-1. このページにある Clone or download から Download ZIP をクリック
-2. DLしたZipを解凍後、Appフォルダ内にあるPakapoをアプリケーションフォルダ等に入れて下さい
+1. [release](https://github.com/gokuge/Pakapo/releases) から最新バージョンをDLして下さい
+2. DLしたZipを解凍後、Pakapo.appをアプリケーションフォルダ等に入れて下さい
 
 ## 使い方
 メニューの開くからファイル/フォルダを選択し、  
