@@ -35,12 +35,11 @@ class PakapoImageView: NSView {
         self.frame = frame
         imageView.frame = frame
         
-        if let unwrappedWarningText = warningText {
-            unwrappedWarningText.frame = frame
-        }
+        resizeWarningTextView()
     }
     
     func setImage(image: NSImage?) {
+        
         guard let unwrappedImage = image else {
             displayNoImage()
             return
@@ -58,18 +57,37 @@ class PakapoImageView: NSView {
         imageView.image = nil
         
         guard let unwrappedWarningText = warningText else {
-            warningText = NSTextField(frame: frame)
+            warningText = NSTextField()
             warningText!.stringValue = "NO IMAGE"
             warningText!.alignment = NSTextAlignment.center
             warningText!.isBordered = false
             warningText!.isEditable = false
             warningText!.isSelectable = false
+            
+            warningText!.textColor = NSColor.lightGray
+            warningText!.backgroundColor = NSColor.clear
+            
+            resizeWarningTextView()
+            
             addSubview(warningText!)
             return
         }
         
         addSubview(unwrappedWarningText)
-
+    }
+    
+    func resizeWarningTextView() {
+        
+        guard let unwrappedWarningText = warningText else {
+            return
+        }
+        
+        let height: CGFloat = frame.height / 3
+        
+        unwrappedWarningText.frame = CGRect(x: 0, y: (frame.height / 2) - (height / 2), width: frame.width, height: height)
+        
+        let fontSize: CGFloat = (2.0 * (height - 1.0278) / 1.177).rounded() / 2.0
+        unwrappedWarningText.font = NSFont.systemFont(ofSize: fontSize)
     }
     
     // MARK: - click event
