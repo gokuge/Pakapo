@@ -48,6 +48,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pakapoImageView.getDirURLClosure = {
                 return self.pakapoImageModel.currentDirURL
             }
+            
+            pakapoImageView.dropClosure = {(url: URL) in
+                self.selectInitURL(url: url)
+            }
                         
             view.window?.contentView?.addSubview(pakapoImageView)
         }
@@ -163,15 +167,19 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
                 return
             }
 
-            let result = self.pakapoImageModel.saveRootDirectoryURL(root: unwrappedURL)
-            
-            if !result {
-                //システムのroot等を選択された場合。あまり考えたくないので無効扱い
-                return
-            }
-            
-            self.refreshImageView(image: self.pakapoImageModel.loadInitImage(contentURL: unwrappedURL))
+            self.selectInitURL(url: unwrappedURL)
         })
+    }
+    
+    func selectInitURL(url: URL) {
+        let result = self.pakapoImageModel.saveRootDirectoryURL(root: url)
+        
+        if !result {
+            //システムのroot等を選択された場合。あまり考えたくないので無効扱い
+            return
+        }
+        
+        self.refreshImageView(image: self.pakapoImageModel.loadInitImage(contentURL: url))
     }
     
     func saveFileURL() {

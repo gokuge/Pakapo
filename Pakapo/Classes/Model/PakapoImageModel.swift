@@ -243,6 +243,18 @@ class PakapoImageModel: NSObject {
     }
 
     // MARK: - image
+    func loadImage(url: URL?) -> NSImage? {
+        guard let unwrappedURL = url else {
+            return nil
+        }
+        
+        if !unwrappedURL.isImageTypeURL() {
+            return nil
+        }
+        
+        return NSImage(contentsOf: unwrappedURL)
+    }
+    
     func loadInitImage(contentURL: URL) -> NSImage? {
         var isDir: ObjCBool = false
         if !FileManager.default.fileExists(atPath: contentURL.path, isDirectory: &isDir) {
@@ -257,7 +269,7 @@ class PakapoImageModel: NSObject {
             guard let unwrappedImage = loadValidImage(contents: fileContents) else {
                 return nil
             }
-            
+
             addOpenRecentDirectories()
             
             return unwrappedImage
@@ -272,7 +284,26 @@ class PakapoImageModel: NSObject {
             //indexの更新
             fileContentsIndex = unwrappedFileContents.firstIndex(of: contentURL)
             
-            guard let unwrappedImage = NSImage(contentsOf: contentURL) else {
+            //本来ありえないはずだが、前回終了時に保存したURLと、refreshContentsで取得した同じfilepathが違う場合がある
+            //どうも日本語がencodeされている部分が違うっぽいが原因不明
+            //これが起こった場合、fileContentsIndexとcurrentDirが有効な値になっていないので、file名で見てリカバリする
+            if fileContentsIndex == nil {
+                for (index, file) in unwrappedFileContents.enumerated() {
+                    print(contentURL.lastPathComponent)
+                    print(file.lastPathComponent)
+                    if contentURL.lastPathComponent == file.lastPathComponent {
+                        fileContentsIndex = index
+                        currentDirURL = file.deletingLastPathComponent()
+                        break
+                    }
+                }
+                //ファイル名でのリカバリにも失敗。読み直してもらうしかなさそう
+                if fileContentsIndex == nil {
+                    return nil
+                }
+            }
+            
+            guard let unwrappedImage = loadImage(url: contentURL) else {
                 return nil
             }
             
@@ -288,9 +319,9 @@ class PakapoImageModel: NSObject {
         }
         
         //indexの更新
-        for (index, content) in unwrappedContents.enumerated() {
+        for (index, contentURL) in unwrappedContents.enumerated() {
             fileContentsIndex = index
-            guard let unwrappedImage = NSImage(contentsOf: content) else {
+            guard let unwrappedImage = loadImage(url: contentURL) else {
                 continue
             }
             
@@ -358,7 +389,7 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
-        guard let image = NSImage(contentsOf: fileURL) else {
+        guard let image = loadImage(url: fileURL) else {
             return nil
         }
         
@@ -424,7 +455,7 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
-        guard let image = NSImage(contentsOf: fileURL) else {
+        guard let image = loadImage(url: fileURL) else {
             return nil
         }
         
@@ -486,7 +517,7 @@ class PakapoImageModel: NSObject {
         fileContentsIndex = 0
 
         //loadPrevImageがnilじゃない時点で確実に表示出来るfileがある
-        return NSImage(contentsOf: fileContents!.first!)
+        return loadImage(url: fileContents!.first!)
     }
     
     func makeNextSearchDirectory() -> [URL]? {

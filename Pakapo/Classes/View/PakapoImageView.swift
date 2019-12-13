@@ -12,72 +12,14 @@ class PakapoImageView: NSView {
     
     var getFileURLClosure:(() -> URL?)!
     var getDirURLClosure:(() -> URL?)!
+    var dropClosure:((URL) -> Void)!
 
     let imageView: NSImageView = NSImageView()
+    var draggingView: DraggingView!
     var warningText: NSTextField?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-    }
-    
-    override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
-        print("dragging entered")
-        
-        return NSDragOperation.copy
-    }
-    
-    override func draggingUpdated(_ sender: NSDraggingInfo) -> NSDragOperation {
-        return NSDragOperation.copy
-    }
-    
-    override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
-        let draggedFilePath = sender.draggingPasteboard.readObjects(forClasses: [NSURL.self], options: nil)
-        
-        guard let unwrappedDraggedFilePath = draggedFilePath else {
-            return false
-        }
-        
-        if unwrappedDraggedFilePath.count != 1 {
-            return false
-        }
-        
-        return true
-    }
-    
-    override func draggingEnded(_ sender: NSDraggingInfo) {
-        //https://stackoverflow.com/questions/44537356/swift-4-nsfilenamespboardtype-not-available-what-to-use-instead-for-registerfo
-        let draggedFilePath = sender.draggingPasteboard.readObjects(forClasses: [NSURL.self], options: nil)
-        
-        guard let unwrappedDraggedFilePath = draggedFilePath else {
-            return
-        }
-        
-        if unwrappedDraggedFilePath.count != 1 {
-            return
-        }
-        
-        guard let unwrappedFileURL = unwrappedDraggedFilePath[0] as? URL else {
-            return
-        }
-        
-        var isDir: ObjCBool = false
-        if !FileManager.default.fileExists(atPath: unwrappedFileURL.path, isDirectory: &isDir) {
-            return
-        }
-        
-        if isDir.boolValue {
-            //directory
-            
-            return
-        }
-        
-        guard NSImage(contentsOf: unwrappedFileURL) != nil else {
-            return
-        }
-
-        //表示可能なファイル
-        
-        print("dragging entered2")
     }
     
     override init(frame frameRect: NSRect) {
@@ -88,20 +30,24 @@ class PakapoImageView: NSView {
         imageView.layer?.backgroundColor = NSColor.black.cgColor
         imageView.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
         
-        registerForDraggedTypes([NSPasteboard.PasteboardType.fileURL])
+        draggingView = DraggingView(frame: frameRect)
+        draggingView.dropClosure = { (url: URL) in
+            self.dropClosure(url)
+        }
         
-//        addSubview(imageView)
+        addSubview(imageView)
+        addSubview(draggingView)
     }
     
     func resizeFrame(frame: CGRect) {
         self.frame = frame
+        draggingView.frame = frame
         imageView.frame = frame
         
         resizeWarningTextView()
     }
     
     func setImage(image: NSImage?) {
-        
         guard let unwrappedImage = image else {
             displayNoImage()
             return
@@ -132,10 +78,12 @@ class PakapoImageView: NSView {
             resizeWarningTextView()
             
             addSubview(warningText!)
+            addSubview(draggingView)
             return
         }
         
         addSubview(unwrappedWarningText)
+        addSubview(draggingView)
     }
     
     func resizeWarningTextView() {
