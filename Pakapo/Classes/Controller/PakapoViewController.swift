@@ -262,6 +262,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     
     // MARK: - key event
     override func keyDown(with event: NSEvent) {
+        super.keyDown(with: event)
+        
         print(String(format: "keyCode:%d", event.keyCode))
         print(String(format: "key:%@", event.charactersIgnoringModifiers!))
         
@@ -337,6 +339,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     
     // MARK: - mouse
     override func mouseUp(with event: NSEvent) {
+        super.mouseUp(with: event)
+        
         guard let window: NSWindow = view.window else {
             return
         }
@@ -347,6 +351,15 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pushLeftArrow()
         }
         
-    }    
+    }
+    
+    override func scrollWheel(with event: NSEvent) {
+        super.scrollWheel(with: event)
+        if event.deltaY > 0 {
+            pushLeftArrow()
+        } else if event.deltaY < 0 {
+            pushRightArrow()
+        }
+    }
 }
 
