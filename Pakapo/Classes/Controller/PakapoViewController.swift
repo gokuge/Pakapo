@@ -101,6 +101,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             return self.pakapoImageModel.getOpenRecentDirectories()
         }
         
+        appdelegate.menuOpenRecentDirectoriesClosure = {(index: Int) -> Void in
+            self.refreshImageView(image: self.pakapoImageModel.jumpOpenRecentDirectory(index: index))
+        }
+        
         appdelegate.menuFileOpenClosure = {
             self.openPanel()
         }

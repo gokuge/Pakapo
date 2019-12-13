@@ -29,6 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var menuSameDirectoriesClosure: ((_ index: Int) -> Void)!
     
     var initOpenRecentDirectoriesClosure: (() -> [String]?)!
+    var menuOpenRecentDirectoriesClosure: ((_ index: Int) -> Void)!
     
     //edit
     var menuCopyOpenClosure: (() -> Void)!
@@ -139,7 +140,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         
         for (index, url_str) in unwrappedOpenRecentDirectories.enumerated() {
             let dir: URL = URL(string: url_str)!
-            let menuItem = NSMenuItem(title: dir.lastPathComponent, action: #selector(pushSameDirectory(_:)), keyEquivalent: "")
+            let menuItem = NSMenuItem(title: dir.lastPathComponent, action: #selector(pushOpenRecentDirectories(_:)), keyEquivalent: "")
             menuItem.tag = index
             openRecentMenu.addItem(menuItem)
         }
@@ -147,6 +148,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     @objc func pushSameDirectory(_ sender: NSMenuItem) {
         menuSameDirectoriesClosure(sender.tag)
+    }
+    
+    @objc func pushOpenRecentDirectories(_ sender: NSMenuItem) {
+        menuOpenRecentDirectoriesClosure(sender.tag)
     }
     
     //edit

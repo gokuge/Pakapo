@@ -442,6 +442,21 @@ class PakapoImageModel: NSObject {
         return jumpDirectory(url: unwrappedRootDirectories[index])
     }
     
+    func jumpOpenRecentDirectory(index: Int) -> NSImage? {
+        guard var openRecentDirectories: [String] = UserDefaults.standard.array(forKey: OPEN_RECENT_DIRECTORIES) as? [String] else {
+            return nil
+        }
+        
+        let jumpURL: URL = URL(string: openRecentDirectories[index])!
+        
+        //ジャンプしたフォルダを最新にする
+        openRecentDirectories.remove(at: index)
+        openRecentDirectories.insert(jumpURL.absoluteString, at: 0)
+        UserDefaults.standard.set(openRecentDirectories, forKey: OPEN_RECENT_DIRECTORIES)
+        
+        return jumpDirectory(url: jumpURL)
+    }
+    
     func jumpDirectory(url: URL) -> NSImage? {
         lastDisplayChildDirURL = nil
         
