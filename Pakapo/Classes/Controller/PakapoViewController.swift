@@ -270,8 +270,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     
     // MARK: - key event
     override func keyDown(with event: NSEvent) {
-        super.keyDown(with: event)
-        
 //        print(String(format: "keyCode:%d", event.keyCode))
 //        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
         
