@@ -1,12 +1,14 @@
 # Pakapo
+![Pakapo](https://user-images.githubusercontent.com/57989544/70847481-52295180-1ea8-11ea-964f-4ff5f6cfe82e.png)
+
 Mac OS用の少機能イメージビューアです  
 Mac OSで愛用していた偉大なcooViewerが、catalinaの登場により利用出来なくなってしまいました  
 色々と代替アプリを探してみたのですが、しっくり来るのが見つからなかったので  
 主に自分の使っていた機能の範囲で、cooViewerっぽいものを作りました
 
 ## インストール
-1. [release](https://github.com/gokuge/Pakapo/releases) から最新バージョンをDLして下さい
-2. DLしたZipを解凍後、Pakapo.appをアプリケーションフォルダ等に入れて下さい
+1. [release](https://github.com/gokuge/Pakapo/releases) から最新バージョンのdmgをDLして下さい
+2. DLしたdmgをマウント後、Pakapo.appをアプリケーションフォルダ等に入れて下さい
 
 ## 使い方
 メニューの開くからファイル/フォルダを選択し、  
