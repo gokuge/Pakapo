@@ -146,12 +146,12 @@
                                                 <action selector="menuViewStyleWidthFit:" target="Voe-Tx-rLC" id="byF-to-Lt6"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="画面に合わせない" tag="2" keyEquivalent="3" id="O4d-dN-zqG">
+                                        <menuItem title="画面に合わせない" tag="3" keyEquivalent="3" id="O4d-dN-zqG">
                                             <connections>
                                                 <action selector="menuViewStyleOriginalSize:" target="Voe-Tx-rLC" id="Au7-rn-GBF"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="見開き分割" tag="3" keyEquivalent="4" id="Sxs-8S-O7f">
+                                        <menuItem title="見開き分割" tag="2" keyEquivalent="4" id="Sxs-8S-O7f">
                                             <connections>
                                                 <action selector="menuViewStyleSpread:" target="Voe-Tx-rLC" id="8nX-oc-IPF"/>
                                             </connections>

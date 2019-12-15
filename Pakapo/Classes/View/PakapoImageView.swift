@@ -15,8 +15,8 @@ class PakapoImageView: NSView {
     enum ViewStyle: Int {
         case defaultView = 0
         case widthFitView
-        case originalSizeView
         case spreadView
+        case originalSizeView
     }
     
     var getFileURLClosure:(() -> URL?)!
@@ -40,6 +40,10 @@ class PakapoImageView: NSView {
         imageView.frame = frameRect
         imageView.wantsLayer = true
         imageView.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
+        
+        if viewStyle.rawValue == ViewStyle.originalSizeView.rawValue {
+            imageView.imageScaling = NSImageScaling.scaleNone
+        }
 
         draggingView = DraggingView(frame: frameRect)
         draggingView.dropClosure = { (url: URL) in
@@ -89,8 +93,8 @@ class PakapoImageView: NSView {
         }
         
         let imageRep: NSBitmapImageRep  = NSBitmapImageRep(data: image.tiffRepresentation!)!
-        let pixelW: CGFloat = CGFloat(imageRep.pixelsWide)
-        let pixelH: CGFloat = CGFloat(imageRep.pixelsHigh)
+        var pixelW: CGFloat = CGFloat(imageRep.pixelsWide)
+        var pixelH: CGFloat = CGFloat(imageRep.pixelsHigh)
         let ratio: CGFloat = frame.width / pixelW
         
         switch viewStyle.rawValue {
@@ -117,6 +121,13 @@ class PakapoImageView: NSView {
                                                     height: spreadH
             )
         case ViewStyle.originalSizeView.rawValue:
+            if (pixelW < frame.width){
+                pixelW = frame.width
+            }
+            if (pixelH < frame.height){
+                pixelH = frame.height
+            }
+            
             scrollView.documentView?.frame = CGRect(x: 0,
                                                     y: 0,
                                                     width: pixelW,

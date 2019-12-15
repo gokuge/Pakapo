@@ -16,6 +16,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     var pakapoImageView: PakapoImageView!
     let pakapoImageModel: PakapoImageModel = PakapoImageModel()
     var isPageFeedRight: Bool!
+    var pinchIn: Bool = false
     
     // MARK: - init
     override func viewWillAppear() {
@@ -365,6 +366,38 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         } else if event.deltaY < 0 {
             pushRightArrow()
         }
+    }
+    
+    
+    override func magnify(with event: NSEvent) {
+        
+        //ピンチの終了時はmagnificationが0で来るので、「イン/アウト」のどちらで終えたのかがわからない。直前までのを記憶する必要がある
+        if event.magnification > 0 {
+            pinchIn = false
+        } else if event.magnification < 0{
+            pinchIn = true
+        }
+        
+        //終了時以外は更新させない
+        if event.phase.rawValue != NSEvent.Phase.ended.rawValue {
+            return
+        }
+        
+        //cooViewerのピンチは0,1,3,2の順
+        var viewStyle: Int = pakapoImageView.viewStyle.rawValue
+        if pinchIn {
+            if viewStyle == PakapoImageView.ViewStyle.defaultView.rawValue {
+                return
+            }
+            viewStyle -= 1
+        } else {
+            if viewStyle == PakapoImageView.ViewStyle.originalSizeView.rawValue {
+                return
+            }
+            viewStyle += 1
+        }
+        let appDelegate: AppDelegate = NSApplication.shared.delegate as! AppDelegate
+        appDelegate.selectViewStyle(tag: viewStyle)
     }
 }
 
