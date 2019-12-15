@@ -39,7 +39,6 @@ class PakapoImageView: NSView {
         
         imageView.frame = frameRect
         imageView.wantsLayer = true
-        imageView.layer?.backgroundColor = NSColor.black.cgColor
         imageView.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
 
         draggingView = DraggingView(frame: frameRect)
@@ -48,7 +47,7 @@ class PakapoImageView: NSView {
         }
         
         scrollView.frame = frameRect
-        scrollView.backgroundColor = NSColor.red
+        scrollView.backgroundColor = NSColor.black
         scrollView.documentView = imageView
         scrollView.hasHorizontalScroller = true
         scrollView.hasVerticalScroller = true

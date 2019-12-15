@@ -42,7 +42,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
         if pakapoImageView == nil {
             pakapoImageView = PakapoImageView(frame: view.frame)
-            
+            pakapoImageView.viewStyle = PakapoImageView.ViewStyle(rawValue: UserDefaults.standard.integer(forKey: appDelegate.VIEW_STYLE))!
+
             pakapoImageView.getFileURLClosure = {
                 return self.pakapoImageModel.getFileURL()
             }
@@ -54,9 +55,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pakapoImageView.dropClosure = {(url: URL) in
                 self.selectInitURL(url: url)
             }
-            
-            pakapoImageView.viewStyle = PakapoImageView.ViewStyle(rawValue: UserDefaults.standard.integer(forKey: appDelegate.VIEW_STYLE))!
-                        
+                                    
             window.contentView?.addSubview(pakapoImageView)
         }
   
