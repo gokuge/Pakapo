@@ -106,9 +106,9 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="表示" tag="3" id="H8h-7b-M4v">
+                            <menuItem title="設定" tag="3" id="H8h-7b-M4v">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="表示" id="HyV-fh-RgO">
+                                <menu key="submenu" title="設定" id="HyV-fh-RgO">
                                     <items>
                                         <menuItem title="ページ右送り" state="on" id="zNo-K6-wko">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -132,7 +132,34 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="ウィンドウ" tag="4" id="aUF-d1-5bR">
+                            <menuItem title="表示" tag="4" id="PBY-Gt-iCe">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="表示" id="3ld-ha-7yb">
+                                    <items>
+                                        <menuItem title="画面内に収める" keyEquivalent="1" id="vwq-b2-nrF">
+                                            <connections>
+                                                <action selector="menuViewStyleDefault:" target="Voe-Tx-rLC" id="ozG-EM-yl2"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="画面の横幅に合わせる" tag="1" keyEquivalent="2" id="Y5z-Cd-aFI">
+                                            <connections>
+                                                <action selector="menuViewStyleWidthFit:" target="Voe-Tx-rLC" id="byF-to-Lt6"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="画面に合わせない" tag="2" keyEquivalent="3" id="O4d-dN-zqG">
+                                            <connections>
+                                                <action selector="menuViewStyleOriginalSize:" target="Voe-Tx-rLC" id="Au7-rn-GBF"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="見開き分割" tag="3" keyEquivalent="4" id="Sxs-8S-O7f">
+                                            <connections>
+                                                <action selector="menuViewStyleSpread:" target="Voe-Tx-rLC" id="8nX-oc-IPF"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="ウィンドウ" tag="5" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="ウィンドウ" systemMenu="window" id="Td7-aD-5lo">
                                     <items>
@@ -149,7 +176,7 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="ヘルプ" tag="5" id="wpr-3q-Mcd">
+                            <menuItem title="ヘルプ" tag="6" id="wpr-3q-Mcd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="ヘルプ" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
@@ -186,6 +213,7 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <value key="minSize" type="size" width="200" height="90"/>
                         <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
                         </connections>

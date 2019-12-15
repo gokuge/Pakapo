@@ -10,13 +10,25 @@ import Cocoa
 
 class PakapoImageView: NSView {
     
+    let SPREAD_WIDTH: CGFloat = 740
+    
+    enum ViewStyle: Int {
+        case defaultView = 0
+        case widthFitView
+        case originalSizeView
+        case spreadView
+    }
+    
     var getFileURLClosure:(() -> URL?)!
     var getDirURLClosure:(() -> URL?)!
     var dropClosure:((URL) -> Void)!
 
     let imageView: NSImageView = NSImageView()
+    let scrollView: PakapoImageScrollView = PakapoImageScrollView()
     var draggingView: DraggingView!
     var warningText: NSTextField?
+    
+    var viewStyle: ViewStyle = ViewStyle.defaultView
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -29,22 +41,105 @@ class PakapoImageView: NSView {
         imageView.wantsLayer = true
         imageView.layer?.backgroundColor = NSColor.black.cgColor
         imageView.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
-        
+
         draggingView = DraggingView(frame: frameRect)
         draggingView.dropClosure = { (url: URL) in
             self.dropClosure(url)
         }
         
-        addSubview(imageView)
+        scrollView.frame = frameRect
+        scrollView.backgroundColor = NSColor.red
+        scrollView.documentView = imageView
+        scrollView.hasHorizontalScroller = true
+        scrollView.hasVerticalScroller = true
+        scrollView.autohidesScrollers = true
+
+        scrollView.canScrollClosure = {
+            
+            if self.viewStyle.rawValue == ViewStyle.defaultView.rawValue {
+                return false
+            }
+            
+            return true
+        }
+        addSubview(scrollView)
         addSubview(draggingView)
     }
     
     func resizeFrame(frame: CGRect) {
+        let point: NSPoint = NSPoint(x: scrollView.contentView.documentVisibleRect.origin.x,
+                                     y: scrollView.contentView.documentVisibleRect.origin.y)
+
         self.frame = frame
         draggingView.frame = frame
         imageView.frame = frame
+        scrollView.frame = frame
+        
+        if let unwrappedImage = imageView.image {
+            resizeDocumentView(image: unwrappedImage)
+            scrollView.contentView.scroll(point)
+        }
         
         resizeWarningTextView()
+    }
+    
+    func resizeDocumentView(image: NSImage) {
+        
+        if viewStyle.rawValue == ViewStyle.defaultView.rawValue {
+            return
+        }
+        
+        let imageRep: NSBitmapImageRep  = NSBitmapImageRep(data: image.tiffRepresentation!)!
+        let pixelW: CGFloat = CGFloat(imageRep.pixelsWide)
+        let pixelH: CGFloat = CGFloat(imageRep.pixelsHigh)
+        let ratio: CGFloat = frame.width / pixelW
+        
+        switch viewStyle.rawValue {
+        case ViewStyle.widthFitView.rawValue:
+            scrollView.documentView?.frame = CGRect(x: 0.0,
+                                                    y: 0.0,
+                                                    width: pixelW * ratio,
+                                                    height: pixelH * ratio
+            )
+        case ViewStyle.spreadView.rawValue:
+            //初期値は横フィット
+            var spreadW: CGFloat = pixelW * ratio
+            var spreadH: CGFloat = pixelH * ratio
+            
+            if (pixelW > SPREAD_WIDTH){
+                //既定値より大きい場合にのみ見開き設定(横2倍フィット)
+                spreadW *= 2
+                spreadH *= 2
+            }
+            
+            scrollView.documentView?.frame = CGRect(x: 0.0,
+                                                    y: 0.0,
+                                                    width: spreadW,
+                                                    height: spreadH
+            )
+        case ViewStyle.originalSizeView.rawValue:
+            scrollView.documentView?.frame = CGRect(x: 0,
+                                                    y: 0,
+                                                    width: pixelW,
+                                                    height: pixelH)
+            
+        default:
+            break
+        }
+    }
+    
+    func resizeWarningTextView() {
+        
+        guard let unwrappedWarningText = warningText else {
+            return
+        }
+        
+        let height: CGFloat = frame.height / 3
+        
+        unwrappedWarningText.frame = CGRect(x: 0, y: (frame.height / 2) - (height / 2), width: frame.width, height: height)
+        
+        let fontSize: CGFloat = (2.0 * (height - 1.0278) / 1.177).rounded() / 2.0
+        unwrappedWarningText.font = NSFont.systemFont(ofSize: fontSize)
     }
     
     func setImage(image: NSImage?) {
@@ -57,8 +152,10 @@ class PakapoImageView: NSView {
             unwrappedWarningText.removeFromSuperview()
             warningText = nil
         }
-
+        
         imageView.image = unwrappedImage
+        
+        resizeDocumentView(image: unwrappedImage)
     }
     
     func displayNoImage() {
@@ -84,20 +181,6 @@ class PakapoImageView: NSView {
         
         addSubview(unwrappedWarningText)
         addSubview(draggingView)
-    }
-    
-    func resizeWarningTextView() {
-        
-        guard let unwrappedWarningText = warningText else {
-            return
-        }
-        
-        let height: CGFloat = frame.height / 3
-        
-        unwrappedWarningText.frame = CGRect(x: 0, y: (frame.height / 2) - (height / 2), width: frame.width, height: height)
-        
-        let fontSize: CGFloat = (2.0 * (height - 1.0278) / 1.177).rounded() / 2.0
-        unwrappedWarningText.font = NSFont.systemFont(ofSize: fontSize)
     }
     
     // MARK: - click event

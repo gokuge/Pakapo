@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		712DEE8123A60A2E007F6750 /* PakapoImageScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712DEE8023A60A2E007F6750 /* PakapoImageScrollView.swift */; };
 		71D593B523A3A01D00025091 /* DraggingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D593B423A3A01D00025091 /* DraggingView.swift */; };
 		71D593B823A3C68F00025091 /* URL+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D593B723A3C68F00025091 /* URL+ext.swift */; };
 		E71E357F239A40530021E1A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E357E239A40530021E1A2 /* AppDelegate.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		712DEE8023A60A2E007F6750 /* PakapoImageScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageScrollView.swift; sourceTree = "<group>"; };
 		71D593B423A3A01D00025091 /* DraggingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggingView.swift; sourceTree = "<group>"; };
 		71D593B723A3C68F00025091 /* URL+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ext.swift"; sourceTree = "<group>"; };
 		E71E357B239A40530021E1A2 /* Pakapo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pakapo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				E71E3594239A42600021E1A2 /* PakapoImageView.swift */,
+				712DEE8023A60A2E007F6750 /* PakapoImageScrollView.swift */,
 				71D593B423A3A01D00025091 /* DraggingView.swift */,
 			);
 			path = View;
@@ -207,6 +210,7 @@
 			files = (
 				E71E3581239A40530021E1A2 /* PakapoViewController.swift in Sources */,
 				E71E3597239A428D0021E1A2 /* PakapoImageModel.swift in Sources */,
+				712DEE8123A60A2E007F6750 /* PakapoImageScrollView.swift in Sources */,
 				E71E357F239A40530021E1A2 /* AppDelegate.swift in Sources */,
 				71D593B523A3A01D00025091 /* DraggingView.swift in Sources */,
 				71D593B823A3C68F00025091 /* URL+ext.swift in Sources */,

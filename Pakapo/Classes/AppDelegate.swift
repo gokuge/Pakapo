@@ -14,6 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let FIRST_LAUNCH: String = "firstLaunch"
     let PAGE_FEED_RIGHT: String = "pageFeedRight"
     let SEARCH_CHILD_ENABLE: String = "searchChildEnable"
+    let VIEW_STYLE: String = "viewStyle"
     
     @IBOutlet weak var mainMenu: NSMenu!
     
@@ -34,10 +35,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     //edit
     var menuCopyOpenClosure: (() -> Void)!
     
-    //view
+    //setting
     var menuPageFeedClosure: ((_ right: Bool) -> Void)!
     var menuSearchChildEnableClosure: ((_ enable: Bool) -> Void)!
     
+    //view
+    var menuChangeViewStyleClosure: ((_ viewStyle: Int) -> Void)!
+
     //window
     var menuFullScreenClosure: (() -> Void)!
 
@@ -58,6 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         initOpenRecentDirectories()
         selectPageFeed(right: true)
         toggleSearchChildEnableItem(enable: false)
+        initViewStyle()
         
         UserDefaults.standard.set("finishFirstLaunch", forKey: FIRST_LAUNCH)
     }
@@ -67,6 +72,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         initOpenRecentDirectories()
         selectPageFeed(right: UserDefaults.standard.bool(forKey: PAGE_FEED_RIGHT))
         toggleSearchChildEnableItem(enable: !UserDefaults.standard.bool(forKey: SEARCH_CHILD_ENABLE))
+        initViewStyle()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -159,7 +165,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menuCopyOpenClosure()
     }
     
-    //view
+    //setting
     @IBAction func menuPageFeedRight(_ sender: Any) {
         selectPageFeed(right: true)
     }
@@ -172,15 +178,58 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         toggleSearchChildEnableItem(enable: NSNumber(value: (sender as! NSMenuItem).state.rawValue).boolValue)
     }
     
+    //view
+    @IBAction func menuViewStyleDefault(_ sender: Any) {
+        selectViewStyle(tag: (sender as! NSMenuItem).tag)
+    }
+    
+    @IBAction func menuViewStyleWidthFit(_ sender: Any) {
+        selectViewStyle(tag: (sender as! NSMenuItem).tag)
+    }
+    
+    @IBAction func menuViewStyleOriginalSize(_ sender: Any) {
+        selectViewStyle(tag: (sender as! NSMenuItem).tag)
+    }
+    
+    @IBAction func menuViewStyleSpread(_ sender: Any) {
+        selectViewStyle(tag: (sender as! NSMenuItem).tag)
+    }
+    
+    func initViewStyle() {
+        refreshViewStyle(tag: UserDefaults.standard.integer(forKey: VIEW_STYLE))
+    }
+    
+    func selectViewStyle(tag: Int) {
+        
+        refreshViewStyle(tag: tag)
+        
+        UserDefaults.standard.set(tag, forKey: VIEW_STYLE)
+        menuChangeViewStyleClosure(tag)
+    }
+    
+    func refreshViewStyle(tag: Int) {
+        let viewItem: NSMenuItem! = mainMenu.item(withTag: 4)
+        
+        for item in viewItem.submenu!.items {
+            
+            if item.tag != tag {
+                item.state = NSControl.StateValue.off
+                continue
+            }
+            
+            item.state = NSControl.StateValue.on
+        }
+    }
+    
     //window
     @IBAction func menuToggleFullScreen(_ sender: Any) {
         menuFullScreenClosure()
     }
     
     func selectPageFeed(right: Bool) {
-        let viewItem: NSMenuItem! = mainMenu.item(withTag: 3)
-        let rightFeedItem: NSMenuItem! = viewItem.submenu?.item(withTag: 0)
-        let leftFeedItem: NSMenuItem! = viewItem.submenu?.item(withTag: 1)
+        let settingItem: NSMenuItem! = mainMenu.item(withTag: 3)
+        let rightFeedItem: NSMenuItem! = settingItem.submenu?.item(withTag: 0)
+        let leftFeedItem: NSMenuItem! = settingItem.submenu?.item(withTag: 1)
         
         if right {
             rightFeedItem.state = NSControl.StateValue.on
@@ -196,8 +245,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     func toggleSearchChildEnableItem(enable: Bool) {
-        let viewItem: NSMenuItem! = mainMenu.item(withTag: 3)
-        let searchChildEnableItem: NSMenuItem! = viewItem.submenu?.item(withTag: 2)
+        let settingItem: NSMenuItem! = mainMenu.item(withTag: 3)
+        let searchChildEnableItem: NSMenuItem! = settingItem.submenu?.item(withTag: 2)
         
         if enable {
             searchChildEnableItem.state = NSControl.StateValue.off

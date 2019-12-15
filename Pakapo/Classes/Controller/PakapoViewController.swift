@@ -37,6 +37,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         guard let window = view.window else {
             return
         }
+
+        let appDelegate: AppDelegate = NSApplication.shared.delegate as! AppDelegate
         
         if pakapoImageView == nil {
             pakapoImageView = PakapoImageView(frame: view.frame)
@@ -52,8 +54,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pakapoImageView.dropClosure = {(url: URL) in
                 self.selectInitURL(url: url)
             }
+            
+            pakapoImageView.viewStyle = PakapoImageView.ViewStyle(rawValue: UserDefaults.standard.integer(forKey: appDelegate.VIEW_STYLE))!
                         
-            view.window?.contentView?.addSubview(pakapoImageView)
+            window.contentView?.addSubview(pakapoImageView)
         }
   
         if let unwrappedURL = pakapoImageModel.loadFileURL(),
@@ -66,14 +70,13 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         //キー入力有効化
         window.makeFirstResponder(self)
         
-        makeAppdelegateClosure()
+        makeAppdelegateClosure(appDelegate: appDelegate)
     }
     
-    func makeAppdelegateClosure() {
-        let appdelegate: AppDelegate = NSApplication.shared.delegate as! AppDelegate
+    func makeAppdelegateClosure(appDelegate: AppDelegate) {
         
         //init
-        appdelegate.initFullScreenMode = {
+        appDelegate.initFullScreenMode = {
             if !UserDefaults.standard.bool(forKey: self.WINDOW_FULL_SCREEN) {
                 return
             }
@@ -86,49 +89,59 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         }
         
         //pakapo
-        appdelegate.menuQuitPakapoClosure = {
+        appDelegate.menuQuitPakapoClosure = {
             self.saveFileURL()
             NSApplication.shared.terminate(self)
         }
 
         //file
-        appdelegate.initRootSameDirectoriesClosure = {
+        appDelegate.initRootSameDirectoriesClosure = {
             
             return self.pakapoImageModel.initRootSameDirectories()
         }
         
-        appdelegate.menuSameDirectoriesClosure = {(index: Int) -> Void in
+        appDelegate.menuSameDirectoriesClosure = {(index: Int) -> Void in
             self.refreshImageView(image: self.pakapoImageModel.jumpSameDirectory(index: index))
         }
         
-        appdelegate.initOpenRecentDirectoriesClosure = {
+        appDelegate.initOpenRecentDirectoriesClosure = {
             return self.pakapoImageModel.getOpenRecentDirectories()
         }
         
-        appdelegate.menuOpenRecentDirectoriesClosure = {(index: Int) -> Void in
+        appDelegate.menuOpenRecentDirectoriesClosure = {(index: Int) -> Void in
             self.refreshImageView(image: self.pakapoImageModel.jumpOpenRecentDirectory(index: index))
         }
         
-        appdelegate.menuFileOpenClosure = {
+        appDelegate.menuFileOpenClosure = {
             self.openPanel()
         }
         
         //eidt
-        appdelegate.menuCopyOpenClosure = {
+        appDelegate.menuCopyOpenClosure = {
             self.pakapoImageView.clickCopyFile()
         }
                 
-        //view
-        appdelegate.menuPageFeedClosure = {(right: Bool) -> Void in
+        //setting
+        appDelegate.menuPageFeedClosure = {(right: Bool) -> Void in
             self.isPageFeedRight = right
         }
 
-        appdelegate.menuSearchChildEnableClosure = {(enable: Bool) -> Void in
+        appDelegate.menuSearchChildEnableClosure = {(enable: Bool) -> Void in
             self.pakapoImageModel.isSearchChild = enable
+        }
+        
+        //view
+        appDelegate.menuChangeViewStyleClosure = {(viewStyle: Int) -> Void in
+            self.pakapoImageView.viewStyle = PakapoImageView.ViewStyle(rawValue: viewStyle)!
+            self.pakapoImageView.resizeFrame(frame: CGRect(x: 0,
+                                                           y: 0,
+                                                           width: self.view.frame.width,
+                                                           height: self.view.frame.height)
+            )
         }
 
         //window
-        appdelegate.menuFullScreenClosure = {
+        appDelegate.menuFullScreenClosure = {
             self.pushFullScreenCommand()
         }
         
@@ -192,14 +205,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     }
     
     func windowDidResize(_ notification: Notification) {
-        guard let frame = self.view.window?.frame else {
-            return
-        }
-
         pakapoImageView.resizeFrame(frame: CGRect(x: 0,
                                                   y: 0,
-                                                  width: frame.width,
-                                                  height: frame.height))
+                                                  width: view.frame.width,
+                                                  height: view.frame.height))
     }
     
     // MARK: - window
@@ -342,11 +351,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     override func mouseUp(with event: NSEvent) {
         super.mouseUp(with: event)
         
-        guard let window: NSWindow = view.window else {
-            return
-        }
-        
-        if (window.frame.width / 2) < event.locationInWindow.x {
+        if (view.frame.width / 2) < event.locationInWindow.x {
             pushRightArrow()
         } else {
             pushLeftArrow()
