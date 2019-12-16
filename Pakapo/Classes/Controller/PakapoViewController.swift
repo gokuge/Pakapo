@@ -368,6 +368,11 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     }
     
     override func mouseMoved(with event: NSEvent) {
+        //マウス位置がviewの範囲外だった場合は何もしない
+        if !view.frame.contains(event.locationInWindow) {
+            return
+        }
+        
         super.mouseMoved(with: event)
         
         if let unwrappedMouseMovedEndWorkItem = mouseMovedEndWorkItem {

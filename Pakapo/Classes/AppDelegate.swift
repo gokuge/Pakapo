@@ -46,6 +46,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var menuFullScreenClosure: (() -> Void)!
 
     // MARK: - appdelegate
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        initFullScreenMode()
+    }
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
         if UserDefaults.standard.string(forKey: FIRST_LAUNCH) == nil {
@@ -53,8 +57,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         } else {
             loadMenu()
         }
-        
-        initFullScreenMode()
     }
     
     func initFirstLaunchMenu() {
