@@ -18,6 +18,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     var isPageFeedRight: Bool!
     var pinchIn: Bool = false
     
+    var mouseMovedEndWorkItem: DispatchWorkItem?
+    
     // MARK: - init
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -69,6 +71,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
         //キー入力有効化
         window.makeFirstResponder(self)
+        //マウス移動検知有効化
+        window.acceptsMouseMovedEvents = true
         
         makeAppdelegateClosure(appDelegate: appDelegate)
     }
@@ -257,6 +261,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         //非アクティブ時にもwindowを出す
         window.hidesOnDeactivate = false
         
+        NSCursor.setHiddenUntilMouseMoves(false)
+        
         UserDefaults.standard.set(false, forKey: WINDOW_FULL_SCREEN)
     }
     
@@ -273,6 +279,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
         //非アクティブ時にwindowを隠す
         window.hidesOnDeactivate = true
+        
+        NSCursor.setHiddenUntilMouseMoves(true)
         
         UserDefaults.standard.set(true, forKey: WINDOW_FULL_SCREEN)
     }
@@ -357,6 +365,29 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pushLeftArrow()
         }
         
+    }
+    
+    override func mouseMoved(with event: NSEvent) {
+        super.mouseMoved(with: event)
+        
+        if let unwrappedMouseMovedEndWorkItem = mouseMovedEndWorkItem {
+            unwrappedMouseMovedEndWorkItem.cancel()
+        }
+        
+        mouseMovedEndWorkItem = DispatchWorkItem {
+            self.autoHideMouseCursor()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: mouseMovedEndWorkItem!)
+    }
+    
+    func autoHideMouseCursor() {
+        guard let window: NSWindow = view.window else {
+            return
+        }
+        if window.styleMask.contains(NSWindow.StyleMask.fullScreen) {
+            NSCursor.setHiddenUntilMouseMoves(true)
+        }
     }
     
     override func scrollWheel(with event: NSEvent) {
