@@ -194,9 +194,14 @@ class PakapoImageModel: NSObject {
                     - 存在するなら子directoryの中身を表示させていく
                     - 存在しないなら自分の親のdirectoryへ戻り、自分の次の子のdirectoryの中身を表示させていく
              */
+            
+            var tmpDir: URL = dirURL
+            
+            if let aliasOriginalDirURL = getAliasOriginalURL(url: tmpDir) {
+                tmpDir = aliasOriginalDirURL
+            }
 
-
-            let contentUrls = try FileManager.default.contentsOfDirectory(at: dirURL, includingPropertiesForKeys: nil)
+            let contentUrls = try FileManager.default.contentsOfDirectory(at: tmpDir, includingPropertiesForKeys: nil)
             let sortContens = contentUrls.sorted { a, b in
                 return a.lastPathComponent.localizedStandardCompare(b.lastPathComponent) == ComparisonResult.orderedAscending
             }
@@ -211,8 +216,15 @@ class PakapoImageModel: NSObject {
                     continue
                 }
                 
+                var tmpPath: String = content.path
+                
+                //エイリアスの場合
+                if let aliasOriginalURL = getAliasOriginalURL(url: content) {
+                    tmpPath = aliasOriginalURL.path
+                }
+                
                 var isDir: ObjCBool = false
-                if !FileManager.default.fileExists(atPath: content.path, isDirectory: &isDir) {
+                if !FileManager.default.fileExists(atPath: tmpPath, isDirectory: &isDir) {
                     //指定したURLが存在しないってことはこのタイミングではないはず
                     continue
                 }
@@ -241,6 +253,25 @@ class PakapoImageModel: NSObject {
             print(error)
         }
     }
+    
+    func getAliasOriginalURL(url: URL) -> URL? {
+        do {
+            let resourceValues = try url.resourceValues(forKeys: [.isAliasFileKey])
+            
+            guard let isAliasFile = resourceValues.isAliasFile else {
+                return nil
+            }
+            
+            if !isAliasFile {
+                return nil
+            }
+            
+            return try URL(resolvingAliasFileAt: url)
+        } catch  {
+            print(error)
+        }
+        return nil
+    }
 
     // MARK: - image
     func loadImage(url: URL?) -> NSImage? {
@@ -250,6 +281,10 @@ class PakapoImageModel: NSObject {
         
         if !unwrappedURL.isImageTypeURL() {
             return nil
+        }
+        
+        if let aliasOriginalURL = getAliasOriginalURL(url: unwrappedURL) {
+            return NSImage(contentsOf: aliasOriginalURL)
         }
         
         return NSImage(contentsOf: unwrappedURL)
