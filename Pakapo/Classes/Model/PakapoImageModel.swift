@@ -278,7 +278,7 @@ class PakapoImageModel: NSObject {
     }
 
     // MARK: - image
-    func loadImage(url: URL?) -> NSImage? {
+    func loadValidImageURL(url: URL?) -> URL? {
         guard let unwrappedURL = url else {
             return nil
         }
@@ -287,14 +287,19 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
+        var tmpURL = unwrappedURL
         if let aliasOriginalURL = getAliasOriginalURL(url: unwrappedURL) {
-            return NSImage(contentsOf: aliasOriginalURL)
+            tmpURL = aliasOriginalURL
         }
         
-        return NSImage(contentsOf: unwrappedURL)
+        if NSImage(contentsOf: tmpURL) != nil {
+            return tmpURL
+        }
+        
+        return nil
     }
     
-    func loadInitImage(contentURL: URL) -> NSImage? {
+    func loadInitImageURL(contentURL: URL) -> URL? {
         var isDir: ObjCBool = false
         if !FileManager.default.fileExists(atPath: contentURL.path, isDirectory: &isDir) {
             //指定したURLが存在しないってことはこのタイミングではないはず
@@ -305,13 +310,13 @@ class PakapoImageModel: NSObject {
             //dir内でContentsを作成
             refreshContents(dirURL: contentURL)
             
-            guard let unwrappedImage = loadValidImage(contents: fileContents) else {
+            guard let unwrappedImageURL = loadValidImageURLInFileContents(contents: fileContents) else {
                 return nil
             }
 
             addOpenRecentDirectories()
             
-            return unwrappedImage
+            return unwrappedImageURL
         } else {
             //fileが入っているdir内のContentsを作成
             refreshContents(dirURL: contentURL.deletingLastPathComponent())
@@ -340,17 +345,17 @@ class PakapoImageModel: NSObject {
                 }
             }
             
-            guard let unwrappedImage = loadImage(url: contentURL) else {
+            guard let unwrappedImageURl = loadValidImageURL(url: contentURL) else {
                 return nil
             }
             
             addOpenRecentDirectories()
             
-            return unwrappedImage
+            return unwrappedImageURl
         }
     }
     
-    func loadValidImage(contents: [URL]?) -> NSImage? {
+    func loadValidImageURLInFileContents(contents: [URL]?) -> URL? {
         guard let unwrappedContents = contents else {
             return nil
         }
@@ -358,17 +363,17 @@ class PakapoImageModel: NSObject {
         //indexの更新
         for (index, contentURL) in unwrappedContents.enumerated() {
             fileContentsIndex = index
-            guard let unwrappedImage = loadImage(url: contentURL) else {
+            guard let unwrappedImageURL = loadValidImageURL(url: contentURL) else {
                 continue
             }
             
-            return unwrappedImage
+            return unwrappedImageURL
         }
 
         return nil
     }
     
-    func loadNextImage() -> NSImage? {
+    func loadNextImageURL() -> URL? {
         guard var unwrappedFileContentsIndex = fileContentsIndex,
               let unwrappedCurrentDirURL = currentDirURL,
               let unwrappedRootDirURL = rootDirURL else {
@@ -426,16 +431,16 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
-        guard let image = loadImage(url: fileURL) else {
+        guard let imageURl = loadValidImageURL(url: fileURL) else {
             return nil
         }
         
         addOpenRecentDirectories()
         
-        return image
+        return imageURl
     }
     
-    func loadPrevImage() -> NSImage? {
+    func loadPrevImageURL() -> URL? {
         guard var unwrappedFileContentsIndex = fileContentsIndex,
               let unwrappedCurrentDirURL = currentDirURL,
               let unwrappedRootDirURL = rootDirURL else {
@@ -492,17 +497,17 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
-        guard let image = loadImage(url: fileURL) else {
+        guard let imageURL = loadValidImageURL(url: fileURL) else {
             return nil
         }
         
         addOpenRecentDirectories()
         
-        return image
+        return imageURL
     }
     
     // MARK: - directory
-    func jumpSameDirectory(index: Int) -> NSImage? {
+    func jumpSameDirectory(index: Int) -> URL? {
         guard let unwrappedRootDirectories = rootDirectories else {
             return nil
         }
@@ -510,7 +515,7 @@ class PakapoImageModel: NSObject {
         return jumpDirectory(url: unwrappedRootDirectories[index])
     }
     
-    func jumpOpenRecentDirectory(index: Int) -> NSImage? {
+    func jumpOpenRecentDirectory(index: Int) -> URL? {
         guard var openRecentDirectories: [String] = UserDefaults.standard.array(forKey: OPEN_RECENT_DIRECTORIES) as? [String] else {
             return nil
         }
@@ -525,28 +530,28 @@ class PakapoImageModel: NSObject {
         return jumpDirectory(url: jumpURL)
     }
     
-    func jumpDirectory(url: URL) -> NSImage? {
+    func jumpDirectory(url: URL) -> URL? {
         lastDisplayChildDirURL = nil
         
-        return loadInitImage(contentURL: url)
+        return loadInitImageURL(contentURL: url)
     }
     
-    func loadNextDirectory() -> NSImage? {
+    func loadNextDirectory() -> URL? {
         guard let unwrappedFileContents = fileContents else {
             return nil
         }
         
-        //現在のdirectoryの最後まで表示した事にして、後はloadNextImageに任せる
+        //現在のdirectoryの最後まで表示した事にして、後はloadNextImageURLに任せる
         fileContentsIndex = unwrappedFileContents.count - 1
         
-        return loadNextImage()
+        return loadNextImageURL()
     }
     
-    func loadPrevDirectory() -> NSImage? {
+    func loadPrevDirectory() -> URL? {
         //現在のdirectoryの頭まで表示した事にして、一旦loadPrevImageを実行する
         fileContentsIndex = 0
         
-        if loadPrevImage() == nil {
+        if loadPrevImageURL() == nil {
             return nil
         }
         
@@ -554,7 +559,7 @@ class PakapoImageModel: NSObject {
         fileContentsIndex = 0
 
         //loadPrevImageがnilじゃない時点で確実に表示出来るfileがある
-        return loadImage(url: fileContents!.first!)
+        return loadValidImageURL(url: fileContents!.first!)
     }
     
     func makeNextSearchDirectory() -> [URL]? {
@@ -617,7 +622,7 @@ class PakapoImageModel: NSObject {
         for dir in searchDirectories {
             refreshContents(dirURL: dir)
 
-            if loadValidImage(contents: fileContents) != nil {
+            if loadValidImageURLInFileContents(contents: fileContents) != nil {
                 return dir
             }
             
@@ -656,7 +661,7 @@ class PakapoImageModel: NSObject {
                 continue
             }
             
-            if loadValidImage(contents: unwrappedFileContents.reversed()) != nil {
+            if loadValidImageURLInFileContents(contents: unwrappedFileContents.reversed()) != nil {
                 return dir
             }
             

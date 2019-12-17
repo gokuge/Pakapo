@@ -72,8 +72,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         }
   
         if let unwrappedURL = pakapoImageModel.loadFileURL(),
-           let unwrappedImage: NSImage = pakapoImageModel.loadInitImage(contentURL: unwrappedURL) {
-            self.refreshImageView(image: unwrappedImage)
+           let unwrappedImageURL: URL = pakapoImageModel.loadInitImageURL(contentURL: unwrappedURL) {
+            self.refreshImageView(imageURL: unwrappedImageURL)
         } else {
             openPanel()
         }
@@ -112,7 +112,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         }
         
         appDelegate.menuSameDirectoriesClosure = {(index: Int) -> Void in
-            self.refreshImageView(image: self.pakapoImageModel.jumpSameDirectory(index: index))
+            self.refreshImageView(imageURL: self.pakapoImageModel.jumpSameDirectory(index: index))
         }
         
         appDelegate.initOpenRecentDirectoriesClosure = {
@@ -120,7 +120,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         }
         
         appDelegate.menuOpenRecentDirectoriesClosure = {(index: Int) -> Void in
-            self.refreshImageView(image: self.pakapoImageModel.jumpOpenRecentDirectory(index: index))
+            self.refreshImageView(imageURL: self.pakapoImageModel.jumpOpenRecentDirectory(index: index))
         }
         
         appDelegate.menuFileOpenClosure = {
@@ -158,8 +158,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
     }
     
-    func refreshImageView(image: NSImage?) {
-        pakapoImageView.setImage(image: image)
+    func refreshImageView(imageURL: URL?) {
+        pakapoImageView.setImage(imageURL: imageURL)
         
         view.window?.title = pakapoImageModel.loadPageTitle()
     }
@@ -203,7 +203,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             return
         }
         
-        self.refreshImageView(image: self.pakapoImageModel.loadInitImage(contentURL: url))
+        self.refreshImageView(imageURL: self.pakapoImageModel.loadInitImageURL(contentURL: url))
     }
     
     func saveFileURL() {
@@ -343,18 +343,18 @@ extension PakapoViewController {
     }
 
     func pushNextPage() {
-        refreshImageView(image: pakapoImageModel.loadNextImage())
+        refreshImageView(imageURL: pakapoImageModel.loadNextImageURL())
     }
 
     func pushPrevPage() {
-        refreshImageView(image: pakapoImageModel.loadPrevImage())
+        refreshImageView(imageURL: pakapoImageModel.loadPrevImageURL())
     }
     
     func pushNextDir() {
-        refreshImageView(image: pakapoImageModel.loadNextDirectory())
+        refreshImageView(imageURL: pakapoImageModel.loadNextDirectory())
     }
     
     func pushPrevDir() {
-        refreshImageView(image: pakapoImageModel.loadPrevDirectory())
+        refreshImageView(imageURL: pakapoImageModel.loadPrevDirectory())
     }
 }
