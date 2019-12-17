@@ -359,6 +359,15 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     override func mouseUp(with event: NSEvent) {
         super.mouseUp(with: event)
         
+        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+        case [.control]:
+            //Control+マウスクリックの場合は右クリックを押されたものとする
+            pakapoImageView.showContextMenu(event: event)
+            return
+        default:
+            break
+        }
+        
         if (view.frame.width / 2) < event.locationInWindow.x {
             pushRightArrow()
         } else {

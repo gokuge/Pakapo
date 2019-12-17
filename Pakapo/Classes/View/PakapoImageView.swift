@@ -192,14 +192,24 @@ class PakapoImageView: NSView {
     }
     
     // MARK: - click event
+    //右クリック用。システムに任せる
     override func menu(for event: NSEvent) -> NSMenu? {
+        return makeContextMenu()
+    }
+    
+    //ctrl + 左クリック用。viewController側から呼ばれる
+    func showContextMenu(event: NSEvent) {
+        NSMenu.popUpContextMenu(makeContextMenu(), with: event, for: self)
+    }
+    
+    func makeContextMenu() -> NSMenu {
         let menu = NSMenu()
         menu.addItem(withTitle: "ファイルを表示する", action: #selector(clickShowFile), keyEquivalent: "")
         menu.addItem(withTitle: "ファイルをコピーする", action: #selector(clickCopyFile), keyEquivalent: "")
         menu.addItem(NSMenuItem.separator())
         menu.addItem(withTitle: "フォルダを表示する", action: #selector(clickShowDir), keyEquivalent: "")
         menu.addItem(withTitle: "フォルダをコピーする", action: #selector(clickCopyDir), keyEquivalent: "")
-
+        
         return menu
     }
 
