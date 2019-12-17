@@ -21,6 +21,8 @@ class PakapoImageModel: NSObject {
     var rootDirectories: [URL]?
     var currentDirURL: URL?
     
+    var aliasMapperDic: [URL:URL] = [:]
+    
     var fileContents: [URL]?
     var fileContentsIndex: Int?
 
@@ -199,6 +201,8 @@ class PakapoImageModel: NSObject {
             
             if let aliasOriginalDirURL = getAliasOriginalURL(url: tmpDir) {
                 tmpDir = aliasOriginalDirURL
+                //エイリアスを展開しようとした場合、Originalをキーに参照元を保存しておく
+                aliasMapperDic.updateValue(dirURL, forKey: aliasOriginalDirURL)
             }
 
             let contentUrls = try FileManager.default.contentsOfDirectory(at: tmpDir, includingPropertiesForKeys: nil)
@@ -676,19 +680,27 @@ class PakapoImageModel: NSObject {
     }
     
     func loadNextValidDirectory(dirURL: URL) -> URL? {
+        var tmpDirURL = dirURL
+        
+        //エイリアスの可能性を考慮する
+        if let unwrappedAliasURL = aliasMapperDic[dirURL] {
+            tmpDirURL = unwrappedAliasURL
+            aliasMapperDic.removeValue(forKey: dirURL)
+        }
+        
         guard let unwrappedRootDirURL = rootDirURL else {
             return nil
         }
         
         //rootより親は検索対象にしない
-        if unwrappedRootDirURL.absoluteString == dirURL.absoluteString {
+        if unwrappedRootDirURL.absoluteString == tmpDirURL.absoluteString {
             return nil
         }
         
         //現状表示しているURLを最後に表示させたURLとして確保しておく
-        lastDisplayChildDirURL = dirURL
+        lastDisplayChildDirURL = tmpDirURL
         
-        let nextDirURL = dirURL.deletingLastPathComponent()
+        let nextDirURL = tmpDirURL.deletingLastPathComponent()
 
         //親でcontentを更新する
         refreshContents(dirURL: nextDirURL)
@@ -710,19 +722,27 @@ class PakapoImageModel: NSObject {
     }
     
     func loadPrevValidDirectory(dirURL: URL) -> URL? {
+        var tmpDirURL = dirURL
+        
+        //エイリアスの可能性を考慮する
+        if let unwrappedAliasURL = aliasMapperDic[dirURL] {
+            tmpDirURL = unwrappedAliasURL
+            aliasMapperDic.removeValue(forKey: dirURL)
+        }
+        
         guard let unwrappedRootDirURL = rootDirURL else {
             return nil
         }
         
         //rootより親は検索対象にしない
-        if unwrappedRootDirURL.absoluteString == dirURL.absoluteString {
+        if unwrappedRootDirURL.absoluteString == tmpDirURL.absoluteString {
             return nil
         }
         
         //現状表示しているURLを最後に表示させたURLとして確保しておく
-        lastDisplayChildDirURL = dirURL
+        lastDisplayChildDirURL = tmpDirURL
         
-        let nextDirURL = dirURL.deletingLastPathComponent()
+        let nextDirURL = tmpDirURL.deletingLastPathComponent()
 
         //親でcontentを更新する
         refreshContents(dirURL: nextDirURL)
