@@ -93,8 +93,8 @@ class PakapoImageView: NSView {
         }
         
         let imageRep: NSBitmapImageRep  = NSBitmapImageRep(data: image.tiffRepresentation!)!
-        var pixelW: CGFloat = CGFloat(imageRep.pixelsWide)
-        var pixelH: CGFloat = CGFloat(imageRep.pixelsHigh)
+        let pixelW: CGFloat = CGFloat(imageRep.pixelsWide)
+        let pixelH: CGFloat = CGFloat(imageRep.pixelsHigh)
         let ratio: CGFloat = frame.width / pixelW
         
         switch viewStyle.rawValue {
@@ -121,11 +121,9 @@ class PakapoImageView: NSView {
                                                     height: spreadH
             )
         case ViewStyle.originalSizeView.rawValue:
-            if (pixelW < frame.width){
-                pixelW = frame.width
-            }
-            if (pixelH < frame.height){
-                pixelH = frame.height
+            //どちらかViewのsizeより小さかった場合はdefaultViewと同じ表示状態にする
+            if (pixelW <= frame.width || pixelH <= frame.height){
+                return
             }
             
             scrollView.documentView?.frame = CGRect(x: 0,
