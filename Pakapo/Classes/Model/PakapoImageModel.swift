@@ -55,7 +55,7 @@ class PakapoImageModel: NSObject {
         let component = root.pathComponents
 
         if component.count < 2 {
-            //そんな所で選択しないでくれガード
+            // /Volume を選択してもpathComponentsは2なので基本的にないはず
             return false
         } else if component.count > 2 {
             saveURL = saveURL.deletingLastPathComponent()
