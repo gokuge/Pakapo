@@ -16,9 +16,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     var pakapoImageView: PakapoImageView!
     let pakapoImageModel: PakapoImageModel = PakapoImageModel()
     var isPageFeedRight: Bool!
-    var pinchIn: Bool = false
-    
-    var mouseMovedEndWorkItem: DispatchWorkItem?
     
     // MARK: - init
     override func viewWillAppear() {
@@ -54,7 +51,19 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pakapoImageView.getDirURLClosure = {
                 return self.pakapoImageModel.currentDirURL
             }
+
+            pakapoImageView.leftClickClosure = {
+                self.pushLeftArrow()
+            }
             
+            pakapoImageView.rightClickClosure = {
+                self.pushRightArrow()
+            }
+            
+            pakapoImageView.changeViewStyleClosure = {(viewStyle: Int) in
+                appDelegate.selectViewStyle(tag: viewStyle)
+            }
+
             pakapoImageView.dropClosure = {(url: URL) in
                 self.selectInitURL(url: url)
             }
@@ -71,8 +80,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
         //キー入力有効化
         window.makeFirstResponder(self)
-        //マウス移動検知有効化
-        window.acceptsMouseMovedEvents = true
         
         makeAppdelegateClosure(appDelegate: appDelegate)
     }
@@ -202,7 +209,9 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     func saveFileURL() {
         pakapoImageModel.saveFileURL()
     }
-    
+}
+
+extension PakapoViewController {
     // MARK: - window delegate
     func windowWillClose(_ notification: Notification) {
         saveFileURL()
@@ -284,7 +293,9 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
         UserDefaults.standard.set(true, forKey: WINDOW_FULL_SCREEN)
     }
-    
+}
+
+extension PakapoViewController {
     // MARK: - key event
     override func keyDown(with event: NSEvent) {
 //        print(String(format: "keyCode:%d", event.keyCode))
@@ -303,14 +314,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pushPrevDir()
         default:break
         }
-
-        //複数の修飾キーを取得する場合は[.command]を[.command, .shift]とすれば良い
-//        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
-//        case [.command] where event.keyCode == 3:
-//            pushFullScreenCommand()
-//        default:
-//            break
-//        }
     }
     
     func pushEsc() {
@@ -354,95 +357,4 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     func pushPrevDir() {
         refreshImageView(image: pakapoImageModel.loadPrevDirectory())
     }
-    
-    // MARK: - mouse
-    override func mouseUp(with event: NSEvent) {
-        super.mouseUp(with: event)
-        
-        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
-        case [.control]:
-            //Control+マウスクリックの場合は右クリックを押されたものとする
-            pakapoImageView.showContextMenu(event: event)
-            return
-        default:
-            break
-        }
-        
-        if (view.frame.width / 2) < event.locationInWindow.x {
-            pushRightArrow()
-        } else {
-            pushLeftArrow()
-        }
-        
-    }
-    
-    override func mouseMoved(with event: NSEvent) {
-        //マウス位置がviewの範囲外だった場合は何もしない
-        if !view.frame.contains(event.locationInWindow) {
-            return
-        }
-        
-        super.mouseMoved(with: event)
-        
-        if let unwrappedMouseMovedEndWorkItem = mouseMovedEndWorkItem {
-            unwrappedMouseMovedEndWorkItem.cancel()
-        }
-        
-        mouseMovedEndWorkItem = DispatchWorkItem {
-            self.autoHideMouseCursor()
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: mouseMovedEndWorkItem!)
-    }
-    
-    func autoHideMouseCursor() {
-        guard let window: NSWindow = view.window else {
-            return
-        }
-        if window.styleMask.contains(NSWindow.StyleMask.fullScreen) {
-            NSCursor.setHiddenUntilMouseMoves(true)
-        }
-    }
-    
-    override func scrollWheel(with event: NSEvent) {
-        super.scrollWheel(with: event)
-        if event.deltaY > 0 {
-            pushLeftArrow()
-        } else if event.deltaY < 0 {
-            pushRightArrow()
-        }
-    }
-    
-    
-    override func magnify(with event: NSEvent) {
-        
-        //ピンチの終了時はmagnificationが0で来るので、「イン/アウト」のどちらで終えたのかがわからない。直前までのを記憶する必要がある
-        if event.magnification > 0 {
-            pinchIn = false
-        } else if event.magnification < 0{
-            pinchIn = true
-        }
-        
-        //終了時以外は更新させない
-        if event.phase.rawValue != NSEvent.Phase.ended.rawValue {
-            return
-        }
-        
-        //cooViewerのピンチは0,1,3,2の順
-        var viewStyle: Int = pakapoImageView.viewStyle.rawValue
-        if pinchIn {
-            if viewStyle == PakapoImageView.ViewStyle.defaultView.rawValue {
-                return
-            }
-            viewStyle -= 1
-        } else {
-            if viewStyle == PakapoImageView.ViewStyle.originalSizeView.rawValue {
-                return
-            }
-            viewStyle += 1
-        }
-        let appDelegate: AppDelegate = NSApplication.shared.delegate as! AppDelegate
-        appDelegate.selectViewStyle(tag: viewStyle)
-    }
 }
-

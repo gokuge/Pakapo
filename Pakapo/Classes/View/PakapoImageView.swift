@@ -21,14 +21,20 @@ class PakapoImageView: NSView {
     
     var getFileURLClosure:(() -> URL?)!
     var getDirURLClosure:(() -> URL?)!
+    var leftClickClosure:(() -> Void)!
+    var rightClickClosure:(() -> Void)!
+    var changeViewStyleClosure:((Int) -> Void)!
     var dropClosure:((URL) -> Void)!
+
+    var viewStyle: ViewStyle = ViewStyle.defaultView
 
     let imageView: NSImageView = NSImageView()
     let scrollView: PakapoImageScrollView = PakapoImageScrollView()
     var draggingView: DraggingView!
     var warningText: NSTextField?
     
-    var viewStyle: ViewStyle = ViewStyle.defaultView
+    var pinchIn: Bool = false
+    var mouseMovedEndWorkItem: DispatchWorkItem?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -190,8 +196,96 @@ class PakapoImageView: NSView {
         addSubview(unwrappedWarningText)
         addSubview(draggingView)
     }
+}
+
+extension PakapoImageView {
+    // MARK: - mouse event
+    override func mouseUp(with event: NSEvent) {
+        super.mouseUp(with: event)
+        
+        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+        case [.control]:
+            //Control+マウスクリックの場合は右クリックを押されたものとする
+            showContextMenu(event: event)
+            return
+        default:
+            break
+        }
+        
+        if (frame.width / 2) < event.locationInWindow.x {
+            rightClickClosure()
+        } else {
+            leftClickClosure()
+        }
+    }
     
-    // MARK: - click event
+    override func updateTrackingAreas() {
+        let options: NSTrackingArea.Options = [.mouseEnteredAndExited, .mouseMoved, .activeInKeyWindow]
+        addTrackingArea(NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil))
+    }
+    
+    override func mouseMoved(with event: NSEvent) {
+        super.mouseMoved(with: event)
+        
+        if let unwrappedMouseMovedEndWorkItem = mouseMovedEndWorkItem {
+            unwrappedMouseMovedEndWorkItem.cancel()
+        }
+        
+        mouseMovedEndWorkItem = DispatchWorkItem {
+            self.autoHideMouseCursor()
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: mouseMovedEndWorkItem!)
+    }
+    
+    func autoHideMouseCursor() {
+        guard let unwrappedWindow: NSWindow = window else {
+            return
+        }
+        if unwrappedWindow.styleMask.contains(NSWindow.StyleMask.fullScreen) {
+            NSCursor.setHiddenUntilMouseMoves(true)
+        }
+    }
+    
+    override func scrollWheel(with event: NSEvent) {
+        super.scrollWheel(with: event)
+        if event.deltaY > 0 {
+            leftClickClosure()
+        } else if event.deltaY < 0 {
+            rightClickClosure()
+        }
+    }
+    
+    override func magnify(with event: NSEvent) {
+        //ピンチの終了時はmagnificationが0で来るので、「イン/アウト」のどちらで終えたのかがわからない。直前までのを記憶する必要がある
+        if event.magnification > 0 {
+            pinchIn = false
+        } else if event.magnification < 0{
+            pinchIn = true
+        }
+        
+        //終了時以外は更新させない
+        if event.phase.rawValue != NSEvent.Phase.ended.rawValue {
+            return
+        }
+        
+        //cooViewerのピンチは0,1,3,2の順
+        var tmpStyle: Int = viewStyle.rawValue
+        if pinchIn {
+            if viewStyle.rawValue == ViewStyle.defaultView.rawValue {
+                return
+            }
+            tmpStyle -= 1
+        } else {
+            if viewStyle.rawValue == ViewStyle.originalSizeView.rawValue {
+                return
+            }
+            tmpStyle += 1
+        }
+        
+        changeViewStyleClosure(tmpStyle)
+    }
+    
     //右クリック用。システムに任せる
     override func menu(for event: NSEvent) -> NSMenu? {
         return makeContextMenu()
