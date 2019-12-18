@@ -143,11 +143,11 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
         //view
         appDelegate.menuChangeViewStyleClosure = {(viewStyle: Int) -> Void in
-            self.pakapoImageView.viewStyle = PakapoImageView.ViewStyle(rawValue: viewStyle)!
             self.pakapoImageView.resizeFrame(frame: CGRect(x: 0,
                                                            y: 0,
                                                            width: self.view.frame.width,
-                                                           height: self.view.frame.height)
+                                                           height: self.view.frame.height),
+                                             changeStyle: PakapoImageView.ViewStyle(rawValue: viewStyle)!
             )
         }
 
@@ -221,7 +221,9 @@ extension PakapoViewController {
         pakapoImageView.resizeFrame(frame: CGRect(x: 0,
                                                   y: 0,
                                                   width: view.frame.width,
-                                                  height: view.frame.height))
+                                                  height: view.frame.height),
+                                    changeStyle: nil
+        )
     }
     
     // MARK: - window

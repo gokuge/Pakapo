@@ -85,25 +85,40 @@ class PakapoImageView: NSView {
         addSubview(draggingView)
     }
     
-    func resizeFrame(frame: CGRect) {
+    func resizeFrame(frame: CGRect, changeStyle: ViewStyle?) {
         let point: NSPoint = NSPoint(x: scrollView.contentView.documentVisibleRect.origin.x,
                                      y: scrollView.contentView.documentVisibleRect.origin.y)
+        
+        let oldViewRect: NSRect = self.frame
+        let oldImageViewRect: NSRect = imageView.frame
 
         self.frame = frame
         draggingView.frame = frame
         imageView.frame = frame
         scrollView.frame = frame
         
-        if let unwrappedImage = imageView.image {
-            resizeDocumentView(image: unwrappedImage)
-            scrollView.contentView.scroll(point)
+        guard let unwrappedImage = imageView.image else {
+            resizeWarningTextView()
+            return
         }
         
-        resizeWarningTextView()
+        if let unwrappedChangeViewStyle = changeStyle {
+            viewStyle = unwrappedChangeViewStyle
+            resizeDocumentView(image: unwrappedImage)
+        } else {
+            let diffW: CGFloat = frame.width - oldViewRect.width
+            let diffH: CGFloat = frame.height - 
+            imageView.frame = CGRect(x: imageView.frame.origin.x,
+                                     y: imageView.frame.origin.y,
+                                     width: oldImageViewRect.width + diffW,
+                                     height: oldImageViewRect.height + diffH)
+        }
+        
+        scrollView.documentView?.scroll(point)
     }
     
     func resizeDocumentView(image: NSImage) {
-        
+                
         if viewStyle.rawValue == ViewStyle.defaultView.rawValue {
             return
         }
