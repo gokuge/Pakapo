@@ -107,7 +107,7 @@ class PakapoImageView: NSView {
             resizeDocumentView(image: unwrappedImage)
         } else {
             let diffW: CGFloat = frame.width - oldViewRect.width
-            let diffH: CGFloat = frame.height - 
+            let diffH: CGFloat = frame.height - oldViewRect.height
             imageView.frame = CGRect(x: imageView.frame.origin.x,
                                      y: imageView.frame.origin.y,
                                      width: oldImageViewRect.width + diffW,
