@@ -226,6 +226,10 @@ class PakapoImageView: NSView {
     }
     
     func zoom(rate: CGFloat){
+        if rate == 0 {
+            return
+        }
+        
         let oldScrollPoint: NSPoint = NSPoint(x: self.scrollView.contentView.documentVisibleRect.origin.x,
                                               y: self.scrollView.contentView.documentVisibleRect.origin.y)
         
