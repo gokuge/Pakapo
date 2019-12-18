@@ -36,8 +36,10 @@ class PakapoImageView: NSView {
     var warningText: NSTextField?
     
     var pinchIn: Bool = false
+    var scrolling: Bool = false
     
     var mouseMovedEndWorkItem: DispatchWorkItem?
+    var scrollEndWorkItem: DispatchWorkItem?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -50,7 +52,7 @@ class PakapoImageView: NSView {
         imageView.wantsLayer = true
         imageView.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
         
-        imageView.layer?.backgroundColor = NSColor.red.cgColor
+//        imageView.layer?.backgroundColor = NSColor.red.cgColor
         
         if viewStyle.rawValue == ViewStyle.originalSizeView.rawValue {
             imageView.imageScaling = NSImageScaling.scaleNone
@@ -69,20 +71,33 @@ class PakapoImageView: NSView {
         scrollView.hasHorizontalScroller = true
         scrollView.hasVerticalScroller = true
         scrollView.autohidesScrollers = true
+        scrollView.postsBoundsChangedNotifications = true
+        NotificationCenter.default.addObserver(self, selector: #selector(didScroll(_:)), name: NSView.boundsDidChangeNotification, object: scrollView.contentView)
                 
         scrollView.canScrollClosure = {
             
-            let point: NSPoint = NSPoint(x: self.scrollView.contentView.documentVisibleRect.origin.x,
-                                         y: self.scrollView.contentView.documentVisibleRect.origin.y)
-            
-            if point.x >= 0 || point.y >= 0 {
-                return true
+            if self.frame.width == self.imageView.frame.width && self.frame.height == self.imageView.frame.height {
+                return false
             }
                         
-            return false
+            return true
         }
         addSubview(scrollView)
         addSubview(draggingView)
+    }
+    
+    @objc func didScroll(_ notification: NSNotification) {
+        scrolling = true
+        
+        if let unwrappedScrollEndWorkItem = scrollEndWorkItem {
+            unwrappedScrollEndWorkItem.cancel()
+        }
+        
+        scrollEndWorkItem = DispatchWorkItem {
+            self.scrolling = false
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: scrollEndWorkItem!)
     }
     
     func resizeFrame(frame: CGRect, changeStyle: ViewStyle?) {
@@ -168,7 +183,6 @@ class PakapoImageView: NSView {
     }
     
     func resizeWarningTextView() {
-        
         guard let unwrappedWarningText = warningText else {
             return
         }
@@ -207,8 +221,6 @@ class PakapoImageView: NSView {
         if event.deltaY == 0 {
             return
         }
-        
-        scrollView.contentView.postsBoundsChangedNotifications = false
         
         var rate: CGFloat = -1.2
         if event.deltaY > 0 {
@@ -320,21 +332,25 @@ extension PakapoImageView {
     }
     
     override func scrollWheel(with event: NSEvent) {
-//        super.scrollWheel(with: event)
-//        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
-//        case [.control]:
-//            zoom(event: event)
-//            return
-//        default:
-//            break
-//        }
+        super.scrollWheel(with: event)
+        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+        case [.control]:
+            zoom(event: event)
+            return
+        default:
+            break
+        }
         
-//        if event.deltaY > 0 {
-//            leftClickClosure()
-//        } else if event.deltaY < 0 {
-//            rightClickClosure()
-//        }
-        zoom(event: event)
+        //スクロール中ではページ送りさせない
+        if scrolling {
+            return
+        }
+        
+        if event.deltaY > 0 {
+            leftClickClosure()
+        } else if event.deltaY < 0 {
+            rightClickClosure()
+        }
     }
     
     override func magnify(with event: NSEvent) {
