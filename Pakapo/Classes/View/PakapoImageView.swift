@@ -340,11 +340,7 @@ extension PakapoImageView {
         super.scrollWheel(with: event)
         switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
         case [.control]:
-            if event.deltaY > 0 {
-                zoom(rate: 1.2)
-            } else if event.deltaY < 0 {
-                zoom(rate: -1.2)
-            }
+            zoom(rate: event.deltaY)
 
             return
         default:
@@ -364,39 +360,7 @@ extension PakapoImageView {
     }
     
     override func magnify(with event: NSEvent) {
-        if event.magnification > 0 {
-            zoom(rate: 1.2)
-        } else if event.magnification < 0{
-            zoom(rate: -1.2)
-        }
-        
-        //ピンチの終了時はmagnificationが0で来るので、「イン/アウト」のどちらで終えたのかがわからない。直前までのを記憶する必要がある
-//        if event.magnification > 0 {
-//            pinchIn = false
-//        } else if event.magnification < 0{
-//            pinchIn = true
-//        }
-//
-//        //終了時以外は更新させない
-//        if event.phase.rawValue != NSEvent.Phase.ended.rawValue {
-//            return
-//        }
-//
-//        //cooViewerのピンチは0,1,3,2の順
-//        var tmpStyle: Int = viewStyle.rawValue
-//        if pinchIn {
-//            if viewStyle.rawValue == ViewStyle.defaultView.rawValue {
-//                return
-//            }
-//            tmpStyle -= 1
-//        } else {
-//            if viewStyle.rawValue == ViewStyle.originalSizeView.rawValue {
-//                return
-//            }
-//            tmpStyle += 1
-//        }
-//
-//        changeViewStyleClosure(tmpStyle)
+        zoom(rate: event.magnification * 100)
     }
     
     //右クリック用。システムに任せる
