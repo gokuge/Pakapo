@@ -140,15 +140,6 @@ class PakapoImageView: NSView {
     }
     
     func resizeDocumentView(image: NSImage) {
-        if viewStyle.rawValue == ViewStyle.defaultView.rawValue {
-            scrollView.documentView?.frame = CGRect(x: 0.0,
-                                                    y: 0.0,
-                                                    width: frame.width,
-                                                    height: frame.height
-            )
-            return
-        }
-        
         let imageRep: NSBitmapImageRep  = NSBitmapImageRep(data: image.tiffRepresentation!)!
         let pixelW: CGFloat = CGFloat(imageRep.pixelsWide)
         let pixelH: CGFloat = CGFloat(imageRep.pixelsHigh)
@@ -158,6 +149,9 @@ class PakapoImageView: NSView {
         var resizeh: CGFloat = 0
         
         switch viewStyle.rawValue {
+        case ViewStyle.defaultView.rawValue:
+            resizeW = frame.width
+            resizeh = frame.height
         case ViewStyle.widthFitView.rawValue:
             resizeW = pixelW * ratio
             resizeh = pixelH * ratio
