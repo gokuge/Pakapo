@@ -154,43 +154,46 @@ class PakapoImageView: NSView {
         let pixelH: CGFloat = CGFloat(imageRep.pixelsHigh)
         let ratio: CGFloat = frame.width / pixelW
         
+        var resizeW: CGFloat = 0
+        var resizeh: CGFloat = 0
+        
         switch viewStyle.rawValue {
         case ViewStyle.widthFitView.rawValue:
-            scrollView.documentView?.frame = CGRect(x: 0.0,
-                                                    y: 0.0,
-                                                    width: pixelW * ratio,
-                                                    height: pixelH * ratio
-            )
+            resizeW = pixelW * ratio
+            resizeh = pixelH * ratio
         case ViewStyle.spreadView.rawValue:
             //初期値は横フィット
-            var spreadW: CGFloat = pixelW * ratio
-            var spreadH: CGFloat = pixelH * ratio
+            resizeW = pixelW * ratio
+            resizeh = pixelH * ratio
             
             if (pixelW > SPREAD_WIDTH){
                 //既定値より大きい場合にのみ見開き設定(横2倍フィット)
-                spreadW *= 2
-                spreadH *= 2
+                resizeW *= 2
+                resizeh *= 2
             }
             
-            scrollView.documentView?.frame = CGRect(x: 0.0,
-                                                    y: 0.0,
-                                                    width: spreadW,
-                                                    height: spreadH
-            )
         case ViewStyle.originalSizeView.rawValue:
-            //どちらかViewのsizeより小さかった場合はdefaultViewと同じ表示状態にする
-            if (pixelW <= frame.width || pixelH <= frame.height){
-                return
-            }
-            
-            scrollView.documentView?.frame = CGRect(x: 0,
-                                                    y: 0,
-                                                    width: pixelW,
-                                                    height: pixelH)
-            
+            resizeW = pixelW
+            resizeh = pixelH
         default:
             break
         }
+        
+        //どちらかViewのsizeより小さかった場合はdefaultViewと同じ表示状態にする
+        if (resizeW < frame.width) {
+            resizeW = frame.width
+        }
+        
+        if (resizeh < frame.height) {
+            resizeh = frame.height
+        }
+        
+        scrollView.documentView?.frame = CGRect(x: 0.0,
+                                                y: 0.0,
+                                                width: resizeW,
+                                                height: resizeh
+        )
+
     }
     
     func resizeWarningTextView() {
