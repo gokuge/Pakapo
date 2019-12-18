@@ -136,6 +136,23 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="表示" id="3ld-ha-7yb">
                                     <items>
+                                        <menuItem title="拡大" tag="4" keyEquivalent="+" id="pB8-qz-g1D">
+                                            <connections>
+                                                <action selector="menuViewZoomIn:" target="Voe-Tx-rLC" id="ZqS-rJ-9Nl"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="縮小" tag="5" keyEquivalent="-" id="6Qp-HM-XoX">
+                                            <connections>
+                                                <action selector="menuViewZoomOut:" target="Voe-Tx-rLC" id="rGd-io-r56"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="拡大縮小リセット" tag="6" id="4y4-Ij-fBi">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="menuViewResetZoom:" target="Voe-Tx-rLC" id="Zb8-ZC-ddz"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="noM-H2-fix"/>
                                         <menuItem title="画面内に収める" keyEquivalent="1" id="vwq-b2-nrF">
                                             <connections>
                                                 <action selector="menuViewStyleDefault:" target="Voe-Tx-rLC" id="ozG-EM-yl2"/>

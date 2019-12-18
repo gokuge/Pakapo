@@ -134,8 +134,12 @@ class PakapoImageView: NSView {
     }
     
     func resizeDocumentView(image: NSImage) {
-                
         if viewStyle.rawValue == ViewStyle.defaultView.rawValue {
+            scrollView.documentView?.frame = CGRect(x: 0.0,
+                                                    y: 0.0,
+                                                    width: frame.width,
+                                                    height: frame.height
+            )
             return
         }
         
@@ -224,12 +228,14 @@ class PakapoImageView: NSView {
         
         let oldSize = scrollView.documentView!.frame
         
-        var zoomW = scrollView.documentView!.frame.width + (10 * rate)
-        var zoomH = scrollView.documentView!.frame.height + (10 * rate)
+        let zoomW = scrollView.documentView!.frame.width + (10 * rate)
+        let zoomH = scrollView.documentView!.frame.height + (10 * rate)
         
-        if zoomW <= scrollView.frame.width || zoomH <= scrollView.frame.height {
-            zoomW = scrollView.frame.width
-            zoomH = scrollView.frame.height
+        if zoomW <= frame.width || zoomH <= frame.height {
+            if let unwrappedImage = imageView.image {
+                resizeDocumentView(image: unwrappedImage)
+            }
+            return
         }
 
         imageClipView.isZooming = true
@@ -246,6 +252,10 @@ class PakapoImageView: NSView {
                                      y: oldScrollPoint.y + (zoomDiffSize.height / 2))
 
         scrollView.documentView?.scroll(point)
+    }
+    
+    func resetZoom() {
+        resizeFrame(frame: frame, changeStyle: viewStyle)
     }
     
     func displayNoImage() {

@@ -40,6 +40,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var menuSearchChildEnableClosure: ((_ enable: Bool) -> Void)!
     
     //view
+    var menuZoomInClosure: (() -> Void)!
+    var menuZoomOutClosure: (() -> Void)!
+    var menuResetZoomClosure: (() -> Void)!
     var menuChangeViewStyleClosure: ((_ viewStyle: Int) -> Void)!
 
     //window
@@ -181,6 +184,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     //view
+    @IBAction func menuViewZoomIn(_ sender: Any) {
+        menuZoomInClosure()
+    }
+    
+    @IBAction func menuViewZoomOut(_ sender: Any) {
+        menuZoomOutClosure()
+    }
+    
+    @IBAction func menuViewResetZoom(_ sender: Any) {
+        menuResetZoomClosure()
+    }
+    
     @IBAction func menuViewStyleDefault(_ sender: Any) {
         selectViewStyle(tag: (sender as! NSMenuItem).tag)
     }

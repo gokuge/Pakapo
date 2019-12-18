@@ -142,6 +142,19 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         }
         
         //view
+        appDelegate.menuZoomInClosure = {
+            //通常のスクロールでのズームの10倍
+            self.pakapoImageView.zoom(rate: 12.0)
+        }
+        
+        appDelegate.menuZoomOutClosure = {
+            self.pakapoImageView.zoom(rate: -12.0)
+        }
+        
+        appDelegate.menuResetZoomClosure = {
+            self.pakapoImageView.resetZoom()
+        }
+        
         appDelegate.menuChangeViewStyleClosure = {(viewStyle: Int) -> Void in
             self.pakapoImageView.resizeFrame(frame: CGRect(x: 0,
                                                            y: 0,
