@@ -30,12 +30,15 @@ class PakapoImageView: NSView {
 
     var imageURL: URL?
     let imageView: NSImageView = NSImageView()
+    let imageClipView: PakapoImageClipView = PakapoImageClipView()
     let scrollView: PakapoImageScrollView = PakapoImageScrollView()
     var draggingView: DraggingView!
     var warningText: NSTextField?
     
     var pinchIn: Bool = false
     var mouseMovedEndWorkItem: DispatchWorkItem?
+    
+    var zoomDiffSize: NSSize?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -48,6 +51,8 @@ class PakapoImageView: NSView {
         imageView.wantsLayer = true
         imageView.imageScaling = NSImageScaling.scaleProportionallyUpOrDown
         
+        imageView.layer?.backgroundColor = NSColor.red.cgColor
+        
         if viewStyle.rawValue == ViewStyle.originalSizeView.rawValue {
             imageView.imageScaling = NSImageScaling.scaleNone
         }
@@ -59,18 +64,26 @@ class PakapoImageView: NSView {
         
         scrollView.frame = frameRect
         scrollView.backgroundColor = NSColor.black
+        imageClipView.backgroundColor = NSColor.black
+        scrollView.contentView = imageClipView
         scrollView.documentView = imageView
         scrollView.hasHorizontalScroller = true
         scrollView.hasVerticalScroller = true
         scrollView.autohidesScrollers = true
-
+        
         scrollView.canScrollClosure = {
             
-            if self.viewStyle.rawValue == ViewStyle.defaultView.rawValue {
-                return false
-            }
+//            if self.viewStyle.rawValue == ViewStyle.defaultView.rawValue {
+//                return false
+//            }
+            let point: NSPoint = NSPoint(x: self.scrollView.contentView.documentVisibleRect.origin.x,
+                                         y: self.scrollView.contentView.documentVisibleRect.origin.y)
             
-            return true
+            if point.x >= 0 || point.y >= 0 {
+                return true
+            }
+                        
+            return false
         }
         addSubview(scrollView)
         addSubview(draggingView)
@@ -179,6 +192,45 @@ class PakapoImageView: NSView {
         resizeDocumentView(image: image)
     }
     
+    func zoom(event: NSEvent){
+        if event.deltaY == 0 {
+            return
+        }
+        
+        var rate: CGFloat = -1.2
+        if event.deltaY > 0 {
+            rate = 1.2
+        }
+        
+        let oldScrollPoint: NSPoint = NSPoint(x: self.scrollView.contentView.documentVisibleRect.origin.x,
+                                              y: self.scrollView.contentView.documentVisibleRect.origin.y)
+        
+        let oldSize = scrollView.documentView!.frame
+        
+        var zoomW = scrollView.documentView!.frame.width + (10 * rate)
+        var zoomH = scrollView.documentView!.frame.height + (10 * rate)
+        
+        if zoomW <= scrollView.frame.width || zoomH <= scrollView.frame.height {
+            zoomW = scrollView.frame.width
+            zoomH = scrollView.frame.height
+        }
+
+        imageClipView.isZooming = true
+        scrollView.documentView!.frame = CGRect(x: 0,
+                                                y: 0,
+                                                width: zoomW,
+                                                height: zoomH)
+        imageClipView.isZooming = false
+        
+        zoomDiffSize = NSSize(width: scrollView.documentView!.frame.width - oldSize.width,
+                              height: scrollView.documentView!.frame.height - oldSize.height)
+        
+        let point: NSPoint = NSPoint(x: oldScrollPoint.x + (zoomDiffSize!.width / 2),
+                                     y: oldScrollPoint.y + (zoomDiffSize!.height / 2))
+
+        scrollView.documentView?.scroll(point)
+    }
+    
     func displayNoImage() {
         imageView.image = nil
         
@@ -255,12 +307,21 @@ extension PakapoImageView {
     }
     
     override func scrollWheel(with event: NSEvent) {
-        super.scrollWheel(with: event)
-        if event.deltaY > 0 {
-            leftClickClosure()
-        } else if event.deltaY < 0 {
-            rightClickClosure()
-        }
+//        super.scrollWheel(with: event)
+//        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+//        case [.control]:
+//            zoom(event: event)
+//            return
+//        default:
+//            break
+//        }
+        
+//        if event.deltaY > 0 {
+//            leftClickClosure()
+//        } else if event.deltaY < 0 {
+//            rightClickClosure()
+//        }
+        zoom(event: event)
     }
     
     override func magnify(with event: NSEvent) {

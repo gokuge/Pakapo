@@ -14,13 +14,21 @@ class PakapoImageScrollView: NSScrollView {
     
     override func scrollWheel(with event: NSEvent) {
         
-        //特定の表示形式ではウィンドウのスクロールを優先する
+        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+        case [.control]:
+            //次へ。ズームにする
+            nextResponder?.scrollWheel(with: event)
+            return
+        default:
+            break
+        }
+        //ウィンドウスクロール可能の場合はスクロール優先
         if canScrollClosure() {
             super.scrollWheel(with: event)
             return
         }
         
-        //スクロールでの動作はページ送りにする
+        //次へ。ページ送りにする
         nextResponder?.scrollWheel(with: event)
     }
 }

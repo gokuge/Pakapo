@@ -16,6 +16,7 @@
 		E71E3586239A40540021E1A2 /* Pakapo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E71E3584239A40540021E1A2 /* Pakapo.storyboard */; settings = {ASSET_TAGS = (0, ); }; };
 		E71E3595239A42600021E1A2 /* PakapoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3594239A42600021E1A2 /* PakapoImageView.swift */; };
 		E71E3597239A428D0021E1A2 /* PakapoImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3596239A428D0021E1A2 /* PakapoImageModel.swift */; };
+		E71F335723A8B1C30037B1CD /* PakapoImageClipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71F335623A8B1C30037B1CD /* PakapoImageClipView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		E71E3588239A40540021E1A2 /* Pakapo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pakapo.entitlements; sourceTree = "<group>"; };
 		E71E3594239A42600021E1A2 /* PakapoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageView.swift; sourceTree = "<group>"; };
 		E71E3596239A428D0021E1A2 /* PakapoImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageModel.swift; sourceTree = "<group>"; };
+		E71F335623A8B1C30037B1CD /* PakapoImageClipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageClipView.swift; sourceTree = "<group>"; };
 		E73EB81B23A1FDFA00C661C7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ja; path = ja.lproj/Pakapo.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 			children = (
 				E71E3594239A42600021E1A2 /* PakapoImageView.swift */,
 				712DEE8023A60A2E007F6750 /* PakapoImageScrollView.swift */,
+				E71F335623A8B1C30037B1CD /* PakapoImageClipView.swift */,
 				71D593B423A3A01D00025091 /* DraggingView.swift */,
 			);
 			path = View;
@@ -214,6 +217,7 @@
 				E71E357F239A40530021E1A2 /* AppDelegate.swift in Sources */,
 				71D593B523A3A01D00025091 /* DraggingView.swift in Sources */,
 				71D593B823A3C68F00025091 /* URL+ext.swift in Sources */,
+				E71F335723A8B1C30037B1CD /* PakapoImageClipView.swift in Sources */,
 				E71E3595239A42600021E1A2 /* PakapoImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
