@@ -225,7 +225,7 @@ class PakapoImageView: NSView {
         resizeDocumentView(image: image)
     }
     
-    func zoom(rate: CGFloat){
+    func zoom(rate: CGFloat) {
         if rate == 0 {
             return
         }
