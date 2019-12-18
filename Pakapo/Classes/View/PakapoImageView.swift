@@ -11,6 +11,7 @@ import Cocoa
 class PakapoImageView: NSView {
     
     let SPREAD_WIDTH: CGFloat = 740
+    let DISPATCH_WAIT_TIME: Double = 0.15
     
     enum ViewStyle: Int {
         case defaultView = 0
@@ -36,7 +37,11 @@ class PakapoImageView: NSView {
     var warningText: NSTextField?
     
     var pinchIn: Bool = false
+    var isScrolling: Bool = false
+    
     var mouseMovedEndWorkItem: DispatchWorkItem?
+    var scrollingEndWorkItem: DispatchWorkItem?
+    var zoomingEndWorkItem: DispatchWorkItem?
     
     var zoomDiffSize: NSSize?
     
@@ -71,11 +76,15 @@ class PakapoImageView: NSView {
         scrollView.hasVerticalScroller = true
         scrollView.autohidesScrollers = true
         
+        scrollView.contentView.postsBoundsChangedNotifications = true
+        NotificationCenter.default.addObserver(self, selector: #selector(didScroll(_:)), name: NSView.boundsDidChangeNotification, object: scrollView.contentView)
+        
+        scrollView.isScrollingClosure = {
+            return self.isScrolling
+        }
+        
         scrollView.canScrollClosure = {
             
-//            if self.viewStyle.rawValue == ViewStyle.defaultView.rawValue {
-//                return false
-//            }
             let point: NSPoint = NSPoint(x: self.scrollView.contentView.documentVisibleRect.origin.x,
                                          y: self.scrollView.contentView.documentVisibleRect.origin.y)
             
@@ -87,6 +96,20 @@ class PakapoImageView: NSView {
         }
         addSubview(scrollView)
         addSubview(draggingView)
+    }
+    
+    @objc func didScroll(_ notification: NSNotification) {
+        isScrolling = true
+        
+        if let unwrappedScrollingEndWorkItem = scrollingEndWorkItem {
+            unwrappedScrollingEndWorkItem.cancel()
+        }
+        
+        scrollingEndWorkItem = DispatchWorkItem {
+            self.isScrolling = false
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + DISPATCH_WAIT_TIME, execute: scrollingEndWorkItem!)
     }
     
     func resizeFrame(frame: CGRect) {
@@ -197,6 +220,8 @@ class PakapoImageView: NSView {
             return
         }
         
+        scrollView.contentView.postsBoundsChangedNotifications = false
+        
         var rate: CGFloat = -1.2
         if event.deltaY > 0 {
             rate = 1.2
@@ -229,6 +254,16 @@ class PakapoImageView: NSView {
                                      y: oldScrollPoint.y + (zoomDiffSize!.height / 2))
 
         scrollView.documentView?.scroll(point)
+        
+        if let unwrappedZoomingEndWorkItem = zoomingEndWorkItem {
+            unwrappedZoomingEndWorkItem.cancel()
+        }
+        
+        zoomingEndWorkItem = DispatchWorkItem {
+            self.scrollView.contentView.postsBoundsChangedNotifications = true
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + DISPATCH_WAIT_TIME, execute: zoomingEndWorkItem!)
     }
     
     func displayNoImage() {

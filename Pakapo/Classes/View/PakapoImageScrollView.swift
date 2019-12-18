@@ -10,9 +10,16 @@ import Cocoa
 
 class PakapoImageScrollView: NSScrollView {
     
+    var isScrollingClosure:(() -> Bool)!
     var canScrollClosure:(() -> Bool)!
     
     override func scrollWheel(with event: NSEvent) {
+        
+        //ウィンドウスクロール中はそちらを優先
+        if isScrollingClosure() {
+            super.scrollWheel(with: event)
+            return
+        }
         
         switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
         case [.control]:
