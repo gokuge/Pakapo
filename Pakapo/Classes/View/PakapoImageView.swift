@@ -76,6 +76,12 @@ class PakapoImageView: NSView {
                 
         scrollView.canScrollClosure = {
             
+            //画面内に収める以外は常にスクロール
+            if self.viewStyle != ViewStyle.defaultView {
+                return true
+            }
+            
+            //画面内に収める表示形式で、ズームしていない場合はページ送り
             if self.frame.width == self.imageView.frame.width && self.frame.height == self.imageView.frame.height {
                 return false
             }
