@@ -97,7 +97,8 @@ class PakapoImageView: NSView {
             self.scrolling = false
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: scrollEndWorkItem!)
+        //惰性スクロールが結構残ってる可能性があるので1.5とする。完全に終了した事をイベントで取得出来れば良いのだけど、結構悩ましい
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: scrollEndWorkItem!)
     }
     
     func resizeFrame(frame: CGRect, changeStyle: ViewStyle?) {
@@ -217,16 +218,7 @@ class PakapoImageView: NSView {
         resizeDocumentView(image: image)
     }
     
-    func zoom(event: NSEvent){
-        if event.deltaY == 0 {
-            return
-        }
-        
-        var rate: CGFloat = -1.2
-        if event.deltaY > 0 {
-            rate = 1.2
-        }
-        
+    func zoom(rate: CGFloat){
         let oldScrollPoint: NSPoint = NSPoint(x: self.scrollView.contentView.documentVisibleRect.origin.x,
                                               y: self.scrollView.contentView.documentVisibleRect.origin.y)
         
@@ -335,7 +327,12 @@ extension PakapoImageView {
         super.scrollWheel(with: event)
         switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
         case [.control]:
-            zoom(event: event)
+            if event.deltaY > 0 {
+                zoom(rate: 1.2)
+            } else if event.deltaY < 0 {
+                zoom(rate: -1.2)
+            }
+
             return
         default:
             break
@@ -354,33 +351,39 @@ extension PakapoImageView {
     }
     
     override func magnify(with event: NSEvent) {
-        //ピンチの終了時はmagnificationが0で来るので、「イン/アウト」のどちらで終えたのかがわからない。直前までのを記憶する必要がある
         if event.magnification > 0 {
-            pinchIn = false
+            zoom(rate: 1.2)
         } else if event.magnification < 0{
-            pinchIn = true
+            zoom(rate: -1.2)
         }
         
-        //終了時以外は更新させない
-        if event.phase.rawValue != NSEvent.Phase.ended.rawValue {
-            return
-        }
-        
-        //cooViewerのピンチは0,1,3,2の順
-        var tmpStyle: Int = viewStyle.rawValue
-        if pinchIn {
-            if viewStyle.rawValue == ViewStyle.defaultView.rawValue {
-                return
-            }
-            tmpStyle -= 1
-        } else {
-            if viewStyle.rawValue == ViewStyle.originalSizeView.rawValue {
-                return
-            }
-            tmpStyle += 1
-        }
-        
-        changeViewStyleClosure(tmpStyle)
+        //ピンチの終了時はmagnificationが0で来るので、「イン/アウト」のどちらで終えたのかがわからない。直前までのを記憶する必要がある
+//        if event.magnification > 0 {
+//            pinchIn = false
+//        } else if event.magnification < 0{
+//            pinchIn = true
+//        }
+//
+//        //終了時以外は更新させない
+//        if event.phase.rawValue != NSEvent.Phase.ended.rawValue {
+//            return
+//        }
+//
+//        //cooViewerのピンチは0,1,3,2の順
+//        var tmpStyle: Int = viewStyle.rawValue
+//        if pinchIn {
+//            if viewStyle.rawValue == ViewStyle.defaultView.rawValue {
+//                return
+//            }
+//            tmpStyle -= 1
+//        } else {
+//            if viewStyle.rawValue == ViewStyle.originalSizeView.rawValue {
+//                return
+//            }
+//            tmpStyle += 1
+//        }
+//
+//        changeViewStyleClosure(tmpStyle)
     }
     
     //右クリック用。システムに任せる
