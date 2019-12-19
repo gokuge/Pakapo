@@ -17,6 +17,95 @@
 		E71E3595239A42600021E1A2 /* PakapoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3594239A42600021E1A2 /* PakapoImageView.swift */; };
 		E71E3597239A428D0021E1A2 /* PakapoImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3596239A428D0021E1A2 /* PakapoImageModel.swift */; };
 		E71F335723A8B1C30037B1CD /* PakapoImageClipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71F335623A8B1C30037B1CD /* PakapoImageClipView.swift */; };
+		E721BADA23AB2FA90076D4BB /* ZUnzip.swift in Sources */ = {isa = PBXBuildFile; fileRef = E721BA7723AB2FA90076D4BB /* ZUnzip.swift */; };
+		E721BADB23AB2FA90076D4BB /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E721BA7A23AB2FA90076D4BB /* README.md */; };
+		E721BADC23AB2FA90076D4BB /* fmemopen.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA7C23AB2FA90076D4BB /* fmemopen.c */; };
+		E721BADD23AB2FA90076D4BB /* zip_memdup.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA7E23AB2FA90076D4BB /* zip_memdup.c */; };
+		E721BADE23AB2FA90076D4BB /* zip_file_get_external_attributes.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA7F23AB2FA90076D4BB /* zip_file_get_external_attributes.c */; };
+		E721BADF23AB2FA90076D4BB /* zip_add.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8123AB2FA90076D4BB /* zip_add.c */; };
+		E721BAE023AB2FA90076D4BB /* zip_filerange_crc.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8223AB2FA90076D4BB /* zip_filerange_crc.c */; };
+		E721BAE123AB2FA90076D4BB /* zip_get_name.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8323AB2FA90076D4BB /* zip_get_name.c */; };
+		E721BAE223AB2FA90076D4BB /* zip_file_strerror.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8423AB2FA90076D4BB /* zip_file_strerror.c */; };
+		E721BAE323AB2FA90076D4BB /* zip_fopen_index.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8523AB2FA90076D4BB /* zip_fopen_index.c */; };
+		E721BAE423AB2FA90076D4BB /* zip_source_buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8623AB2FA90076D4BB /* zip_source_buffer.c */; };
+		E721BAE523AB2FA90076D4BB /* zip_error_clear.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8723AB2FA90076D4BB /* zip_error_clear.c */; };
+		E721BAE623AB2FA90076D4BB /* zip_source_stat.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8823AB2FA90076D4BB /* zip_source_stat.c */; };
+		E721BAE723AB2FA90076D4BB /* zip_get_archive_comment.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8923AB2FA90076D4BB /* zip_get_archive_comment.c */; };
+		E721BAE823AB2FA90076D4BB /* zip_file_rename.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8A23AB2FA90076D4BB /* zip_file_rename.c */; };
+		E721BAE923AB2FA90076D4BB /* zip_source_pkware.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8B23AB2FA90076D4BB /* zip_source_pkware.c */; };
+		E721BAEA23AB2FA90076D4BB /* zip_discard.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8C23AB2FA90076D4BB /* zip_discard.c */; };
+		E721BAEB23AB2FA90076D4BB /* zip_source_file.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8D23AB2FA90076D4BB /* zip_source_file.c */; };
+		E721BAEC23AB2FA90076D4BB /* zip_string.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8E23AB2FA90076D4BB /* zip_string.c */; };
+		E721BAED23AB2FA90076D4BB /* zip_set_name.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA8F23AB2FA90076D4BB /* zip_set_name.c */; };
+		E721BAEE23AB2FA90076D4BB /* zip_entry.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9023AB2FA90076D4BB /* zip_entry.c */; };
+		E721BAEF23AB2FA90076D4BB /* zip_source_open.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9123AB2FA90076D4BB /* zip_source_open.c */; };
+		E721BAF023AB2FA90076D4BB /* zip_set_file_compression.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9223AB2FA90076D4BB /* zip_set_file_compression.c */; };
+		E721BAF123AB2FA90076D4BB /* zip_file_error_get.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9323AB2FA90076D4BB /* zip_file_error_get.c */; };
+		E721BAF223AB2FA90076D4BB /* zip_file_replace.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9423AB2FA90076D4BB /* zip_file_replace.c */; };
+		E721BAF323AB2FA90076D4BB /* zip_file_get_offset.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9523AB2FA90076D4BB /* zip_file_get_offset.c */; };
+		E721BAF423AB2FA90076D4BB /* zip_unchange.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9623AB2FA90076D4BB /* zip_unchange.c */; };
+		E721BAF523AB2FA90076D4BB /* zip_new.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9723AB2FA90076D4BB /* zip_new.c */; };
+		E721BAF623AB2FA90076D4BB /* zip_file_set_comment.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9823AB2FA90076D4BB /* zip_file_set_comment.c */; };
+		E721BAF723AB2FA90076D4BB /* zip_close.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9A23AB2FA90076D4BB /* zip_close.c */; };
+		E721BAF823AB2FA90076D4BB /* zip_add_dir.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9B23AB2FA90076D4BB /* zip_add_dir.c */; };
+		E721BAF923AB2FA90076D4BB /* zip_error_get_sys_type.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9C23AB2FA90076D4BB /* zip_error_get_sys_type.c */; };
+		E721BAFA23AB2FA90076D4BB /* zip_fopen_encrypted.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9D23AB2FA90076D4BB /* zip_fopen_encrypted.c */; };
+		E721BAFB23AB2FA90076D4BB /* zip_set_archive_comment.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9E23AB2FA90076D4BB /* zip_set_archive_comment.c */; };
+		E721BAFC23AB2FA90076D4BB /* zip_extra_field.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA9F23AB2FA90076D4BB /* zip_extra_field.c */; };
+		E721BAFD23AB2FA90076D4BB /* zip_dir_add.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA023AB2FA90076D4BB /* zip_dir_add.c */; };
+		E721BAFE23AB2FA90076D4BB /* zip_name_locate.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA123AB2FA90076D4BB /* zip_name_locate.c */; };
+		E721BAFF23AB2FA90076D4BB /* zip_unchange_archive.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA223AB2FA90076D4BB /* zip_unchange_archive.c */; };
+		E721BB0023AB2FA90076D4BB /* zip_source_free.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA323AB2FA90076D4BB /* zip_source_free.c */; };
+		E721BB0123AB2FA90076D4BB /* zip_get_num_files.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA423AB2FA90076D4BB /* zip_get_num_files.c */; };
+		E721BB0223AB2FA90076D4BB /* zip_err_str.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA523AB2FA90076D4BB /* zip_err_str.c */; };
+		E721BB0323AB2FA90076D4BB /* zip_add_entry.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA623AB2FA90076D4BB /* zip_add_entry.c */; };
+		E721BB0423AB2FA90076D4BB /* zip_source_filep.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA723AB2FA90076D4BB /* zip_source_filep.c */; };
+		E721BB0523AB2FA90076D4BB /* zip_error.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA823AB2FA90076D4BB /* zip_error.c */; };
+		E721BB0623AB2FA90076D4BB /* zip_strerror.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAA923AB2FA90076D4BB /* zip_strerror.c */; };
+		E721BB0723AB2FA90076D4BB /* zip_get_encryption_implementation.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAAA23AB2FA90076D4BB /* zip_get_encryption_implementation.c */; };
+		E721BB0823AB2FA90076D4BB /* zip_get_archive_flag.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAAB23AB2FA90076D4BB /* zip_get_archive_flag.c */; };
+		E721BB0923AB2FA90076D4BB /* zip_set_archive_flag.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAAC23AB2FA90076D4BB /* zip_set_archive_flag.c */; };
+		E721BB0A23AB2FA90076D4BB /* zip_source_zip_new.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAAD23AB2FA90076D4BB /* zip_source_zip_new.c */; };
+		E721BB0B23AB2FA90076D4BB /* zip_get_compression_implementation.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAAE23AB2FA90076D4BB /* zip_get_compression_implementation.c */; };
+		E721BB0C23AB2FA90076D4BB /* zip_source_deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAAF23AB2FA90076D4BB /* zip_source_deflate.c */; };
+		E721BB0D23AB2FA90076D4BB /* zip_fdopen.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB023AB2FA90076D4BB /* zip_fdopen.c */; };
+		E721BB0E23AB2FA90076D4BB /* zip_unchange_data.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB123AB2FA90076D4BB /* zip_unchange_data.c */; };
+		E721BB0F23AB2FA90076D4BB /* zip_source_pop.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB223AB2FA90076D4BB /* zip_source_pop.c */; };
+		E721BB1023AB2FA90076D4BB /* zip_set_default_password.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB323AB2FA90076D4BB /* zip_set_default_password.c */; };
+		E721BB1123AB2FA90076D4BB /* zip_extra_field_api.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB423AB2FA90076D4BB /* zip_extra_field_api.c */; };
+		E721BB1223AB2FA90076D4BB /* zip_fread.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB523AB2FA90076D4BB /* zip_fread.c */; };
+		E721BB1323AB2FA90076D4BB /* zip_rename.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB623AB2FA90076D4BB /* zip_rename.c */; };
+		E721BB1423AB2FA90076D4BB /* zip_source_zip.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB723AB2FA90076D4BB /* zip_source_zip.c */; };
+		E721BB1523AB2FA90076D4BB /* zip_stat_index.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB823AB2FA90076D4BB /* zip_stat_index.c */; };
+		E721BB1623AB2FA90076D4BB /* zip_get_num_entries.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAB923AB2FA90076D4BB /* zip_get_num_entries.c */; };
+		E721BB1723AB2FA90076D4BB /* zip_source_function.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BABA23AB2FA90076D4BB /* zip_source_function.c */; };
+		E721BB1823AB2FA90076D4BB /* zip_file_set_external_attributes.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BABB23AB2FA90076D4BB /* zip_file_set_external_attributes.c */; };
+		E721BB1923AB2FA90076D4BB /* zip_replace.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BABC23AB2FA90076D4BB /* zip_replace.c */; };
+		E721BB1A23AB2FA90076D4BB /* zip_delete.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BABD23AB2FA90076D4BB /* zip_delete.c */; };
+		E721BB1B23AB2FA90076D4BB /* zip_source_crc.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BABE23AB2FA90076D4BB /* zip_source_crc.c */; };
+		E721BB1C23AB2FA90076D4BB /* zip_set_file_comment.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BABF23AB2FA90076D4BB /* zip_set_file_comment.c */; };
+		E721BB1D23AB2FA90076D4BB /* zip_stat.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAC023AB2FA90076D4BB /* zip_stat.c */; };
+		E721BB1E23AB2FA90076D4BB /* zip_get_file_comment.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAC123AB2FA90076D4BB /* zip_get_file_comment.c */; };
+		E721BB1F23AB2FA90076D4BB /* zip_source_close.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAC323AB2FA90076D4BB /* zip_source_close.c */; };
+		E721BB2023AB2FA90076D4BB /* zip_source_read.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAC423AB2FA90076D4BB /* zip_source_read.c */; };
+		E721BB2123AB2FA90076D4BB /* zip_open.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAC523AB2FA90076D4BB /* zip_open.c */; };
+		E721BB2223AB2FA90076D4BB /* zip_fopen_index_encrypted.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAC623AB2FA90076D4BB /* zip_fopen_index_encrypted.c */; };
+		E721BB2323AB2FA90076D4BB /* zip_utf-8.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAC723AB2FA90076D4BB /* zip_utf-8.c */; };
+		E721BB2423AB2FA90076D4BB /* zip_error_get.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAC823AB2FA90076D4BB /* zip_error_get.c */; };
+		E721BB2523AB2FA90076D4BB /* zip_fclose.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAC923AB2FA90076D4BB /* zip_fclose.c */; };
+		E721BB2623AB2FA90076D4BB /* zip_dirent.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BACA23AB2FA90076D4BB /* zip_dirent.c */; };
+		E721BB2723AB2FA90076D4BB /* zip_file_add.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BACB23AB2FA90076D4BB /* zip_file_add.c */; };
+		E721BB2823AB2FA90076D4BB /* zip_source_error.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BACC23AB2FA90076D4BB /* zip_source_error.c */; };
+		E721BB2923AB2FA90076D4BB /* zip_file_error_clear.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BACD23AB2FA90076D4BB /* zip_file_error_clear.c */; };
+		E721BB2A23AB2FA90076D4BB /* zip_error_to_str.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BACE23AB2FA90076D4BB /* zip_error_to_str.c */; };
+		E721BB2B23AB2FA90076D4BB /* zip_source_window.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD123AB2FA90076D4BB /* zip_source_window.c */; };
+		E721BB2C23AB2FA90076D4BB /* zip_file_get_comment.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD223AB2FA90076D4BB /* zip_file_get_comment.c */; };
+		E721BB2D23AB2FA90076D4BB /* zip_stat_init.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD323AB2FA90076D4BB /* zip_stat_init.c */; };
+		E721BB2E23AB2FA90076D4BB /* zip_fopen.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD423AB2FA90076D4BB /* zip_fopen.c */; };
+		E721BB2F23AB2FA90076D4BB /* zip_unchange_all.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD523AB2FA90076D4BB /* zip_unchange_all.c */; };
+		E721BB3023AB2FA90076D4BB /* zip_source_layered.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD623AB2FA90076D4BB /* zip_source_layered.c */; };
+		E721BB3123AB2FA90076D4BB /* zip_error_strerror.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD723AB2FA90076D4BB /* zip_error_strerror.c */; };
+		E721BB3223AB2FA90076D4BB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E721BAD923AB2FA90076D4BB /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +121,103 @@
 		E71E3594239A42600021E1A2 /* PakapoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageView.swift; sourceTree = "<group>"; };
 		E71E3596239A428D0021E1A2 /* PakapoImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageModel.swift; sourceTree = "<group>"; };
 		E71F335623A8B1C30037B1CD /* PakapoImageClipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageClipView.swift; sourceTree = "<group>"; };
+		E721BA7723AB2FA90076D4BB /* ZUnzip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZUnzip.swift; sourceTree = "<group>"; };
+		E721BA7923AB2FA90076D4BB /* fmemopen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmemopen.h; sourceTree = "<group>"; };
+		E721BA7A23AB2FA90076D4BB /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E721BA7B23AB2FA90076D4BB /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		E721BA7C23AB2FA90076D4BB /* fmemopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fmemopen.c; sourceTree = "<group>"; };
+		E721BA7E23AB2FA90076D4BB /* zip_memdup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_memdup.c; sourceTree = "<group>"; };
+		E721BA7F23AB2FA90076D4BB /* zip_file_get_external_attributes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_get_external_attributes.c; sourceTree = "<group>"; };
+		E721BA8023AB2FA90076D4BB /* zipint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zipint.h; sourceTree = "<group>"; };
+		E721BA8123AB2FA90076D4BB /* zip_add.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_add.c; sourceTree = "<group>"; };
+		E721BA8223AB2FA90076D4BB /* zip_filerange_crc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_filerange_crc.c; sourceTree = "<group>"; };
+		E721BA8323AB2FA90076D4BB /* zip_get_name.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_get_name.c; sourceTree = "<group>"; };
+		E721BA8423AB2FA90076D4BB /* zip_file_strerror.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_strerror.c; sourceTree = "<group>"; };
+		E721BA8523AB2FA90076D4BB /* zip_fopen_index.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_fopen_index.c; sourceTree = "<group>"; };
+		E721BA8623AB2FA90076D4BB /* zip_source_buffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_buffer.c; sourceTree = "<group>"; };
+		E721BA8723AB2FA90076D4BB /* zip_error_clear.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_error_clear.c; sourceTree = "<group>"; };
+		E721BA8823AB2FA90076D4BB /* zip_source_stat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_stat.c; sourceTree = "<group>"; };
+		E721BA8923AB2FA90076D4BB /* zip_get_archive_comment.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_get_archive_comment.c; sourceTree = "<group>"; };
+		E721BA8A23AB2FA90076D4BB /* zip_file_rename.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_rename.c; sourceTree = "<group>"; };
+		E721BA8B23AB2FA90076D4BB /* zip_source_pkware.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_pkware.c; sourceTree = "<group>"; };
+		E721BA8C23AB2FA90076D4BB /* zip_discard.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_discard.c; sourceTree = "<group>"; };
+		E721BA8D23AB2FA90076D4BB /* zip_source_file.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_file.c; sourceTree = "<group>"; };
+		E721BA8E23AB2FA90076D4BB /* zip_string.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_string.c; sourceTree = "<group>"; };
+		E721BA8F23AB2FA90076D4BB /* zip_set_name.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_set_name.c; sourceTree = "<group>"; };
+		E721BA9023AB2FA90076D4BB /* zip_entry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_entry.c; sourceTree = "<group>"; };
+		E721BA9123AB2FA90076D4BB /* zip_source_open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_open.c; sourceTree = "<group>"; };
+		E721BA9223AB2FA90076D4BB /* zip_set_file_compression.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_set_file_compression.c; sourceTree = "<group>"; };
+		E721BA9323AB2FA90076D4BB /* zip_file_error_get.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_error_get.c; sourceTree = "<group>"; };
+		E721BA9423AB2FA90076D4BB /* zip_file_replace.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_replace.c; sourceTree = "<group>"; };
+		E721BA9523AB2FA90076D4BB /* zip_file_get_offset.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_get_offset.c; sourceTree = "<group>"; };
+		E721BA9623AB2FA90076D4BB /* zip_unchange.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_unchange.c; sourceTree = "<group>"; };
+		E721BA9723AB2FA90076D4BB /* zip_new.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_new.c; sourceTree = "<group>"; };
+		E721BA9823AB2FA90076D4BB /* zip_file_set_comment.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_set_comment.c; sourceTree = "<group>"; };
+		E721BA9923AB2FA90076D4BB /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		E721BA9A23AB2FA90076D4BB /* zip_close.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_close.c; sourceTree = "<group>"; };
+		E721BA9B23AB2FA90076D4BB /* zip_add_dir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_add_dir.c; sourceTree = "<group>"; };
+		E721BA9C23AB2FA90076D4BB /* zip_error_get_sys_type.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_error_get_sys_type.c; sourceTree = "<group>"; };
+		E721BA9D23AB2FA90076D4BB /* zip_fopen_encrypted.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_fopen_encrypted.c; sourceTree = "<group>"; };
+		E721BA9E23AB2FA90076D4BB /* zip_set_archive_comment.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_set_archive_comment.c; sourceTree = "<group>"; };
+		E721BA9F23AB2FA90076D4BB /* zip_extra_field.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_extra_field.c; sourceTree = "<group>"; };
+		E721BAA023AB2FA90076D4BB /* zip_dir_add.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_dir_add.c; sourceTree = "<group>"; };
+		E721BAA123AB2FA90076D4BB /* zip_name_locate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_name_locate.c; sourceTree = "<group>"; };
+		E721BAA223AB2FA90076D4BB /* zip_unchange_archive.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_unchange_archive.c; sourceTree = "<group>"; };
+		E721BAA323AB2FA90076D4BB /* zip_source_free.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_free.c; sourceTree = "<group>"; };
+		E721BAA423AB2FA90076D4BB /* zip_get_num_files.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_get_num_files.c; sourceTree = "<group>"; };
+		E721BAA523AB2FA90076D4BB /* zip_err_str.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_err_str.c; sourceTree = "<group>"; };
+		E721BAA623AB2FA90076D4BB /* zip_add_entry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_add_entry.c; sourceTree = "<group>"; };
+		E721BAA723AB2FA90076D4BB /* zip_source_filep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_filep.c; sourceTree = "<group>"; };
+		E721BAA823AB2FA90076D4BB /* zip_error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_error.c; sourceTree = "<group>"; };
+		E721BAA923AB2FA90076D4BB /* zip_strerror.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_strerror.c; sourceTree = "<group>"; };
+		E721BAAA23AB2FA90076D4BB /* zip_get_encryption_implementation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_get_encryption_implementation.c; sourceTree = "<group>"; };
+		E721BAAB23AB2FA90076D4BB /* zip_get_archive_flag.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_get_archive_flag.c; sourceTree = "<group>"; };
+		E721BAAC23AB2FA90076D4BB /* zip_set_archive_flag.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_set_archive_flag.c; sourceTree = "<group>"; };
+		E721BAAD23AB2FA90076D4BB /* zip_source_zip_new.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_zip_new.c; sourceTree = "<group>"; };
+		E721BAAE23AB2FA90076D4BB /* zip_get_compression_implementation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_get_compression_implementation.c; sourceTree = "<group>"; };
+		E721BAAF23AB2FA90076D4BB /* zip_source_deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_deflate.c; sourceTree = "<group>"; };
+		E721BAB023AB2FA90076D4BB /* zip_fdopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_fdopen.c; sourceTree = "<group>"; };
+		E721BAB123AB2FA90076D4BB /* zip_unchange_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_unchange_data.c; sourceTree = "<group>"; };
+		E721BAB223AB2FA90076D4BB /* zip_source_pop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_pop.c; sourceTree = "<group>"; };
+		E721BAB323AB2FA90076D4BB /* zip_set_default_password.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_set_default_password.c; sourceTree = "<group>"; };
+		E721BAB423AB2FA90076D4BB /* zip_extra_field_api.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_extra_field_api.c; sourceTree = "<group>"; };
+		E721BAB523AB2FA90076D4BB /* zip_fread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_fread.c; sourceTree = "<group>"; };
+		E721BAB623AB2FA90076D4BB /* zip_rename.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_rename.c; sourceTree = "<group>"; };
+		E721BAB723AB2FA90076D4BB /* zip_source_zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_zip.c; sourceTree = "<group>"; };
+		E721BAB823AB2FA90076D4BB /* zip_stat_index.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_stat_index.c; sourceTree = "<group>"; };
+		E721BAB923AB2FA90076D4BB /* zip_get_num_entries.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_get_num_entries.c; sourceTree = "<group>"; };
+		E721BABA23AB2FA90076D4BB /* zip_source_function.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_function.c; sourceTree = "<group>"; };
+		E721BABB23AB2FA90076D4BB /* zip_file_set_external_attributes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_set_external_attributes.c; sourceTree = "<group>"; };
+		E721BABC23AB2FA90076D4BB /* zip_replace.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_replace.c; sourceTree = "<group>"; };
+		E721BABD23AB2FA90076D4BB /* zip_delete.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_delete.c; sourceTree = "<group>"; };
+		E721BABE23AB2FA90076D4BB /* zip_source_crc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_crc.c; sourceTree = "<group>"; };
+		E721BABF23AB2FA90076D4BB /* zip_set_file_comment.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_set_file_comment.c; sourceTree = "<group>"; };
+		E721BAC023AB2FA90076D4BB /* zip_stat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_stat.c; sourceTree = "<group>"; };
+		E721BAC123AB2FA90076D4BB /* zip_get_file_comment.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_get_file_comment.c; sourceTree = "<group>"; };
+		E721BAC223AB2FA90076D4BB /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		E721BAC323AB2FA90076D4BB /* zip_source_close.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_close.c; sourceTree = "<group>"; };
+		E721BAC423AB2FA90076D4BB /* zip_source_read.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_read.c; sourceTree = "<group>"; };
+		E721BAC523AB2FA90076D4BB /* zip_open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_open.c; sourceTree = "<group>"; };
+		E721BAC623AB2FA90076D4BB /* zip_fopen_index_encrypted.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_fopen_index_encrypted.c; sourceTree = "<group>"; };
+		E721BAC723AB2FA90076D4BB /* zip_utf-8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "zip_utf-8.c"; sourceTree = "<group>"; };
+		E721BAC823AB2FA90076D4BB /* zip_error_get.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_error_get.c; sourceTree = "<group>"; };
+		E721BAC923AB2FA90076D4BB /* zip_fclose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_fclose.c; sourceTree = "<group>"; };
+		E721BACA23AB2FA90076D4BB /* zip_dirent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_dirent.c; sourceTree = "<group>"; };
+		E721BACB23AB2FA90076D4BB /* zip_file_add.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_add.c; sourceTree = "<group>"; };
+		E721BACC23AB2FA90076D4BB /* zip_source_error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_error.c; sourceTree = "<group>"; };
+		E721BACD23AB2FA90076D4BB /* zip_file_error_clear.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_error_clear.c; sourceTree = "<group>"; };
+		E721BACE23AB2FA90076D4BB /* zip_error_to_str.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_error_to_str.c; sourceTree = "<group>"; };
+		E721BACF23AB2FA90076D4BB /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		E721BAD023AB2FA90076D4BB /* zipconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zipconf.h; sourceTree = "<group>"; };
+		E721BAD123AB2FA90076D4BB /* zip_source_window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_window.c; sourceTree = "<group>"; };
+		E721BAD223AB2FA90076D4BB /* zip_file_get_comment.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_file_get_comment.c; sourceTree = "<group>"; };
+		E721BAD323AB2FA90076D4BB /* zip_stat_init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_stat_init.c; sourceTree = "<group>"; };
+		E721BAD423AB2FA90076D4BB /* zip_fopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_fopen.c; sourceTree = "<group>"; };
+		E721BAD523AB2FA90076D4BB /* zip_unchange_all.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_unchange_all.c; sourceTree = "<group>"; };
+		E721BAD623AB2FA90076D4BB /* zip_source_layered.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_source_layered.c; sourceTree = "<group>"; };
+		E721BAD723AB2FA90076D4BB /* zip_error_strerror.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_error_strerror.c; sourceTree = "<group>"; };
+		E721BAD823AB2FA90076D4BB /* ZUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZUnzip.h; sourceTree = "<group>"; };
+		E721BAD923AB2FA90076D4BB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E73EB81B23A1FDFA00C661C7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ja; path = ja.lproj/Pakapo.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,6 +243,7 @@
 		E71E3572239A40530021E1A2 = {
 			isa = PBXGroup;
 			children = (
+				E721BA7523AB2F7F0076D4BB /* OtherSources */,
 				E71E357D239A40530021E1A2 /* Pakapo */,
 				E71E357C239A40530021E1A2 /* Products */,
 			);
@@ -137,6 +324,134 @@
 			path = Storyboard;
 			sourceTree = "<group>";
 		};
+		E721BA7523AB2F7F0076D4BB /* OtherSources */ = {
+			isa = PBXGroup;
+			children = (
+				E721BA7623AB2FA90076D4BB /* ZUnzip */,
+			);
+			path = OtherSources;
+			sourceTree = "<group>";
+		};
+		E721BA7623AB2FA90076D4BB /* ZUnzip */ = {
+			isa = PBXGroup;
+			children = (
+				E721BA7723AB2FA90076D4BB /* ZUnzip.swift */,
+				E721BA7823AB2FA90076D4BB /* fmemopen */,
+				E721BA7D23AB2FA90076D4BB /* libzip */,
+				E721BAD823AB2FA90076D4BB /* ZUnzip.h */,
+				E721BAD923AB2FA90076D4BB /* Info.plist */,
+			);
+			path = ZUnzip;
+			sourceTree = "<group>";
+		};
+		E721BA7823AB2FA90076D4BB /* fmemopen */ = {
+			isa = PBXGroup;
+			children = (
+				E721BA7923AB2FA90076D4BB /* fmemopen.h */,
+				E721BA7A23AB2FA90076D4BB /* README.md */,
+				E721BA7B23AB2FA90076D4BB /* module.modulemap */,
+				E721BA7C23AB2FA90076D4BB /* fmemopen.c */,
+			);
+			path = fmemopen;
+			sourceTree = "<group>";
+		};
+		E721BA7D23AB2FA90076D4BB /* libzip */ = {
+			isa = PBXGroup;
+			children = (
+				E721BA7E23AB2FA90076D4BB /* zip_memdup.c */,
+				E721BA7F23AB2FA90076D4BB /* zip_file_get_external_attributes.c */,
+				E721BA8023AB2FA90076D4BB /* zipint.h */,
+				E721BA8123AB2FA90076D4BB /* zip_add.c */,
+				E721BA8223AB2FA90076D4BB /* zip_filerange_crc.c */,
+				E721BA8323AB2FA90076D4BB /* zip_get_name.c */,
+				E721BA8423AB2FA90076D4BB /* zip_file_strerror.c */,
+				E721BA8523AB2FA90076D4BB /* zip_fopen_index.c */,
+				E721BA8623AB2FA90076D4BB /* zip_source_buffer.c */,
+				E721BA8723AB2FA90076D4BB /* zip_error_clear.c */,
+				E721BA8823AB2FA90076D4BB /* zip_source_stat.c */,
+				E721BA8923AB2FA90076D4BB /* zip_get_archive_comment.c */,
+				E721BA8A23AB2FA90076D4BB /* zip_file_rename.c */,
+				E721BA8B23AB2FA90076D4BB /* zip_source_pkware.c */,
+				E721BA8C23AB2FA90076D4BB /* zip_discard.c */,
+				E721BA8D23AB2FA90076D4BB /* zip_source_file.c */,
+				E721BA8E23AB2FA90076D4BB /* zip_string.c */,
+				E721BA8F23AB2FA90076D4BB /* zip_set_name.c */,
+				E721BA9023AB2FA90076D4BB /* zip_entry.c */,
+				E721BA9123AB2FA90076D4BB /* zip_source_open.c */,
+				E721BA9223AB2FA90076D4BB /* zip_set_file_compression.c */,
+				E721BA9323AB2FA90076D4BB /* zip_file_error_get.c */,
+				E721BA9423AB2FA90076D4BB /* zip_file_replace.c */,
+				E721BA9523AB2FA90076D4BB /* zip_file_get_offset.c */,
+				E721BA9623AB2FA90076D4BB /* zip_unchange.c */,
+				E721BA9723AB2FA90076D4BB /* zip_new.c */,
+				E721BA9823AB2FA90076D4BB /* zip_file_set_comment.c */,
+				E721BA9923AB2FA90076D4BB /* config.h */,
+				E721BA9A23AB2FA90076D4BB /* zip_close.c */,
+				E721BA9B23AB2FA90076D4BB /* zip_add_dir.c */,
+				E721BA9C23AB2FA90076D4BB /* zip_error_get_sys_type.c */,
+				E721BA9D23AB2FA90076D4BB /* zip_fopen_encrypted.c */,
+				E721BA9E23AB2FA90076D4BB /* zip_set_archive_comment.c */,
+				E721BA9F23AB2FA90076D4BB /* zip_extra_field.c */,
+				E721BAA023AB2FA90076D4BB /* zip_dir_add.c */,
+				E721BAA123AB2FA90076D4BB /* zip_name_locate.c */,
+				E721BAA223AB2FA90076D4BB /* zip_unchange_archive.c */,
+				E721BAA323AB2FA90076D4BB /* zip_source_free.c */,
+				E721BAA423AB2FA90076D4BB /* zip_get_num_files.c */,
+				E721BAA523AB2FA90076D4BB /* zip_err_str.c */,
+				E721BAA623AB2FA90076D4BB /* zip_add_entry.c */,
+				E721BAA723AB2FA90076D4BB /* zip_source_filep.c */,
+				E721BAA823AB2FA90076D4BB /* zip_error.c */,
+				E721BAA923AB2FA90076D4BB /* zip_strerror.c */,
+				E721BAAA23AB2FA90076D4BB /* zip_get_encryption_implementation.c */,
+				E721BAAB23AB2FA90076D4BB /* zip_get_archive_flag.c */,
+				E721BAAC23AB2FA90076D4BB /* zip_set_archive_flag.c */,
+				E721BAAD23AB2FA90076D4BB /* zip_source_zip_new.c */,
+				E721BAAE23AB2FA90076D4BB /* zip_get_compression_implementation.c */,
+				E721BAAF23AB2FA90076D4BB /* zip_source_deflate.c */,
+				E721BAB023AB2FA90076D4BB /* zip_fdopen.c */,
+				E721BAB123AB2FA90076D4BB /* zip_unchange_data.c */,
+				E721BAB223AB2FA90076D4BB /* zip_source_pop.c */,
+				E721BAB323AB2FA90076D4BB /* zip_set_default_password.c */,
+				E721BAB423AB2FA90076D4BB /* zip_extra_field_api.c */,
+				E721BAB523AB2FA90076D4BB /* zip_fread.c */,
+				E721BAB623AB2FA90076D4BB /* zip_rename.c */,
+				E721BAB723AB2FA90076D4BB /* zip_source_zip.c */,
+				E721BAB823AB2FA90076D4BB /* zip_stat_index.c */,
+				E721BAB923AB2FA90076D4BB /* zip_get_num_entries.c */,
+				E721BABA23AB2FA90076D4BB /* zip_source_function.c */,
+				E721BABB23AB2FA90076D4BB /* zip_file_set_external_attributes.c */,
+				E721BABC23AB2FA90076D4BB /* zip_replace.c */,
+				E721BABD23AB2FA90076D4BB /* zip_delete.c */,
+				E721BABE23AB2FA90076D4BB /* zip_source_crc.c */,
+				E721BABF23AB2FA90076D4BB /* zip_set_file_comment.c */,
+				E721BAC023AB2FA90076D4BB /* zip_stat.c */,
+				E721BAC123AB2FA90076D4BB /* zip_get_file_comment.c */,
+				E721BAC223AB2FA90076D4BB /* zip.h */,
+				E721BAC323AB2FA90076D4BB /* zip_source_close.c */,
+				E721BAC423AB2FA90076D4BB /* zip_source_read.c */,
+				E721BAC523AB2FA90076D4BB /* zip_open.c */,
+				E721BAC623AB2FA90076D4BB /* zip_fopen_index_encrypted.c */,
+				E721BAC723AB2FA90076D4BB /* zip_utf-8.c */,
+				E721BAC823AB2FA90076D4BB /* zip_error_get.c */,
+				E721BAC923AB2FA90076D4BB /* zip_fclose.c */,
+				E721BACA23AB2FA90076D4BB /* zip_dirent.c */,
+				E721BACB23AB2FA90076D4BB /* zip_file_add.c */,
+				E721BACC23AB2FA90076D4BB /* zip_source_error.c */,
+				E721BACD23AB2FA90076D4BB /* zip_file_error_clear.c */,
+				E721BACE23AB2FA90076D4BB /* zip_error_to_str.c */,
+				E721BACF23AB2FA90076D4BB /* module.modulemap */,
+				E721BAD023AB2FA90076D4BB /* zipconf.h */,
+				E721BAD123AB2FA90076D4BB /* zip_source_window.c */,
+				E721BAD223AB2FA90076D4BB /* zip_file_get_comment.c */,
+				E721BAD323AB2FA90076D4BB /* zip_stat_init.c */,
+				E721BAD423AB2FA90076D4BB /* zip_fopen.c */,
+				E721BAD523AB2FA90076D4BB /* zip_unchange_all.c */,
+				E721BAD623AB2FA90076D4BB /* zip_source_layered.c */,
+				E721BAD723AB2FA90076D4BB /* zip_error_strerror.c */,
+			);
+			path = libzip;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -199,6 +514,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E721BB3223AB2FA90076D4BB /* Info.plist in Resources */,
+				E721BADB23AB2FA90076D4BB /* README.md in Resources */,
 				E71E3583239A40540021E1A2 /* Assets.xcassets in Resources */,
 				E71E3586239A40540021E1A2 /* Pakapo.storyboard in Resources */,
 			);
@@ -211,14 +528,101 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E721BADE23AB2FA90076D4BB /* zip_file_get_external_attributes.c in Sources */,
 				E71E3581239A40530021E1A2 /* PakapoViewController.swift in Sources */,
+				E721BB0023AB2FA90076D4BB /* zip_source_free.c in Sources */,
+				E721BAF723AB2FA90076D4BB /* zip_close.c in Sources */,
+				E721BAF623AB2FA90076D4BB /* zip_file_set_comment.c in Sources */,
+				E721BB0523AB2FA90076D4BB /* zip_error.c in Sources */,
+				E721BAFE23AB2FA90076D4BB /* zip_name_locate.c in Sources */,
+				E721BB1023AB2FA90076D4BB /* zip_set_default_password.c in Sources */,
+				E721BAE923AB2FA90076D4BB /* zip_source_pkware.c in Sources */,
+				E721BB1723AB2FA90076D4BB /* zip_source_function.c in Sources */,
+				E721BB2C23AB2FA90076D4BB /* zip_file_get_comment.c in Sources */,
+				E721BB2D23AB2FA90076D4BB /* zip_stat_init.c in Sources */,
+				E721BB0C23AB2FA90076D4BB /* zip_source_deflate.c in Sources */,
+				E721BB2923AB2FA90076D4BB /* zip_file_error_clear.c in Sources */,
+				E721BB2E23AB2FA90076D4BB /* zip_fopen.c in Sources */,
+				E721BB0F23AB2FA90076D4BB /* zip_source_pop.c in Sources */,
+				E721BAFA23AB2FA90076D4BB /* zip_fopen_encrypted.c in Sources */,
+				E721BB0323AB2FA90076D4BB /* zip_add_entry.c in Sources */,
+				E721BADF23AB2FA90076D4BB /* zip_add.c in Sources */,
+				E721BB0A23AB2FA90076D4BB /* zip_source_zip_new.c in Sources */,
+				E721BB2A23AB2FA90076D4BB /* zip_error_to_str.c in Sources */,
+				E721BAF423AB2FA90076D4BB /* zip_unchange.c in Sources */,
+				E721BB1223AB2FA90076D4BB /* zip_fread.c in Sources */,
+				E721BAFB23AB2FA90076D4BB /* zip_set_archive_comment.c in Sources */,
+				E721BB0B23AB2FA90076D4BB /* zip_get_compression_implementation.c in Sources */,
+				E721BADD23AB2FA90076D4BB /* zip_memdup.c in Sources */,
+				E721BAED23AB2FA90076D4BB /* zip_set_name.c in Sources */,
+				E721BAE023AB2FA90076D4BB /* zip_filerange_crc.c in Sources */,
 				E71E3597239A428D0021E1A2 /* PakapoImageModel.swift in Sources */,
+				E721BB0823AB2FA90076D4BB /* zip_get_archive_flag.c in Sources */,
+				E721BB1923AB2FA90076D4BB /* zip_replace.c in Sources */,
+				E721BB0923AB2FA90076D4BB /* zip_set_archive_flag.c in Sources */,
+				E721BAE423AB2FA90076D4BB /* zip_source_buffer.c in Sources */,
+				E721BB2023AB2FA90076D4BB /* zip_source_read.c in Sources */,
+				E721BAF923AB2FA90076D4BB /* zip_error_get_sys_type.c in Sources */,
+				E721BB0D23AB2FA90076D4BB /* zip_fdopen.c in Sources */,
+				E721BB1423AB2FA90076D4BB /* zip_source_zip.c in Sources */,
+				E721BADC23AB2FA90076D4BB /* fmemopen.c in Sources */,
+				E721BAF323AB2FA90076D4BB /* zip_file_get_offset.c in Sources */,
+				E721BAF123AB2FA90076D4BB /* zip_file_error_get.c in Sources */,
+				E721BB2323AB2FA90076D4BB /* zip_utf-8.c in Sources */,
+				E721BB1E23AB2FA90076D4BB /* zip_get_file_comment.c in Sources */,
+				E721BB1A23AB2FA90076D4BB /* zip_delete.c in Sources */,
+				E721BB2723AB2FA90076D4BB /* zip_file_add.c in Sources */,
+				E721BB0E23AB2FA90076D4BB /* zip_unchange_data.c in Sources */,
+				E721BB1C23AB2FA90076D4BB /* zip_set_file_comment.c in Sources */,
+				E721BB1523AB2FA90076D4BB /* zip_stat_index.c in Sources */,
 				712DEE8123A60A2E007F6750 /* PakapoImageScrollView.swift in Sources */,
+				E721BAE223AB2FA90076D4BB /* zip_file_strerror.c in Sources */,
+				E721BB0423AB2FA90076D4BB /* zip_source_filep.c in Sources */,
+				E721BB1D23AB2FA90076D4BB /* zip_stat.c in Sources */,
+				E721BB3023AB2FA90076D4BB /* zip_source_layered.c in Sources */,
+				E721BAE723AB2FA90076D4BB /* zip_get_archive_comment.c in Sources */,
+				E721BB0723AB2FA90076D4BB /* zip_get_encryption_implementation.c in Sources */,
+				E721BAFD23AB2FA90076D4BB /* zip_dir_add.c in Sources */,
 				E71E357F239A40530021E1A2 /* AppDelegate.swift in Sources */,
 				71D593B523A3A01D00025091 /* DraggingView.swift in Sources */,
+				E721BB2823AB2FA90076D4BB /* zip_source_error.c in Sources */,
+				E721BAF223AB2FA90076D4BB /* zip_file_replace.c in Sources */,
+				E721BAF823AB2FA90076D4BB /* zip_add_dir.c in Sources */,
+				E721BB1F23AB2FA90076D4BB /* zip_source_close.c in Sources */,
+				E721BAFF23AB2FA90076D4BB /* zip_unchange_archive.c in Sources */,
+				E721BAF023AB2FA90076D4BB /* zip_set_file_compression.c in Sources */,
+				E721BAE623AB2FA90076D4BB /* zip_source_stat.c in Sources */,
+				E721BB1123AB2FA90076D4BB /* zip_extra_field_api.c in Sources */,
+				E721BAFC23AB2FA90076D4BB /* zip_extra_field.c in Sources */,
+				E721BB1323AB2FA90076D4BB /* zip_rename.c in Sources */,
+				E721BB2423AB2FA90076D4BB /* zip_error_get.c in Sources */,
+				E721BB2223AB2FA90076D4BB /* zip_fopen_index_encrypted.c in Sources */,
+				E721BB2623AB2FA90076D4BB /* zip_dirent.c in Sources */,
+				E721BAEF23AB2FA90076D4BB /* zip_source_open.c in Sources */,
+				E721BB0623AB2FA90076D4BB /* zip_strerror.c in Sources */,
+				E721BB1623AB2FA90076D4BB /* zip_get_num_entries.c in Sources */,
+				E721BB2B23AB2FA90076D4BB /* zip_source_window.c in Sources */,
+				E721BB0223AB2FA90076D4BB /* zip_err_str.c in Sources */,
+				E721BB2F23AB2FA90076D4BB /* zip_unchange_all.c in Sources */,
 				71D593B823A3C68F00025091 /* URL+ext.swift in Sources */,
+				E721BB1823AB2FA90076D4BB /* zip_file_set_external_attributes.c in Sources */,
+				E721BB1B23AB2FA90076D4BB /* zip_source_crc.c in Sources */,
+				E721BAEC23AB2FA90076D4BB /* zip_string.c in Sources */,
+				E721BAE323AB2FA90076D4BB /* zip_fopen_index.c in Sources */,
+				E721BAF523AB2FA90076D4BB /* zip_new.c in Sources */,
 				E71F335723A8B1C30037B1CD /* PakapoImageClipView.swift in Sources */,
+				E721BAEE23AB2FA90076D4BB /* zip_entry.c in Sources */,
+				E721BB2123AB2FA90076D4BB /* zip_open.c in Sources */,
+				E721BAEA23AB2FA90076D4BB /* zip_discard.c in Sources */,
+				E721BB3123AB2FA90076D4BB /* zip_error_strerror.c in Sources */,
+				E721BB0123AB2FA90076D4BB /* zip_get_num_files.c in Sources */,
+				E721BAE523AB2FA90076D4BB /* zip_error_clear.c in Sources */,
 				E71E3595239A42600021E1A2 /* PakapoImageView.swift in Sources */,
+				E721BAE823AB2FA90076D4BB /* zip_file_rename.c in Sources */,
+				E721BAE123AB2FA90076D4BB /* zip_get_name.c in Sources */,
+				E721BAEB23AB2FA90076D4BB /* zip_source_file.c in Sources */,
+				E721BB2523AB2FA90076D4BB /* zip_fclose.c in Sources */,
+				E721BADA23AB2FA90076D4BB /* ZUnzip.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,6 +697,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/OtherSources/ZUnzip";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -347,6 +752,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/OtherSources/ZUnzip";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;

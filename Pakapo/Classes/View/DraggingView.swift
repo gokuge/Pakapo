@@ -74,6 +74,10 @@ class DraggingView: NSView {
             return unwrappedURL
         }
         
+        if unwrappedURL.lastPathComponent.hasSuffix(".zip") {
+            return unwrappedURL
+        }
+        
         if !unwrappedURL.isImageTypeURL() {
             return nil
         }

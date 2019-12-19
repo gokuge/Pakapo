@@ -28,7 +28,6 @@ class PakapoImageView: NSView {
 
     var viewStyle: ViewStyle = ViewStyle.defaultView
 
-    var imageURL: URL?
     let imageView: NSImageView = NSImageView()
     let imageClipView: PakapoImageClipView = PakapoImageClipView()
     let scrollView: PakapoImageScrollView = PakapoImageScrollView()
@@ -203,13 +202,9 @@ class PakapoImageView: NSView {
         unwrappedWarningText.font = NSFont.systemFont(ofSize: fontSize)
     }
     
-    func setImage(imageURL: URL?) {
-        guard let unwrappedImageURL = imageURL else {
-            displayNoImage()
-            return
-        }
+    func setImage(image: NSImage?) {
         
-        guard let image = NSImage(contentsOf: unwrappedImageURL) else {
+        guard let unwrappedImage = image else {
             displayNoImage()
             return
         }
@@ -219,10 +214,9 @@ class PakapoImageView: NSView {
             warningText = nil
         }
         
-        self.imageURL = unwrappedImageURL
-        imageView.image = image
+        imageView.image = unwrappedImage
         
-        resizeDocumentView(image: image)
+        resizeDocumentView(image: unwrappedImage)
     }
     
     func zoom(rate: CGFloat) {

@@ -12,6 +12,7 @@ class PakapoImageModel: NSObject {
     
     let ROOT_DIRECTORY_URL: String = "rootDirectoryURL"
     let LAST_PAGE_URL: String = "lastPageURL"
+    let LAST_ZIP_DIRECTORY_URL: String = "lastZipDirectoryURL"
     let OPEN_RECENT_DIRECTORIES: String = "openRecentDirectories"
     let OPEN_RECENT_MAX_COUNT: Int = 10
     
@@ -28,6 +29,9 @@ class PakapoImageModel: NSObject {
 
     var dirContents: [URL]?
     var lastDisplayChildDirURL: URL?
+    
+    var zipContents: ZUnzip?
+    var lastZipPageURL: URL?
     
     public override init() {
         super.init()
@@ -130,6 +134,12 @@ class PakapoImageModel: NSObject {
         guard let fileURL = getFileURL() else {
             return
         }
+        
+        if let _ = zipContents,
+            let unwrappedCurrentDirURL = currentDirURL {
+            //zip展開中だった場合、zipのPathを保存しておく
+            UserDefaults.standard.set(unwrappedCurrentDirURL, forKey: LAST_ZIP_DIRECTORY_URL)
+        }
 
         UserDefaults.standard.set(fileURL, forKey: LAST_PAGE_URL)
     }
@@ -139,6 +149,13 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
+        //前回zip展開中に終了している場合
+        if let unwrappedLastZipURL = UserDefaults.standard.url(forKey: LAST_ZIP_DIRECTORY_URL) {
+            UserDefaults.standard.removeObject(forKey: LAST_ZIP_DIRECTORY_URL)
+            lastZipPageURL = unwrappedURL
+            return unwrappedLastZipURL
+        }
+                
         return unwrappedURL
     }
     
@@ -187,6 +204,71 @@ class PakapoImageModel: NSObject {
     }
     
     func refreshContents(dirURL: URL) {
+        
+        if isZipFilePath(url: dirURL) {
+            //zipのコンテンツ展開
+            makeZipContents(zipURL: dirURL)
+        } else {
+            //通常のコンテンツ展開
+            makeContents(dirURL: dirURL)
+            zipContents = nil
+        }
+    }
+    
+    func makeZipContents(zipURL: URL) {
+        do {
+            let unzip = try ZUnzip(path: zipURL.path)
+            
+            let sortFiles = unzip.files.sorted { a, b in
+                return a.localizedStandardCompare(b) == ComparisonResult.orderedAscending
+            }
+            
+            fileContents = []
+            dirContents = nil
+            
+            for file in sortFiles {
+                print(file)
+                
+                if file.hasPrefix("__MACOSX") {
+                    continue
+                }
+                
+                guard let fileURL = URL(string: file) else {
+                    //zipの中のエイリアスは対象外にしておく
+                    continue
+                }
+                
+                //ディレクトリは除外。zunzipのfilesは解凍したディレクトリの全てのパスを返すので、ファイルパスだけを保存すればいい
+                if fileURL.absoluteString.hasSuffix("/") {
+                    continue
+                }
+
+                if fileURL.lastPathComponent.hasPrefix(".") {
+                    continue
+                }
+                
+                if isZipFilePath(url: fileURL) {
+                    makeZipContents(zipURL: fileURL)
+                }
+                                
+                if fileURL.isImageTypeURL() {
+                    fileContents!.append(fileURL)
+                }
+            }
+            
+            if fileContents!.count == 0 {
+                zipContents = nil
+                return
+            }
+            currentDirURL = zipURL
+            zipContents = unzip
+
+        } catch {
+            print(error)
+        }
+    }
+    
+    func makeContents(dirURL: URL) {
         do {
             /*
                 ## 基本動作
@@ -236,10 +318,16 @@ class PakapoImageModel: NSObject {
                 if isDir.boolValue {
                     //dir
                     dirContents!.append(content)
-                } else {
-                    //file
-                    fileContents!.append(content)
+                    continue
                 }
+                
+                if isZipFilePath(url: content) {
+                    dirContents!.append(content)
+                    continue
+                }
+                
+                //file
+                fileContents!.append(content)
             }
             
             if dirContents!.count == 0 {
@@ -276,9 +364,18 @@ class PakapoImageModel: NSObject {
         }
         return nil
     }
+    
+    func isZipFilePath(url: URL) -> Bool {
+        
+        if url.lastPathComponent.hasSuffix(".zip") {
+            return true
+        }
+        
+        return false
+    }
 
     // MARK: - image
-    func loadValidImageURL(url: URL?) -> URL? {
+    func loadValidImage(url: URL?) -> NSImage? {
         guard let unwrappedURL = url else {
             return nil
         }
@@ -287,19 +384,22 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
+        if let unwrappedZipContents = zipContents {
+            
+            if let imageData = unwrappedZipContents.data(forFile: unwrappedURL.path) {
+                return NSImage(data: imageData as Data)
+            }
+        }
+        
         var tmpURL = unwrappedURL
         if let aliasOriginalURL = getAliasOriginalURL(url: unwrappedURL) {
             tmpURL = aliasOriginalURL
         }
         
-        if NSImage(contentsOf: tmpURL) != nil {
-            return tmpURL
-        }
-        
-        return nil
+        return NSImage(contentsOf: tmpURL)
     }
     
-    func loadInitImageURL(contentURL: URL) -> URL? {
+    func loadInitImage(contentURL: URL) -> NSImage? {
         var isDir: ObjCBool = false
         if !FileManager.default.fileExists(atPath: contentURL.path, isDirectory: &isDir) {
             //指定したURLが存在しないってことはこのタイミングではないはず
@@ -310,52 +410,80 @@ class PakapoImageModel: NSObject {
             //dir内でContentsを作成
             refreshContents(dirURL: contentURL)
             
-            guard let unwrappedImageURL = loadValidImageURLInFileContents(contents: fileContents) else {
+            if let unwrappedImage = loadValidImageInFileContents(contents: fileContents) {
+                addOpenRecentDirectories()
+                return unwrappedImage
+            }
+            
+            guard let unwrappedDirContents = dirContents else {
                 return nil
             }
-
-            addOpenRecentDirectories()
             
-            return unwrappedImageURL
-        } else {
-            //fileが入っているdir内のContentsを作成
-            refreshContents(dirURL: contentURL.deletingLastPathComponent())
-            
-            guard let unwrappedFileContents = fileContents else {
-                return nil
-            }
-
-            //indexの更新
-            fileContentsIndex = unwrappedFileContents.firstIndex(of: contentURL)
-            
-            //本来ありえないはずだが、前回終了時に保存したURLと、refreshContentsで取得した同じfilepathが違う場合がある
-            //どうも日本語がencodeされている部分が違うっぽいが原因不明
-            //これが起こった場合、fileContentsIndexとcurrentDirが有効な値になっていないので、file名で見てリカバリする
-            if fileContentsIndex == nil {
-                for (index, file) in unwrappedFileContents.enumerated() {
-                    if contentURL.lastPathComponent == file.lastPathComponent {
-                        fileContentsIndex = index
-                        currentDirURL = file.deletingLastPathComponent()
-                        break
+            //zipしかないディレクトリを開かれた可能性があるので検索する
+            for dir in unwrappedDirContents {
+                if isZipFilePath(url: dir) {
+                    refreshContents(dirURL: dir)
+                    
+                    if let unwrappedImage = loadValidImageInFileContents(contents: fileContents) {
+                        addOpenRecentDirectories()
+                        return unwrappedImage
                     }
-                }
-                //ファイル名でのリカバリにも失敗。読み直してもらうしかなさそう
-                if fileContentsIndex == nil {
+                    
                     return nil
                 }
             }
-            
-            guard let unwrappedImageURl = loadValidImageURL(url: contentURL) else {
+
+            return nil
+        }
+        
+        var tmpContentURL: URL = contentURL
+        var pageURL: URL = contentURL
+        
+        if isZipFilePath(url: contentURL) {
+            if let unwrappedLastZipPageURL = lastZipPageURL {
+                pageURL = unwrappedLastZipPageURL
+            }
+        } else {
+            tmpContentURL = contentURL.deletingLastPathComponent()
+        }
+        
+        //fileが入っているdir内のContentsを作成。zipの場合もある
+        refreshContents(dirURL: tmpContentURL)
+        
+        guard let unwrappedFileContents = fileContents else {
+            return nil
+        }
+
+        //indexの更新
+        fileContentsIndex = unwrappedFileContents.firstIndex(of: pageURL)
+        
+        //本来ありえないはずだが、前回終了時に保存したURLと、refreshContentsで取得した同じfilepathが違う場合がある
+        //どうも日本語がencodeされている部分が違うっぽいが原因不明
+        //これが起こった場合、fileContentsIndexとcurrentDirが有効な値になっていないので、file名で見てリカバリする
+        if fileContentsIndex == nil {
+            for (index, file) in unwrappedFileContents.enumerated() {
+                if contentURL.lastPathComponent == file.lastPathComponent {
+                    fileContentsIndex = index
+                    currentDirURL = file.deletingLastPathComponent()
+                    break
+                }
+            }
+            //ファイル名でのリカバリにも失敗。読み直してもらうしかなさそう
+            if fileContentsIndex == nil {
                 return nil
             }
-            
-            addOpenRecentDirectories()
-            
-            return unwrappedImageURl
         }
+        
+        guard let unwrappedImage = loadValidImage(url: pageURL) else {
+            return nil
+        }
+        
+        addOpenRecentDirectories()
+        
+        return unwrappedImage
     }
     
-    func loadValidImageURLInFileContents(contents: [URL]?) -> URL? {
+    func loadValidImageInFileContents(contents: [URL]?) -> NSImage? {
         guard let unwrappedContents = contents else {
             return nil
         }
@@ -363,17 +491,17 @@ class PakapoImageModel: NSObject {
         //indexの更新
         for (index, contentURL) in unwrappedContents.enumerated() {
             fileContentsIndex = index
-            guard let unwrappedImageURL = loadValidImageURL(url: contentURL) else {
+            guard let unwrappedImage = loadValidImage(url: contentURL) else {
                 continue
             }
             
-            return unwrappedImageURL
+            return unwrappedImage
         }
 
         return nil
     }
     
-    func loadNextImageURL() -> URL? {
+    func loadNextImage() -> NSImage? {
         guard var unwrappedFileContentsIndex = fileContentsIndex,
               let unwrappedCurrentDirURL = currentDirURL,
               let unwrappedRootDirURL = rootDirURL else {
@@ -431,16 +559,16 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
-        guard let imageURl = loadValidImageURL(url: fileURL) else {
+        guard let image = loadValidImage(url: fileURL) else {
             return nil
         }
         
         addOpenRecentDirectories()
         
-        return imageURl
+        return image
     }
     
-    func loadPrevImageURL() -> URL? {
+    func loadPrevImage() -> NSImage? {
         guard var unwrappedFileContentsIndex = fileContentsIndex,
               let unwrappedCurrentDirURL = currentDirURL,
               let unwrappedRootDirURL = rootDirURL else {
@@ -497,17 +625,17 @@ class PakapoImageModel: NSObject {
             return nil
         }
         
-        guard let imageURL = loadValidImageURL(url: fileURL) else {
+        guard let image = loadValidImage(url: fileURL) else {
             return nil
         }
         
         addOpenRecentDirectories()
         
-        return imageURL
+        return image
     }
     
     // MARK: - directory
-    func jumpSameDirectory(index: Int) -> URL? {
+    func jumpSameDirectory(index: Int) -> NSImage? {
         guard let unwrappedRootDirectories = rootDirectories else {
             return nil
         }
@@ -515,7 +643,7 @@ class PakapoImageModel: NSObject {
         return jumpDirectory(url: unwrappedRootDirectories[index])
     }
     
-    func jumpOpenRecentDirectory(index: Int) -> URL? {
+    func jumpOpenRecentDirectory(index: Int) -> NSImage? {
         guard var openRecentDirectories: [String] = UserDefaults.standard.array(forKey: OPEN_RECENT_DIRECTORIES) as? [String] else {
             return nil
         }
@@ -530,13 +658,13 @@ class PakapoImageModel: NSObject {
         return jumpDirectory(url: jumpURL)
     }
     
-    func jumpDirectory(url: URL) -> URL? {
+    func jumpDirectory(url: URL) -> NSImage? {
         lastDisplayChildDirURL = nil
         
-        return loadInitImageURL(contentURL: url)
+        return loadInitImage(contentURL: url)
     }
     
-    func loadNextDirectory() -> URL? {
+    func loadNextDirectory() -> NSImage? {
         guard let unwrappedFileContents = fileContents else {
             return nil
         }
@@ -544,14 +672,14 @@ class PakapoImageModel: NSObject {
         //現在のdirectoryの最後まで表示した事にして、後はloadNextImageURLに任せる
         fileContentsIndex = unwrappedFileContents.count - 1
         
-        return loadNextImageURL()
+        return loadNextImage()
     }
     
-    func loadPrevDirectory() -> URL? {
+    func loadPrevDirectory() -> NSImage? {
         //現在のdirectoryの頭まで表示した事にして、一旦loadPrevImageを実行する
         fileContentsIndex = 0
         
-        if loadPrevImageURL() == nil {
+        if loadPrevImage() == nil {
             return nil
         }
         
@@ -559,7 +687,7 @@ class PakapoImageModel: NSObject {
         fileContentsIndex = 0
 
         //loadPrevImageがnilじゃない時点で確実に表示出来るfileがある
-        return loadValidImageURL(url: fileContents!.first!)
+        return loadValidImage(url: fileContents!.first!)
     }
     
     func makeNextSearchDirectory() -> [URL]? {
@@ -622,7 +750,7 @@ class PakapoImageModel: NSObject {
         for dir in searchDirectories {
             refreshContents(dirURL: dir)
 
-            if loadValidImageURLInFileContents(contents: fileContents) != nil {
+            if loadValidImageInFileContents(contents: fileContents) != nil {
                 return dir
             }
             
@@ -661,7 +789,7 @@ class PakapoImageModel: NSObject {
                 continue
             }
             
-            if loadValidImageURLInFileContents(contents: unwrappedFileContents.reversed()) != nil {
+            if loadValidImageInFileContents(contents: unwrappedFileContents.reversed()) != nil {
                 return dir
             }
             

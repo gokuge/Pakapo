@@ -1,0 +1,4 @@
+module fmemopen [system][extern_c] {
+	header "fmemopen.h"
+	export *
+}

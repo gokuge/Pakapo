@@ -10,15 +10,15 @@ import Cocoa
 
 extension URL {
     func isImageTypeURL() -> Bool{
-        //使い方的にdirectoryのURLは来ない様にしたいが、念の為
-        var isDir: ObjCBool = false
-        if !FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
-            return false
-        }
-        
-        if isDir.boolValue {
-            return false
-        }
+//        //使い方的にdirectoryのURLは来ない様にしたいが、念の為
+//        var isDir: ObjCBool = false
+//        if !FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
+//            return false
+//        }
+//        
+//        if isDir.boolValue {
+//            return false
+//        }
 
         guard let lastPath = lastPathComponent.components(separatedBy: ".").last else {
             return false

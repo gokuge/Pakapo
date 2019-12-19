@@ -1,0 +1,5 @@
+module libzip [system][extern_c] {
+	header "zipint.h"
+	header "zip.h"
+	export *
+}

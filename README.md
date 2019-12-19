@@ -136,4 +136,7 @@ tmp_dir
 - coo様(cooViewer開発者)
 
 ## Licence
-MIT
+- `Pakapo` - MIT
+- `ZUnzip` - [MIT](https://github.com/codelynx/ZUnzip/blob/master/LICENSE.md)
+- `fmemopen` - [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
+- `libzip` - [zlib license](https://libzip.org/license/)
