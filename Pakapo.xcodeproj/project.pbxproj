@@ -106,6 +106,7 @@
 		E721BB3023AB2FA90076D4BB /* zip_source_layered.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD623AB2FA90076D4BB /* zip_source_layered.c */; };
 		E721BB3123AB2FA90076D4BB /* zip_error_strerror.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD723AB2FA90076D4BB /* zip_error_strerror.c */; };
 		E721BB3223AB2FA90076D4BB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E721BAD923AB2FA90076D4BB /* Info.plist */; };
+		E721BB3423AB722E0076D4BB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = E721BB3323AB722E0076D4BB /* Credits.rtf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -218,6 +219,7 @@
 		E721BAD723AB2FA90076D4BB /* zip_error_strerror.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip_error_strerror.c; sourceTree = "<group>"; };
 		E721BAD823AB2FA90076D4BB /* ZUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZUnzip.h; sourceTree = "<group>"; };
 		E721BAD923AB2FA90076D4BB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E721BB3323AB722E0076D4BB /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		E73EB81B23A1FDFA00C661C7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ja; path = ja.lproj/Pakapo.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -273,6 +275,7 @@
 				E71E3582239A40540021E1A2 /* Assets.xcassets */,
 				E71E3587239A40540021E1A2 /* Info.plist */,
 				E71E3588239A40540021E1A2 /* Pakapo.entitlements */,
+				E721BB3323AB722E0076D4BB /* Credits.rtf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -514,6 +517,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E721BB3423AB722E0076D4BB /* Credits.rtf in Resources */,
 				E721BB3223AB2FA90076D4BB /* Info.plist in Resources */,
 				E721BADB23AB2FA90076D4BB /* README.md in Resources */,
 				E71E3583239A40540021E1A2 /* Assets.xcassets in Resources */,
