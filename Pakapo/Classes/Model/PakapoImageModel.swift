@@ -341,7 +341,7 @@ class PakapoImageModel: NSObject {
             currentDirURL = dirURL
             
         } catch {
-            //Permissionでコケる場合がある
+            //Permissionでコケる場合がある。コケてもfileContentsとdirContentsが無いので次の有効なファイルを探しにいくので問題はない
             print(error)
         }
     }
@@ -437,13 +437,8 @@ class PakapoImageModel: NSObject {
         }
         
         var tmpContentURL: URL = contentURL
-        var pageURL: URL = contentURL
         
-        if isZipFilePath(url: contentURL) {
-            if let unwrappedLastZipPageURL = lastZipPageURL {
-                pageURL = unwrappedLastZipPageURL
-            }
-        } else {
+        if !isZipFilePath(url: contentURL) {
             tmpContentURL = contentURL.deletingLastPathComponent()
         }
         
@@ -452,6 +447,22 @@ class PakapoImageModel: NSObject {
         
         guard let unwrappedFileContents = fileContents else {
             return nil
+        }
+        
+        var pageURL: URL = contentURL
+
+        /*
+         zipの場合、contentURLはzipへのPathを持っている。更にその中のPathについては
+         起動時のみUserDefault経由でlastZipPageURLが持っている
+         起動後のzip投入については強制的にfileContentsの頭で良い
+        */
+        if isZipFilePath(url: contentURL) {
+            if let unwrappedLastZipPageURL = lastZipPageURL {
+                pageURL = unwrappedLastZipPageURL
+                lastZipPageURL = nil
+            } else {
+                pageURL = unwrappedFileContents[0]
+            }
         }
 
         //indexの更新

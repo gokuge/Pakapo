@@ -125,7 +125,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             return
         }
         
-        for (index, dir) in unwrappedDirectories.reversed().enumerated() {
+        for (index, dir) in unwrappedDirectories.enumerated() {
             let menuItem = NSMenuItem(title: dir.lastPathComponent, action: #selector(pushSameDirectory(_:)), keyEquivalent: "")
             menuItem.tag = index
             sameDirectoriesMenu.addItem(menuItem)
