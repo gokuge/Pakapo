@@ -1,5 +1,5 @@
 # Pakapo
-![Pakapo](https://user-images.githubusercontent.com/57989544/70847481-52295180-1ea8-11ea-964f-4ff5f6cfe82e.png)
+![128](https://user-images.githubusercontent.com/57989544/71253968-bcd90200-236c-11ea-949a-aeb713279217.png)
 
 Mac OS用の少機能イメージビューアです  
 Mac OSで愛用していた偉大なcooViewerが、catalinaの登場により利用出来なくなってしまいました  
