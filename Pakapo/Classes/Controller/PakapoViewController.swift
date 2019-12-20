@@ -45,7 +45,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pakapoImageView.viewStyle = PakapoImageView.ViewStyle(rawValue: UserDefaults.standard.integer(forKey: appDelegate.VIEW_STYLE))!
 
             pakapoImageView.getFileURLClosure = {
-                return self.pakapoImageModel.getFileURL()
+                return self.pakapoImageModel.getViewPageURL()
             }
 
             pakapoImageView.getDirURLClosure = {
@@ -65,15 +65,15 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             }
 
             pakapoImageView.dropClosure = {(url: URL) in
-                self.selectInitURL(url: url)
+                self.loadStartingPointImage(url: url)
             }
                                     
             window.contentView?.addSubview(pakapoImageView)
         }
   
-        if let unwrappedURL = pakapoImageModel.loadFileURL(),
-           let unwrappedImage = pakapoImageModel.loadInitImage(contentURL: unwrappedURL) {
-            self.refreshImageView(image: unwrappedImage)
+        if let unwrappedURL = pakapoImageModel.loadLastViewPageURL(),
+           let unwrappedImage = pakapoImageModel.getStartingPointImage(contentURL: unwrappedURL) {
+            self.setImageView(image: unwrappedImage)
         } else {
             openPanel()
         }
@@ -101,18 +101,18 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
         //pakapo
         appDelegate.menuQuitPakapoClosure = {
-            self.saveFileURL()
+            self.saveLastViewPageURL()
             NSApplication.shared.terminate(self)
         }
 
         //file
         appDelegate.initRootSameDirectoriesClosure = {
             
-            return self.pakapoImageModel.initRootSameDirectories()
+            return self.pakapoImageModel.makeRootSameDirectories()
         }
         
         appDelegate.menuSameDirectoriesClosure = {(index: Int) -> Void in
-            self.refreshImageView(image: self.pakapoImageModel.jumpSameDirectory(index: index))
+            self.setImageView(image: self.pakapoImageModel.jumpSameDirectory(index: index))
         }
         
         appDelegate.initOpenRecentDirectoriesClosure = {
@@ -120,7 +120,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         }
         
         appDelegate.menuOpenRecentDirectoriesClosure = {(index: Int) -> Void in
-            self.refreshImageView(image: self.pakapoImageModel.jumpOpenRecentDirectory(index: index))
+            self.setImageView(image: self.pakapoImageModel.jumpOpenRecentDirectory(index: index))
         }
         
         appDelegate.menuFileOpenClosure = {
@@ -138,7 +138,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         }
 
         appDelegate.menuSearchChildEnableClosure = {(enable: Bool) -> Void in
-            self.pakapoImageModel.isSearchChild = enable
+            self.pakapoImageModel.searchChildEnable = enable
         }
         
         //view
@@ -171,44 +171,17 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         
     }
     
-    func refreshImageView(image: NSImage?) {
+    func setImageView(image: NSImage?) {
         pakapoImageView.setImage(image: image)
         
-        view.window?.title = pakapoImageModel.loadPageTitle()
+        view.window?.title = pakapoImageModel.getViewPageTitle()
     }
     
     // MARK: -
-    func openPanel() {
-        guard let window = self.view.window else {
-            return
-        }
-
-        let openImagePanel: NSOpenPanel = NSOpenPanel()
-
-        openImagePanel.allowsMultipleSelection = false
-        openImagePanel.canCreateDirectories    = false
-        openImagePanel.canChooseDirectories    = true
-        openImagePanel.canChooseFiles          = true
-
-        //画像ファイルのみ対象とする
-        openImagePanel.allowedFileTypes        = NSImage.imageTypes + ["zip"]
-        
-        openImagePanel.beginSheetModal(for: window, completionHandler: { (response) in
-            
-            if response != NSApplication.ModalResponse.OK {
-                return
-            }
-            
-            guard let unwrappedURL = openImagePanel.url else {
-                //存在しないって事は基本無いはず
-                return
-            }
-
-            self.selectInitURL(url: unwrappedURL)
-        })
-    }
     
-    func selectInitURL(url: URL) {
+    /// 指定されたURLでModelの読み込みを開始する
+    /// - Parameter url: openPanelやD&Dで開かれたファイル/ディレクトリのURL
+    func loadStartingPointImage(url: URL) {
         let result = self.pakapoImageModel.saveRootDirectoryURL(root: url)
         
         if !result {
@@ -216,18 +189,19 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             return
         }
         
-        self.refreshImageView(image: self.pakapoImageModel.loadInitImage(contentURL: url))
+        self.setImageView(image: self.pakapoImageModel.getStartingPointImage(contentURL: url))
     }
     
-    func saveFileURL() {
-        pakapoImageModel.saveFileURL()
+    /// 終了時の表示中のURL保存をModelにわたす
+    func saveLastViewPageURL() {
+        pakapoImageModel.saveLastViewPageURL()
     }
 }
 
 extension PakapoViewController {
     // MARK: - window delegate
     func windowWillClose(_ notification: Notification) {
-        saveFileURL()
+        saveLastViewPageURL()
     }
     
     func windowDidResize(_ notification: Notification) {
@@ -240,6 +214,35 @@ extension PakapoViewController {
     }
     
     // MARK: - window
+    func openPanel() {
+        guard let window = self.view.window else {
+            return
+        }
+
+        let openImagePanel: NSOpenPanel = NSOpenPanel()
+
+        openImagePanel.allowsMultipleSelection = false
+        openImagePanel.canCreateDirectories    = false
+        openImagePanel.canChooseDirectories    = true
+        openImagePanel.canChooseFiles          = true
+
+        //読み込み可能なファイルのみ対象とする(画像 + zip)
+        openImagePanel.allowedFileTypes        = NSImage.imageTypes + ["zip"]
+        
+        openImagePanel.beginSheetModal(for: window, completionHandler: { (response) in
+            
+            if response != NSApplication.ModalResponse.OK {
+                return
+            }
+            
+            guard let unwrappedURL = openImagePanel.url else {
+                return
+            }
+
+            self.loadStartingPointImage(url: unwrappedURL)
+        })
+    }
+    
     func pushFullScreenCommand() {
         guard let window: NSWindow = view.window else {
             return
@@ -358,18 +361,18 @@ extension PakapoViewController {
     }
 
     func pushNextPage() {
-        refreshImageView(image: pakapoImageModel.loadNextImage())
+        setImageView(image: pakapoImageModel.getNextImage())
     }
 
     func pushPrevPage() {
-        refreshImageView(image: pakapoImageModel.loadPrevImage())
+        setImageView(image: pakapoImageModel.getPrevImage())
     }
     
     func pushNextDir() {
-        refreshImageView(image: pakapoImageModel.loadNextDirectory())
+        setImageView(image: pakapoImageModel.getNextDirectoryImage())
     }
     
     func pushPrevDir() {
-        refreshImageView(image: pakapoImageModel.loadPrevDirectory())
+        setImageView(image: pakapoImageModel.getPrevDirectoryImage())
     }
 }

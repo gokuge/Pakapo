@@ -30,11 +30,10 @@ class PakapoImageView: NSView {
 
     let imageView: NSImageView = NSImageView()
     let imageClipView: PakapoImageClipView = PakapoImageClipView()
-    let scrollView: PakapoImageScrollView = PakapoImageScrollView()
+    let imageScrollView: PakapoImageScrollView = PakapoImageScrollView()
     var draggingView: DraggingView!
     var warningText: NSTextField?
     
-    var pinchIn: Bool = false
     var scrolling: Bool = false
     
     var mouseMovedEndWorkItem: DispatchWorkItem?
@@ -61,19 +60,20 @@ class PakapoImageView: NSView {
         draggingView.dropClosure = { (url: URL) in
             self.dropClosure(url)
         }
-        
-        scrollView.frame = frameRect
-        scrollView.backgroundColor = NSColor.black
+
         imageClipView.backgroundColor = NSColor.black
-        scrollView.contentView = imageClipView
-        scrollView.documentView = imageView
-        scrollView.hasHorizontalScroller = true
-        scrollView.hasVerticalScroller = true
-        scrollView.autohidesScrollers = true
-        scrollView.postsBoundsChangedNotifications = true
-        NotificationCenter.default.addObserver(self, selector: #selector(didScroll(_:)), name: NSView.boundsDidChangeNotification, object: scrollView.contentView)
+
+        imageScrollView.frame = frameRect
+        imageScrollView.backgroundColor = NSColor.black
+        imageScrollView.contentView = imageClipView
+        imageScrollView.documentView = imageView
+        imageScrollView.hasHorizontalScroller = true
+        imageScrollView.hasVerticalScroller = true
+        imageScrollView.autohidesScrollers = true
+        imageScrollView.postsBoundsChangedNotifications = true
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollEvent(_:)), name: NSView.boundsDidChangeNotification, object: imageScrollView.contentView)
                 
-        scrollView.canScrollClosure = {
+        imageScrollView.canScrollClosure = {
             
             //画面内に収める以外は常にスクロール
             if self.viewStyle != ViewStyle.defaultView {
@@ -87,11 +87,12 @@ class PakapoImageView: NSView {
                         
             return true
         }
-        addSubview(scrollView)
+        addSubview(imageScrollView)
         addSubview(draggingView)
     }
     
-    @objc func didScroll(_ notification: NSNotification) {
+    /// scrollViewの状態変更(スクロール時も同様)検知時に呼ばれる
+    @objc func scrollEvent(_ notification: NSNotification) {
         scrolling = true
         
         if let unwrappedScrollEndWorkItem = scrollEndWorkItem {
@@ -106,9 +107,33 @@ class PakapoImageView: NSView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: scrollEndWorkItem!)
     }
     
+    /// ImageViewに画像をセットする
+    /// - Parameters:
+    ///   - image: 表示しようとしているファイル
+    func setImage(image: NSImage?) {
+        
+        guard let unwrappedImage = image else {
+            displayNoImage()
+            return
+        }
+        
+        if let unwrappedWarningText = warningText {
+            unwrappedWarningText.removeFromSuperview()
+            warningText = nil
+        }
+        
+        imageView.image = unwrappedImage
+        
+        initDocumentViewSize(image: unwrappedImage)
+    }
+    
+    /// PakapoImageViewと扱うviewのサイズを変更する
+    /// - Parameters:
+    ///   - frame: この引数のサイズになるように諸々のviewを更新させる
+    ///   - changeStyle: 表示形式。変更する場合のみ値が入る
     func resizeFrame(frame: CGRect, changeStyle: ViewStyle?) {
-        let point: NSPoint = NSPoint(x: scrollView.contentView.documentVisibleRect.origin.x,
-                                     y: scrollView.contentView.documentVisibleRect.origin.y)
+        let point: NSPoint = NSPoint(x: imageScrollView.contentView.documentVisibleRect.origin.x,
+                                     y: imageScrollView.contentView.documentVisibleRect.origin.y)
         
         let oldViewRect: NSRect = self.frame
         let oldImageViewRect: NSRect = imageView.frame
@@ -116,7 +141,7 @@ class PakapoImageView: NSView {
         self.frame = frame
         draggingView.frame = frame
         imageView.frame = frame
-        scrollView.frame = frame
+        imageScrollView.frame = frame
         
         guard let unwrappedImage = imageView.image else {
             resizeWarningTextView()
@@ -125,7 +150,7 @@ class PakapoImageView: NSView {
         
         if let unwrappedChangeViewStyle = changeStyle {
             viewStyle = unwrappedChangeViewStyle
-            resizeDocumentView(image: unwrappedImage)
+            initDocumentViewSize(image: unwrappedImage)
         } else {
             let diffW: CGFloat = frame.width - oldViewRect.width
             let diffH: CGFloat = frame.height - oldViewRect.height
@@ -135,10 +160,27 @@ class PakapoImageView: NSView {
                                      height: oldImageViewRect.height + diffH)
         }
         
-        scrollView.documentView?.scroll(point)
+        imageScrollView.documentView?.scroll(point)
     }
     
-    func resizeDocumentView(image: NSImage) {
+    /// 警告ビューで表示する文字を適切なフォントサイズに変更する
+    func resizeWarningTextView() {
+        guard let unwrappedWarningText = warningText else {
+            return
+        }
+        
+        let height: CGFloat = frame.height / 3
+        
+        unwrappedWarningText.frame = CGRect(x: 0, y: (frame.height / 2) - (height / 2), width: frame.width, height: height)
+        
+        let fontSize: CGFloat = (2.0 * (height - 1.0278) / 1.177).rounded() / 2.0
+        unwrappedWarningText.font = NSFont.systemFont(ofSize: fontSize)
+    }
+    
+    /// 表示形式で指定された通りにdocumentViewを初期化する
+    /// - Parameters:
+    ///   - image: 表示しようとしているファイル。サイズの取得に使う
+    func initDocumentViewSize(image: NSImage) {
         let imageRep: NSBitmapImageRep  = NSBitmapImageRep(data: image.tiffRepresentation!)!
         let pixelW: CGFloat = CGFloat(imageRep.pixelsWide)
         let pixelH: CGFloat = CGFloat(imageRep.pixelsHigh)
@@ -181,7 +223,7 @@ class PakapoImageView: NSView {
             resizeh = frame.height
         }
         
-        scrollView.documentView?.frame = CGRect(x: 0.0,
+        imageScrollView.documentView?.frame = CGRect(x: 0.0,
                                                 y: 0.0,
                                                 width: resizeW,
                                                 height: resizeh
@@ -189,72 +231,47 @@ class PakapoImageView: NSView {
 
     }
     
-    func resizeWarningTextView() {
-        guard let unwrappedWarningText = warningText else {
-            return
-        }
-        
-        let height: CGFloat = frame.height / 3
-        
-        unwrappedWarningText.frame = CGRect(x: 0, y: (frame.height / 2) - (height / 2), width: frame.width, height: height)
-        
-        let fontSize: CGFloat = (2.0 * (height - 1.0278) / 1.177).rounded() / 2.0
-        unwrappedWarningText.font = NSFont.systemFont(ofSize: fontSize)
-    }
-    
-    func setImage(image: NSImage?) {
-        
-        guard let unwrappedImage = image else {
-            displayNoImage()
-            return
-        }
-        
-        if let unwrappedWarningText = warningText {
-            unwrappedWarningText.removeFromSuperview()
-            warningText = nil
-        }
-        
-        imageView.image = unwrappedImage
-        
-        resizeDocumentView(image: unwrappedImage)
-    }
-    
+    /// 表示されているImageViewを拡大縮小する。ウィンドウで表示されている領域の中心に向かって拡大する
+    /// - Parameters:
+    ///   - rate: 拡大縮小率
     func zoom(rate: CGFloat) {
         if rate == 0 {
             return
         }
         
-        let oldScrollPoint: NSPoint = NSPoint(x: self.scrollView.contentView.documentVisibleRect.origin.x,
-                                              y: self.scrollView.contentView.documentVisibleRect.origin.y)
+        let oldScrollPoint: NSPoint = NSPoint(x: self.imageScrollView.contentView.documentVisibleRect.origin.x,
+                                              y: self.imageScrollView.contentView.documentVisibleRect.origin.y)
         
-        let oldSize = scrollView.documentView!.frame
+        let oldSize = imageScrollView.documentView!.frame
         
-        let zoomW = scrollView.documentView!.frame.width + (10 * rate)
-        let zoomH = scrollView.documentView!.frame.height + (10 * rate)
+        //rateそのままだと拡大縮小率として小さすぎるので*10する
+        let zoomW = imageScrollView.documentView!.frame.width + (10 * rate)
+        let zoomH = imageScrollView.documentView!.frame.height + (10 * rate)
         
         if zoomW <= frame.width || zoomH <= frame.height {
             if let unwrappedImage = imageView.image {
-                resizeDocumentView(image: unwrappedImage)
+                initDocumentViewSize(image: unwrappedImage)
             }
             return
         }
 
         imageClipView.isZooming = true
-        scrollView.documentView!.frame = CGRect(x: 0,
+        imageScrollView.documentView!.frame = CGRect(x: 0,
                                                 y: 0,
                                                 width: zoomW,
                                                 height: zoomH)
         imageClipView.isZooming = false
         
-        let zoomDiffSize = NSSize(width: scrollView.documentView!.frame.width - oldSize.width,
-                              height: scrollView.documentView!.frame.height - oldSize.height)
+        let zoomDiffSize = NSSize(width: imageScrollView.documentView!.frame.width - oldSize.width,
+                              height: imageScrollView.documentView!.frame.height - oldSize.height)
         
         let point: NSPoint = NSPoint(x: oldScrollPoint.x + (zoomDiffSize.width / 2),
                                      y: oldScrollPoint.y + (zoomDiffSize.height / 2))
 
-        scrollView.documentView?.scroll(point)
+        imageScrollView.documentView?.scroll(point)
     }
     
+    /// 拡大縮小率のリセット。現状のviewStyleを指定する事でdocumentViewが初期化される
     func resetZoom() {
         resizeFrame(frame: frame, changeStyle: viewStyle)
     }
@@ -287,6 +304,12 @@ class PakapoImageView: NSView {
 
 extension PakapoImageView {
     // MARK: - mouse event
+    /// マウス検知領域を設定。ウィンドウ内のみにする
+    override func updateTrackingAreas() {
+        let options: NSTrackingArea.Options = [.mouseEnteredAndExited, .mouseMoved, .activeInKeyWindow]
+        addTrackingArea(NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil))
+    }
+    
     override func mouseUp(with event: NSEvent) {
         super.mouseUp(with: event)
         
@@ -304,11 +327,6 @@ extension PakapoImageView {
         } else {
             leftClickClosure()
         }
-    }
-    
-    override func updateTrackingAreas() {
-        let options: NSTrackingArea.Options = [.mouseEnteredAndExited, .mouseMoved, .activeInKeyWindow]
-        addTrackingArea(NSTrackingArea(rect: bounds, options: options, owner: self, userInfo: nil))
     }
     
     override func mouseMoved(with event: NSEvent) {
@@ -361,12 +379,12 @@ extension PakapoImageView {
         zoom(rate: event.magnification * 100)
     }
     
-    //右クリック用。システムに任せる
+    ///右クリック検知でシステムから来るイベント
     override func menu(for event: NSEvent) -> NSMenu? {
         return makeContextMenu()
     }
     
-    //ctrl + 左クリック用。viewController側から呼ばれる
+    ///ctrl + 左クリック用。viewController側から呼ばれる
     func showContextMenu(event: NSEvent) {
         NSMenu.popUpContextMenu(makeContextMenu(), with: event, for: self)
     }
