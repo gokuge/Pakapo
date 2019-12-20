@@ -138,7 +138,7 @@ tmp_dir
 
 ## 謝辞
 - coo様(cooViewer開発者)
-- [codelynx]((https://github.com/codelynx))様(ZUnzip作者)
+- [codelynx](https://github.com/codelynx)様(ZUnzip作者)
 
 ## Licence
 - `Pakapo` - MIT
