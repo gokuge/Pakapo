@@ -15,6 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         case pakapo = 0
         case file
         case edit
+        case slideshow
         case view
         case window
     }
@@ -46,6 +47,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     //edit
     var menuCopyOpenClosure: (() -> Void)!
     
+    //slideshow
+    var menuSlideshowClosure: (() -> Void)!
+    
     //view
     var menuZoomInClosure: (() -> Void)!
     var menuZoomOutClosure: (() -> Void)!
@@ -61,7 +65,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        
         if UserDefaults.standard.string(forKey: FIRST_LAUNCH) == nil {
             initFirstLaunchMenu()
         } else {
@@ -74,7 +77,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         initOpenRecentDirectories()
         initViewStyle()
 
-        UserDefaults.standard.set(0.0, forKey: AppDelegate.SLIDESHOW_SPEED)
+        UserDefaults.standard.set(2.0, forKey: AppDelegate.SLIDESHOW_SPEED)
         UserDefaults.standard.set(true, forKey: AppDelegate.PAGE_FEED_RIGHT)
         UserDefaults.standard.set(true, forKey: AppDelegate.SEARCH_CHILD_ENABLE)
 
@@ -204,6 +207,22 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     //edit
     @IBAction func menuCopy(_ sender: Any) {
         menuCopyOpenClosure()
+    }
+    
+    //slideshow
+    func setMenuSlideshowState(on: Bool) {
+        let slideshowItem: NSMenuItem! = mainMenu.item(withTag: menuTag.slideshow.rawValue)
+        let slideshowStartItem: NSMenuItem! = slideshowItem.submenu?.item(withTag: 0)
+        
+        if on {
+            slideshowStartItem.state = NSControl.StateValue.on
+        } else {
+            slideshowStartItem.state = NSControl.StateValue.off
+        }
+    }
+    
+    @IBAction func menuSlideshow(_ sender: Any) {
+        menuSlideshowClosure()
     }
     
     //view

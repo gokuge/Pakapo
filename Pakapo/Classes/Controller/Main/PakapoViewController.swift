@@ -133,6 +133,11 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             self.pakapoImageView.clickCopyFile()
         }
         
+        //slideshow
+        appDelegate.menuSlideshowClosure = {
+            self.pushSlideshowStart()
+        }
+        
         //view
         appDelegate.menuZoomInClosure = {
             //通常のスクロールでのズームの10倍
@@ -372,23 +377,22 @@ extension PakapoViewController {
     }
     
     func pushSlideshowStart() {
+        let appDelegate: AppDelegate = NSApplication.shared.delegate as! AppDelegate
+        
         if let unwrappedSlideshowTimer = slideshowTimer {
             unwrappedSlideshowTimer.invalidate()
             slideshowTimer = nil
+            appDelegate.setMenuSlideshowState(on: false)
             return
         }
         
-        var baseIntervalTime: Float = 2.0
-        let preferenceSpeed = UserDefaults.standard.float(forKey: AppDelegate.SLIDESHOW_SPEED)
-        if preferenceSpeed > 0 {
-            baseIntervalTime /= preferenceSpeed
-        }
-        
-        let interval: TimeInterval = TimeInterval(baseIntervalTime)
+        let interval: TimeInterval = TimeInterval(UserDefaults.standard.float(forKey: AppDelegate.SLIDESHOW_SPEED))
         
         slideshowTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true, block: { _ in
             self.pushNextPage()
         })
 
+        self.pushNextPage()
+        appDelegate.setMenuSlideshowState(on: true)
     }
 }

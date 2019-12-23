@@ -110,7 +110,20 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="表示" tag="3" id="PBY-Gt-iCe">
+                            <menuItem title="スライドショウ" tag="3" id="nAq-JQ-NxK">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="スライドショウ" id="19S-fA-7oj">
+                                    <items>
+                                        <menuItem title="スライドショウを開始" id="AUd-Js-Efi">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="menuSlideshow:" target="Voe-Tx-rLC" id="pTu-Bw-mwF"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
+                            <menuItem title="表示" tag="4" id="PBY-Gt-iCe">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="表示" id="3ld-ha-7yb">
                                     <items>
@@ -154,7 +167,7 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="ウィンドウ" tag="4" id="aUF-d1-5bR">
+                            <menuItem title="ウィンドウ" tag="5" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="ウィンドウ" systemMenu="window" id="Td7-aD-5lo">
                                     <items>
@@ -171,7 +184,7 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="ヘルプ" tag="5" id="wpr-3q-Mcd">
+                            <menuItem title="ヘルプ" tag="6" id="wpr-3q-Mcd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="ヘルプ" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
@@ -354,10 +367,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3rk-77-2C4">
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3rk-77-2C4" userLabel="スライドショウ速度調整(デフォルト5秒毎):">
                                 <rect key="frame" x="18" y="265" width="240" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="スライドショー速度調整(デフォルト2秒毎):" id="AcK-cN-T0T">
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="スライドショウ速度調整:" id="AcK-cN-T0T">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -366,10 +379,10 @@
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZKW-QS-u3d">
                                 <rect key="frame" x="20" y="236" width="96" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="1.2" drawsBackground="YES" id="KzC-cr-N2t">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="0.1 ~ 60" drawsBackground="YES" id="KzC-cr-N2t">
                                     <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="13q-6n-32e">
-                                        <real key="minimum" value="0.0"/>
-                                        <real key="maximum" value="10"/>
+                                        <real key="minimum" value="0.10000000000000001"/>
+                                        <real key="maximum" value="60"/>
                                     </numberFormatter>
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -380,10 +393,10 @@
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iMa-IP-0XS">
-                                <rect key="frame" x="122" y="239" width="77" height="16"/>
+                                <rect key="frame" x="122" y="239" width="218" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="0 ~ 10.0倍速" id="d2R-6t-03F">
-                                    <font key="font" metaFont="system"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="秒毎に実行します(0.1 ~ 60秒で設定可)" id="d2R-6t-03F">
+                                    <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
