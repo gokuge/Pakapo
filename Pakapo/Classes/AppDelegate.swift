@@ -93,7 +93,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     func initNewAddFunction() {
-        //1.2.1で追加。スライドショウ
+        //1.1.1で追加。スライドショウ
         let slideshowSpeed = UserDefaults.standard.float(forKey: AppDelegate.SLIDESHOW_SPEED)
         
         if slideshowSpeed == 0 {
