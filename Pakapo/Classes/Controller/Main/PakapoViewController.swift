@@ -16,6 +16,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     var pakapoImageView: PakapoImageView!
     let pakapoImageModel: PakapoImageModel = PakapoImageModel()
     
+    var slideshowTimer: Timer?
+    
     // MARK: - init
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -310,6 +312,9 @@ extension PakapoViewController {
 //        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
         
         switch Int(event.keyCode) {
+        case 49:
+            //スペース
+            pushSlideshowStart()
         case 53:
             pushEsc()
         case 123:
@@ -364,5 +369,26 @@ extension PakapoViewController {
     
     func pushPrevDir() {
         setImageView(image: pakapoImageModel.getPrevDirectoryImage())
+    }
+    
+    func pushSlideshowStart() {
+        if let unwrappedSlideshowTimer = slideshowTimer {
+            unwrappedSlideshowTimer.invalidate()
+            slideshowTimer = nil
+            return
+        }
+        
+        var baseIntervalTime: Float = 2.0
+        let preferenceSpeed = UserDefaults.standard.float(forKey: AppDelegate.SLIDESHOW_SPEED)
+        if preferenceSpeed > 0 {
+            baseIntervalTime /= preferenceSpeed
+        }
+        
+        let interval: TimeInterval = TimeInterval(baseIntervalTime)
+        
+        slideshowTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true, block: { _ in
+            self.pushNextPage()
+        })
+
     }
 }

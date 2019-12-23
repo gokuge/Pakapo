@@ -319,7 +319,7 @@
                                 <rect key="frame" x="18" y="240" width="139" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="サブフォルダを読み込む:" id="ohf-pl-KSy">
-                                    <font key="font" size="13" name=".HiraKakuInterface-W3"/>
+                                    <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -349,11 +349,50 @@
         <!--詳細-->
         <scene sceneID="131-VC-fEQ">
             <objects>
-                <viewController title="詳細" id="Hrb-aA-Deo" sceneMemberID="viewController">
+                <viewController title="詳細" id="Hrb-aA-Deo" customClass="PreferenceDetailViewController" customModule="Pakapo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="vYQ-mJ-R9b">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3rk-77-2C4">
+                                <rect key="frame" x="18" y="265" width="240" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="スライドショー速度調整(デフォルト2秒毎):" id="AcK-cN-T0T">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZKW-QS-u3d">
+                                <rect key="frame" x="20" y="236" width="96" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="1.2" drawsBackground="YES" id="KzC-cr-N2t">
+                                    <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="13q-6n-32e">
+                                        <real key="minimum" value="0.0"/>
+                                        <real key="maximum" value="10"/>
+                                    </numberFormatter>
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <action selector="changeSlideshowSpeedValue:" target="Hrb-aA-Deo" id="Y9A-Ju-eXf"/>
+                                </connections>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iMa-IP-0XS">
+                                <rect key="frame" x="122" y="239" width="77" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="0 ~ 10.0倍速" id="d2R-6t-03F">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
                     </view>
+                    <connections>
+                        <outlet property="slideshowSpeedValue" destination="ZKW-QS-u3d" id="hC5-yg-nho"/>
+                    </connections>
                 </viewController>
                 <customObject id="tMb-Qm-Wzf" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

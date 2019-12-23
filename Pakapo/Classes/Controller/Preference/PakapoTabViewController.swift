@@ -11,7 +11,7 @@ import Cocoa
 class PakapoTabViewController: NSTabViewController {
     
     static let GENERAL_VIEW_HEIGHT: CGFloat = 200
-    static let DETAIL_VIEW_HEIGHT: CGFloat = 400
+    static let DETAIL_VIEW_HEIGHT: CGFloat = 200
     
     override func tabView(_ tabView: NSTabView, willSelect tabViewItem: NSTabViewItem?) {
         super.tabView(tabView, willSelect: tabViewItem)

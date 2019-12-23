@@ -110,6 +110,7 @@
 		E721BB3423AB722E0076D4BB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = E721BB3323AB722E0076D4BB /* Credits.rtf */; };
 		E7BB17AB23B053B200DE2F67 /* PreferenceGeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BB17AA23B053B200DE2F67 /* PreferenceGeneralViewController.swift */; };
 		E7D274B923B08BA400307C57 /* PakapoTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D274B823B08BA400307C57 /* PakapoTabViewController.swift */; };
+		E7D274BB23B096A900307C57 /* PreferenceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D274BA23B096A900307C57 /* PreferenceDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -227,6 +228,7 @@
 		E73EB81B23A1FDFA00C661C7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ja; path = ja.lproj/Pakapo.storyboard; sourceTree = "<group>"; };
 		E7BB17AA23B053B200DE2F67 /* PreferenceGeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceGeneralViewController.swift; sourceTree = "<group>"; };
 		E7D274B823B08BA400307C57 /* PakapoTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PakapoTabViewController.swift; sourceTree = "<group>"; };
+		E7D274BA23B096A900307C57 /* PreferenceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -476,6 +478,7 @@
 			children = (
 				E7D274B823B08BA400307C57 /* PakapoTabViewController.swift */,
 				E7BB17AA23B053B200DE2F67 /* PreferenceGeneralViewController.swift */,
+				E7D274BA23B096A900307C57 /* PreferenceDetailViewController.swift */,
 			);
 			path = Preference;
 			sourceTree = "<group>";
@@ -611,6 +614,7 @@
 				E721BB2323AB2FA90076D4BB /* zip_utf-8.c in Sources */,
 				E721BB1E23AB2FA90076D4BB /* zip_get_file_comment.c in Sources */,
 				E721BB1A23AB2FA90076D4BB /* zip_delete.c in Sources */,
+				E7D274BB23B096A900307C57 /* PreferenceDetailViewController.swift in Sources */,
 				E721BB2723AB2FA90076D4BB /* zip_file_add.c in Sources */,
 				E721BB0E23AB2FA90076D4BB /* zip_unchange_data.c in Sources */,
 				E721BB1C23AB2FA90076D4BB /* zip_set_file_comment.c in Sources */,

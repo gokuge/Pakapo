@@ -24,6 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let FIRST_LAUNCH: String = "firstLaunch"
     static let PAGE_FEED_RIGHT: String = "pageFeedRight"
     static let SEARCH_CHILD_ENABLE: String = "searchChildEnable"
+    static let SLIDESHOW_SPEED: String = "slideshowSpeed"
     let VIEW_STYLE: String = "viewStyle"
     
     @IBOutlet weak var mainMenu: NSMenu!
@@ -73,6 +74,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         initOpenRecentDirectories()
         initViewStyle()
 
+        UserDefaults.standard.set(0.0, forKey: AppDelegate.SLIDESHOW_SPEED)
         UserDefaults.standard.set(true, forKey: AppDelegate.PAGE_FEED_RIGHT)
         UserDefaults.standard.set(true, forKey: AppDelegate.SEARCH_CHILD_ENABLE)
 
