@@ -70,6 +70,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         } else {
             loadMenu()
         }
+        
+        initNewAddFunction()
     }
     
     func initFirstLaunchMenu() {
@@ -77,10 +79,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         initOpenRecentDirectories()
         initViewStyle()
 
-        UserDefaults.standard.set(2.0, forKey: AppDelegate.SLIDESHOW_SPEED)
         UserDefaults.standard.set(true, forKey: AppDelegate.PAGE_FEED_RIGHT)
         UserDefaults.standard.set(true, forKey: AppDelegate.SEARCH_CHILD_ENABLE)
-
+        UserDefaults.standard.set(2.0, forKey: AppDelegate.SLIDESHOW_SPEED)
+        
         UserDefaults.standard.set("finishFirstLaunch", forKey: FIRST_LAUNCH)
     }
     
@@ -88,6 +90,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         initSameDirectories()
         initOpenRecentDirectories()
         initViewStyle()
+    }
+    
+    func initNewAddFunction() {
+        //1.2.1で追加。スライドショウ
+        let slideshowSpeed = UserDefaults.standard.float(forKey: AppDelegate.SLIDESHOW_SPEED)
+        
+        if slideshowSpeed == 0 {
+            UserDefaults.standard.set(2.0, forKey: AppDelegate.SLIDESHOW_SPEED)
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -210,17 +221,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     //slideshow
-    func setMenuSlideshowState(on: Bool) {
-        let slideshowItem: NSMenuItem! = mainMenu.item(withTag: menuTag.slideshow.rawValue)
-        let slideshowStartItem: NSMenuItem! = slideshowItem.submenu?.item(withTag: 0)
-        
-        if on {
-            slideshowStartItem.state = NSControl.StateValue.on
-        } else {
-            slideshowStartItem.state = NSControl.StateValue.off
-        }
-    }
-    
     @IBAction func menuSlideshow(_ sender: Any) {
         menuSlideshowClosure()
     }

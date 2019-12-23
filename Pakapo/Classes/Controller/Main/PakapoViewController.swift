@@ -317,8 +317,8 @@ extension PakapoViewController {
 //        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
         
         switch Int(event.keyCode) {
-        case 49:
-            //スペース
+        case 5:
+            //g
             pushSlideshowStart()
         case 53:
             pushEsc()
@@ -377,12 +377,9 @@ extension PakapoViewController {
     }
     
     func pushSlideshowStart() {
-        let appDelegate: AppDelegate = NSApplication.shared.delegate as! AppDelegate
-        
         if let unwrappedSlideshowTimer = slideshowTimer {
             unwrappedSlideshowTimer.invalidate()
             slideshowTimer = nil
-            appDelegate.setMenuSlideshowState(on: false)
             return
         }
         
@@ -393,6 +390,5 @@ extension PakapoViewController {
         })
 
         self.pushNextPage()
-        appDelegate.setMenuSlideshowState(on: true)
     }
 }

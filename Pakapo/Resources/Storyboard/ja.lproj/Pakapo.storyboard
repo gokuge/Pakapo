@@ -114,7 +114,7 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="スライドショウ" id="19S-fA-7oj">
                                     <items>
-                                        <menuItem title="スライドショウを開始" id="AUd-Js-Efi">
+                                        <menuItem title="開始/停止" id="AUd-Js-Efi">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="menuSlideshow:" target="Voe-Tx-rLC" id="pTu-Bw-mwF"/>
@@ -316,7 +316,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <popUpButtonCell key="cell" type="push" title="右送り" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1ia-Lj-sg0" id="f56-Sv-1gB">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="menu"/>
                                     <menu key="menu" id="6hn-ed-NOJ">
                                         <items>
                                             <menuItem title="右送り" state="on" id="1ia-Lj-sg0"/>
@@ -379,10 +379,10 @@
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZKW-QS-u3d">
                                 <rect key="frame" x="20" y="236" width="96" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="0.1 ~ 60" drawsBackground="YES" id="KzC-cr-N2t">
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="0.1 ~ 300" drawsBackground="YES" id="KzC-cr-N2t">
                                     <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="13q-6n-32e">
                                         <real key="minimum" value="0.10000000000000001"/>
-                                        <real key="maximum" value="60"/>
+                                        <real key="maximum" value="300"/>
                                     </numberFormatter>
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -393,9 +393,9 @@
                                 </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iMa-IP-0XS">
-                                <rect key="frame" x="122" y="239" width="218" height="16"/>
+                                <rect key="frame" x="122" y="239" width="226" height="16"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="秒毎に実行します(0.1 ~ 60秒で設定可)" id="d2R-6t-03F">
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="秒毎に実行します(0.1 ~ 300秒で設定可)" id="d2R-6t-03F">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
