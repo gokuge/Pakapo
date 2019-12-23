@@ -16,39 +16,43 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Pakapo" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
-                                        <menuItem title="About Pakapo" id="5kV-Vb-QxS">
+                                        <menuItem title="Pakapoについて" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW"/>
+                                        <menuItem title="環境設定…" keyEquivalent="," id="BOF-NM-1cW">
+                                            <connections>
+                                                <action selector="menuShowPreferencesWindow:" target="Voe-Tx-rLC" id="drc-cJ-REh"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
-                                        <menuItem title="Services" id="NMo-om-nkz">
+                                        <menuItem title="サービス" id="NMo-om-nkz">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
+                                            <menu key="submenu" title="サービス" systemMenu="services" id="hz9-B4-Xy5"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                                        <menuItem title="Hide Pakapo" keyEquivalent="h" id="Olw-nP-bQN">
+                                        <menuItem title="Pakapoを隠す" keyEquivalent="h" id="Olw-nP-bQN">
                                             <connections>
                                                 <action selector="hide:" target="Ady-hI-5gd" id="PnN-Uc-m68"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Hide Others" keyEquivalent="h" id="Vdr-fp-XzO">
+                                        <menuItem title="ほかを隠す" keyEquivalent="h" id="Vdr-fp-XzO">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                             <connections>
                                                 <action selector="hideOtherApplications:" target="Ady-hI-5gd" id="VT4-aY-XCT"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Show All" id="Kd2-mp-pUS">
+                                        <menuItem title="すべてを表示" id="Kd2-mp-pUS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="unhideAllApplications:" target="Ady-hI-5gd" id="Dhg-Le-xox"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                                        <menuItem title="Quit Pakapo" keyEquivalent="q" id="4sb-4s-VLi">
+                                        <menuItem title="Pakapoを終了" keyEquivalent="q" id="4sb-4s-VLi">
                                             <connections>
                                                 <action selector="menuQuitApplication:" target="Voe-Tx-rLC" id="MBb-ln-K0u"/>
                                             </connections>
@@ -106,33 +110,7 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="設定" tag="3" id="H8h-7b-M4v">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="設定" id="HyV-fh-RgO">
-                                    <items>
-                                        <menuItem title="ページ右送り" state="on" id="zNo-K6-wko">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="menuPageFeedRight:" target="Voe-Tx-rLC" id="GWj-J8-zfF"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="ページ左送り" tag="1" id="F7x-D5-vdy">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="menuPageFeedLeft:" target="Voe-Tx-rLC" id="c1C-Ft-HSz"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="k9n-6F-wJS"/>
-                                        <menuItem title="サブフォルダを読み込む" tag="2" id="4G2-kA-hFe">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="menuSearchChildEnable:" target="Voe-Tx-rLC" id="BRi-M3-gBO"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                            </menuItem>
-                            <menuItem title="表示" tag="4" id="PBY-Gt-iCe">
+                            <menuItem title="表示" tag="3" id="PBY-Gt-iCe">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="表示" id="3ld-ha-7yb">
                                     <items>
@@ -176,7 +154,7 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="ウィンドウ" tag="5" id="aUF-d1-5bR">
+                            <menuItem title="ウィンドウ" tag="4" id="aUF-d1-5bR">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="ウィンドウ" systemMenu="window" id="Td7-aD-5lo">
                                     <items>
@@ -193,7 +171,7 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="ヘルプ" tag="6" id="wpr-3q-Mcd">
+                            <menuItem title="ヘルプ" tag="5" id="wpr-3q-Mcd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="ヘルプ" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
@@ -246,15 +224,144 @@
         <!--Pakapo View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
+                <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <viewController id="XfG-lQ-9wD" customClass="PakapoViewController" customModule="Pakapo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </view>
                 </viewController>
-                <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="75" y="655"/>
         </scene>
+        <!--Window Controller-->
+        <scene sceneID="dAi-ln-eqK">
+            <objects>
+                <windowController storyboardIdentifier="PakapoPreferencesWindow" id="bRG-Gt-CZA" sceneMemberID="viewController">
+                    <window key="window" title="環境設定" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="rsf-Fn-kaB" customClass="PakapoPreferencesWindow" customModule="Pakapo" customModuleProvider="target">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="294" y="313" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
+                        <connections>
+                            <outlet property="delegate" destination="bRG-Gt-CZA" id="BcI-K3-gkI"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="oQg-Pk-c0d" kind="relationship" relationship="window.shadowedContentViewController" id="qcS-2l-pXD"/>
+                    </connections>
+                </windowController>
+                <customObject id="TYA-lU-WSq" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="654" y="250"/>
+        </scene>
+        <!--Pakapo Tab View Controller-->
+        <scene sceneID="i9a-wJ-o8a">
+            <objects>
+                <tabViewController selectedTabViewItemIndex="0" tabStyle="toolbar" id="oQg-Pk-c0d" customClass="PakapoTabViewController" customModule="Pakapo" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabViewItems>
+                        <tabViewItem label="一般" image="NSPreferencesGeneral" id="8VE-Fu-cfW"/>
+                        <tabViewItem label="詳細" image="NSAdvanced" id="R4M-HN-2TV"/>
+                    </tabViewItems>
+                    <tabView key="tabView" type="noTabsNoBorder" id="CWm-9S-OFZ">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <font key="font" metaFont="message"/>
+                        <connections>
+                            <outlet property="delegate" destination="oQg-Pk-c0d" id="xWs-mZ-BXq"/>
+                        </connections>
+                    </tabView>
+                    <connections>
+                        <outlet property="tabView" destination="CWm-9S-OFZ" id="7uf-gs-Ng8"/>
+                        <segue destination="OpA-WQ-Kiq" kind="relationship" relationship="tabItems" id="zKX-DN-A2c"/>
+                        <segue destination="Hrb-aA-Deo" kind="relationship" relationship="tabItems" id="Ayj-WF-kp1"/>
+                    </connections>
+                </tabViewController>
+                <customObject id="X0C-jb-u8C" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="654" y="655"/>
+        </scene>
+        <!--一般-->
+        <scene sceneID="onP-80-2Wa">
+            <objects>
+                <viewController title="一般" id="OpA-WQ-Kiq" customClass="PreferenceGeneralViewController" customModule="Pakapo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" autoresizesSubviews="NO" id="aGA-ME-XKn">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l4X-H6-l85">
+                                <rect key="frame" x="18" y="264" width="68" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="ページ送り:" id="ZAm-pi-0Rl">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xxm-x9-bff">
+                                <rect key="frame" x="90" y="258" width="94" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="push" title="右送り" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1ia-Lj-sg0" id="f56-Sv-1gB">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <menu key="menu" id="6hn-ed-NOJ">
+                                        <items>
+                                            <menuItem title="右送り" state="on" id="1ia-Lj-sg0"/>
+                                            <menuItem title="左送り" tag="1" id="0W2-8J-x9w"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                                <connections>
+                                    <action selector="pageFeedChange:" target="OpA-WQ-Kiq" id="lJn-fN-HzT"/>
+                                </connections>
+                            </popUpButton>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IBx-ss-PGm">
+                                <rect key="frame" x="18" y="240" width="139" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="サブフォルダを読み込む:" id="ohf-pl-KSy">
+                                    <font key="font" size="13" name=".HiraKakuInterface-W3"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IEQ-RM-QYj">
+                                <rect key="frame" x="161" y="241" width="22" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="btq-Jh-aTp">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="searchChildEnableChange:" target="OpA-WQ-Kiq" id="HBi-nH-ffZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </view>
+                    <connections>
+                        <outlet property="pageFeedPopUpButton" destination="Xxm-x9-bff" id="HFj-zJ-v1I"/>
+                        <outlet property="searchChildEnableCheckBox" destination="IEQ-RM-QYj" id="PuQ-Vf-xvE"/>
+                    </connections>
+                </viewController>
+                <customObject id="ndw-4u-QLz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1174" y="655"/>
+        </scene>
+        <!--詳細-->
+        <scene sceneID="131-VC-fEQ">
+            <objects>
+                <viewController title="詳細" id="Hrb-aA-Deo" sceneMemberID="viewController">
+                    <view key="view" id="vYQ-mJ-R9b">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="tMb-Qm-Wzf" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1174" y="1158"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="NSAdvanced" width="32" height="32"/>
+        <image name="NSPreferencesGeneral" width="32" height="32"/>
+    </resources>
 </document>

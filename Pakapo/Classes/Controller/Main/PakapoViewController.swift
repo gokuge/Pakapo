@@ -15,7 +15,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     
     var pakapoImageView: PakapoImageView!
     let pakapoImageModel: PakapoImageModel = PakapoImageModel()
-    var isPageFeedRight: Bool!
     
     // MARK: - init
     override func viewWillAppear() {
@@ -130,15 +129,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         //eidt
         appDelegate.menuCopyOpenClosure = {
             self.pakapoImageView.clickCopyFile()
-        }
-                
-        //setting
-        appDelegate.menuPageFeedClosure = {(right: Bool) -> Void in
-            self.isPageFeedRight = right
-        }
-
-        appDelegate.menuSearchChildEnableClosure = {(enable: Bool) -> Void in
-            self.pakapoImageModel.searchChildEnable = enable
         }
         
         //view
@@ -345,7 +335,7 @@ extension PakapoViewController {
     }
     
     func pushRightArrow() {
-        if isPageFeedRight {
+        if UserDefaults.standard.bool(forKey: AppDelegate.PAGE_FEED_RIGHT) {
             pushNextPage()
         } else {
             pushPrevPage()
@@ -353,7 +343,7 @@ extension PakapoViewController {
     }
     
     func pushLeftArrow() {
-        if isPageFeedRight {
+        if UserDefaults.standard.bool(forKey: AppDelegate.PAGE_FEED_RIGHT) {
             pushPrevPage()
         } else {
             pushNextPage()

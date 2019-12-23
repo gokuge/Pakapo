@@ -13,10 +13,11 @@
 		E71E357F239A40530021E1A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E357E239A40530021E1A2 /* AppDelegate.swift */; };
 		E71E3581239A40530021E1A2 /* PakapoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3580239A40530021E1A2 /* PakapoViewController.swift */; };
 		E71E3583239A40540021E1A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E71E3582239A40540021E1A2 /* Assets.xcassets */; };
-		E71E3586239A40540021E1A2 /* Pakapo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E71E3584239A40540021E1A2 /* Pakapo.storyboard */; settings = {ASSET_TAGS = (0, ); }; };
+		E71E3586239A40540021E1A2 /* Pakapo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E71E3584239A40540021E1A2 /* Pakapo.storyboard */; settings = {ASSET_TAGS = (1, ); }; };
 		E71E3595239A42600021E1A2 /* PakapoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3594239A42600021E1A2 /* PakapoImageView.swift */; };
 		E71E3597239A428D0021E1A2 /* PakapoImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E3596239A428D0021E1A2 /* PakapoImageModel.swift */; };
 		E71F335723A8B1C30037B1CD /* PakapoImageClipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71F335623A8B1C30037B1CD /* PakapoImageClipView.swift */; };
+		E71F61A523B044660042C190 /* PakapoPreferencesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71F61A423B044660042C190 /* PakapoPreferencesWindow.swift */; };
 		E721BADA23AB2FA90076D4BB /* ZUnzip.swift in Sources */ = {isa = PBXBuildFile; fileRef = E721BA7723AB2FA90076D4BB /* ZUnzip.swift */; };
 		E721BADB23AB2FA90076D4BB /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E721BA7A23AB2FA90076D4BB /* README.md */; };
 		E721BADC23AB2FA90076D4BB /* fmemopen.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BA7C23AB2FA90076D4BB /* fmemopen.c */; };
@@ -107,6 +108,8 @@
 		E721BB3123AB2FA90076D4BB /* zip_error_strerror.c in Sources */ = {isa = PBXBuildFile; fileRef = E721BAD723AB2FA90076D4BB /* zip_error_strerror.c */; };
 		E721BB3223AB2FA90076D4BB /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E721BAD923AB2FA90076D4BB /* Info.plist */; };
 		E721BB3423AB722E0076D4BB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = E721BB3323AB722E0076D4BB /* Credits.rtf */; };
+		E7BB17AB23B053B200DE2F67 /* PreferenceGeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BB17AA23B053B200DE2F67 /* PreferenceGeneralViewController.swift */; };
+		E7D274B923B08BA400307C57 /* PakapoTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D274B823B08BA400307C57 /* PakapoTabViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,6 +125,7 @@
 		E71E3594239A42600021E1A2 /* PakapoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageView.swift; sourceTree = "<group>"; };
 		E71E3596239A428D0021E1A2 /* PakapoImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageModel.swift; sourceTree = "<group>"; };
 		E71F335623A8B1C30037B1CD /* PakapoImageClipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoImageClipView.swift; sourceTree = "<group>"; };
+		E71F61A423B044660042C190 /* PakapoPreferencesWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PakapoPreferencesWindow.swift; sourceTree = "<group>"; };
 		E721BA7723AB2FA90076D4BB /* ZUnzip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZUnzip.swift; sourceTree = "<group>"; };
 		E721BA7923AB2FA90076D4BB /* fmemopen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmemopen.h; sourceTree = "<group>"; };
 		E721BA7A23AB2FA90076D4BB /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -221,6 +225,8 @@
 		E721BAD923AB2FA90076D4BB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E721BB3323AB722E0076D4BB /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		E73EB81B23A1FDFA00C661C7 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ja; path = ja.lproj/Pakapo.storyboard; sourceTree = "<group>"; };
+		E7BB17AA23B053B200DE2F67 /* PreferenceGeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceGeneralViewController.swift; sourceTree = "<group>"; };
+		E7D274B823B08BA400307C57 /* PakapoTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PakapoTabViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -284,6 +290,7 @@
 			isa = PBXGroup;
 			children = (
 				E71E357E239A40530021E1A2 /* AppDelegate.swift */,
+				E71F61A323B044400042C190 /* Window */,
 				71D593B623A3C5F100025091 /* Extension */,
 				E71E3593239A41F80021E1A2 /* Model */,
 				E71E3592239A41F00021E1A2 /* View */,
@@ -295,7 +302,8 @@
 		E71E3591239A41E50021E1A2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E71E3580239A40530021E1A2 /* PakapoViewController.swift */,
+				E7BB17A923B0538400DE2F67 /* Main */,
+				E7BB17A823B0537600DE2F67 /* Preference */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -325,6 +333,14 @@
 				E71E3584239A40540021E1A2 /* Pakapo.storyboard */,
 			);
 			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		E71F61A323B044400042C190 /* Window */ = {
+			isa = PBXGroup;
+			children = (
+				E71F61A423B044660042C190 /* PakapoPreferencesWindow.swift */,
+			);
+			path = Window;
 			sourceTree = "<group>";
 		};
 		E721BA7523AB2F7F0076D4BB /* OtherSources */ = {
@@ -455,6 +471,23 @@
 			path = libzip;
 			sourceTree = "<group>";
 		};
+		E7BB17A823B0537600DE2F67 /* Preference */ = {
+			isa = PBXGroup;
+			children = (
+				E7D274B823B08BA400307C57 /* PakapoTabViewController.swift */,
+				E7BB17AA23B053B200DE2F67 /* PreferenceGeneralViewController.swift */,
+			);
+			path = Preference;
+			sourceTree = "<group>";
+		};
+		E7BB17A923B0538400DE2F67 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				E71E3580239A40530021E1A2 /* PakapoViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -483,6 +516,7 @@
 			attributes = {
 				KnownAssetTags = (
 					0,
+					1,
 				);
 				LastSwiftUpdateCheck = 1110;
 				LastUpgradeCheck = 1110;
@@ -544,6 +578,7 @@
 				E721BB1723AB2FA90076D4BB /* zip_source_function.c in Sources */,
 				E721BB2C23AB2FA90076D4BB /* zip_file_get_comment.c in Sources */,
 				E721BB2D23AB2FA90076D4BB /* zip_stat_init.c in Sources */,
+				E7D274B923B08BA400307C57 /* PakapoTabViewController.swift in Sources */,
 				E721BB0C23AB2FA90076D4BB /* zip_source_deflate.c in Sources */,
 				E721BB2923AB2FA90076D4BB /* zip_file_error_clear.c in Sources */,
 				E721BB2E23AB2FA90076D4BB /* zip_fopen.c in Sources */,
@@ -570,6 +605,7 @@
 				E721BB0D23AB2FA90076D4BB /* zip_fdopen.c in Sources */,
 				E721BB1423AB2FA90076D4BB /* zip_source_zip.c in Sources */,
 				E721BADC23AB2FA90076D4BB /* fmemopen.c in Sources */,
+				E7BB17AB23B053B200DE2F67 /* PreferenceGeneralViewController.swift in Sources */,
 				E721BAF323AB2FA90076D4BB /* zip_file_get_offset.c in Sources */,
 				E721BAF123AB2FA90076D4BB /* zip_file_error_get.c in Sources */,
 				E721BB2323AB2FA90076D4BB /* zip_utf-8.c in Sources */,
@@ -626,6 +662,7 @@
 				E721BAE123AB2FA90076D4BB /* zip_get_name.c in Sources */,
 				E721BAEB23AB2FA90076D4BB /* zip_source_file.c in Sources */,
 				E721BB2523AB2FA90076D4BB /* zip_fclose.c in Sources */,
+				E71F61A523B044660042C190 /* PakapoPreferencesWindow.swift in Sources */,
 				E721BADA23AB2FA90076D4BB /* ZUnzip.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

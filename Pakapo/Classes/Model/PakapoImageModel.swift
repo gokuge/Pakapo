@@ -16,8 +16,6 @@ class PakapoImageModel: NSObject {
     let OPEN_RECENT_DIRECTORIES: String = "openRecentDirectories"
     let OPEN_RECENT_MAX_COUNT: Int = 10
     
-    var searchChildEnable: Bool!
-    
     var rootDirURL: URL?
     var rootDirectories: [URL]?
     
@@ -526,7 +524,7 @@ extension PakapoImageModel {
         return unwrappedDirContents.reversed()
     }
     
-    /// サブフォルダを検索対象とするかどうか。isSearchChildはウィンドウのメニュー経由で渡されている
+    /// サブフォルダを検索対象とするかどうか
     func canSearchChildDirectory() -> Bool {
         guard let unwrappedRootDirURL = rootDirURL,
               let unwrappedCurrentDirURL = currentDirURL else {
@@ -538,7 +536,7 @@ extension PakapoImageModel {
             return true
         }
         
-        return searchChildEnable
+        return UserDefaults.standard.bool(forKey: AppDelegate.SEARCH_CHILD_ENABLE)
     }
     
     /// Currentに含まれているディレクトリで次に有効なファイルを持つディレクトリのURLを返す。子から孫へと有効なファイルが見つかるまで探す

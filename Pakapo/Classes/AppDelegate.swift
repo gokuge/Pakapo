@@ -11,9 +11,19 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
+    enum menuTag: Int {
+        case pakapo = 0
+        case file
+        case edit
+        case view
+        case window
+    }
+    
+    var preferencesWindowController: NSWindowController?
+    
     let FIRST_LAUNCH: String = "firstLaunch"
-    let PAGE_FEED_RIGHT: String = "pageFeedRight"
-    let SEARCH_CHILD_ENABLE: String = "searchChildEnable"
+    static let PAGE_FEED_RIGHT: String = "pageFeedRight"
+    static let SEARCH_CHILD_ENABLE: String = "searchChildEnable"
     let VIEW_STYLE: String = "viewStyle"
     
     @IBOutlet weak var mainMenu: NSMenu!
@@ -34,10 +44,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     //edit
     var menuCopyOpenClosure: (() -> Void)!
-    
-    //setting
-    var menuPageFeedClosure: ((_ right: Bool) -> Void)!
-    var menuSearchChildEnableClosure: ((_ enable: Bool) -> Void)!
     
     //view
     var menuZoomInClosure: (() -> Void)!
@@ -65,18 +71,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func initFirstLaunchMenu() {
         initSameDirectories()
         initOpenRecentDirectories()
-        selectPageFeed(right: true)
-        toggleSearchChildEnableItem(enable: false)
         initViewStyle()
-        
+
+        UserDefaults.standard.set(true, forKey: AppDelegate.PAGE_FEED_RIGHT)
+        UserDefaults.standard.set(true, forKey: AppDelegate.SEARCH_CHILD_ENABLE)
+
         UserDefaults.standard.set("finishFirstLaunch", forKey: FIRST_LAUNCH)
     }
     
     func loadMenu() {
         initSameDirectories()
         initOpenRecentDirectories()
-        selectPageFeed(right: UserDefaults.standard.bool(forKey: PAGE_FEED_RIGHT))
-        toggleSearchChildEnableItem(enable: !UserDefaults.standard.bool(forKey: SEARCH_CHILD_ENABLE))
         initViewStyle()
     }
 
@@ -87,7 +92,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // MARK: - menu
     func menuWillOpen(_ menu: NSMenu) {
         
-        let fileItem: NSMenuItem! = mainMenu.item(withTag: 1)
+        let fileItem: NSMenuItem! = mainMenu.item(withTag: menuTag.file.rawValue)
         let sameDirectoriesItem: NSMenuItem! = fileItem.submenu?.item(withTag: 2)
         let openRecentItem: NSMenuItem! = fileItem.submenu?.item(withTag: 3)
         
@@ -103,6 +108,35 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     //Pakapo
+    @IBAction func menuShowPreferencesWindow(_ sender: Any) {
+        
+        guard let window = NSApplication.shared.mainWindow else {
+            return
+        }
+        if window.title == "環境設定" {
+            window.close()
+            preferencesWindowController = nil
+            return
+        }
+        
+        let storyboard: NSStoryboard = NSStoryboard(name: "Pakapo", bundle: nil)
+        preferencesWindowController = storyboard.instantiateController(withIdentifier: "PakapoPreferencesWindow") as? NSWindowController
+        
+        if let preferenceWindow = preferencesWindowController?.window {
+            preferencesWindowController?.window?.setFrame(CGRect(x: preferenceWindow.frame.origin.x,
+                                                                 y: preferenceWindow.frame.origin.y,
+                                                                 width: preferenceWindow.frame.size.width,
+                                                                 height: PakapoTabViewController.GENERAL_VIEW_HEIGHT),
+                                                          display: true
+            )
+            
+            preferenceWindow.setFrameUsingName("PreferenceWindow")
+        }
+        preferencesWindowController!.windowFrameAutosaveName = "PreferenceWindow"
+        preferencesWindowController!.showWindow(sender)
+    }
+    
+    
     @IBAction func menuQuitApplication(_ sender: Any) {
         menuQuitPakapoClosure()
     }
@@ -113,7 +147,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     func initSameDirectories() {
-        let fileItem: NSMenuItem! = mainMenu.item(withTag: 1)
+        let fileItem: NSMenuItem! = mainMenu.item(withTag: menuTag.file.rawValue)
         let sameDirectoriesItem: NSMenuItem! = fileItem.submenu?.item(withTag: 2)
         let sameDirectoriesMenu: NSMenu! = sameDirectoriesItem.submenu
         sameDirectoriesMenu.delegate = self
@@ -137,7 +171,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     func initOpenRecentDirectories() {
-        let fileItem: NSMenuItem! = mainMenu.item(withTag: 1)
+        let fileItem: NSMenuItem! = mainMenu.item(withTag: menuTag.file.rawValue)
         let openRecentItem: NSMenuItem! = fileItem.submenu?.item(withTag: 3)
         let openRecentMenu: NSMenu! = openRecentItem.submenu
         openRecentMenu.delegate = self
@@ -168,19 +202,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     //edit
     @IBAction func menuCopy(_ sender: Any) {
         menuCopyOpenClosure()
-    }
-    
-    //setting
-    @IBAction func menuPageFeedRight(_ sender: Any) {
-        selectPageFeed(right: true)
-    }
-    
-    @IBAction func menuPageFeedLeft(_ sender: Any) {
-        selectPageFeed(right: false)
-    }
-    
-    @IBAction func menuSearchChildEnable(_ sender: Any) {
-        toggleSearchChildEnableItem(enable: NSNumber(value: (sender as! NSMenuItem).state.rawValue).boolValue)
     }
     
     //view
@@ -225,7 +246,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     func refreshViewStyle(tag: Int) {
-        let viewItem: NSMenuItem! = mainMenu.item(withTag: 4)
+        let viewItem: NSMenuItem! = mainMenu.item(withTag: menuTag.view.rawValue)
         
         for item in viewItem.submenu!.items {
             
@@ -241,40 +262,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     //window
     @IBAction func menuToggleFullScreen(_ sender: Any) {
         menuFullScreenClosure()
-    }
-    
-    func selectPageFeed(right: Bool) {
-        let settingItem: NSMenuItem! = mainMenu.item(withTag: 3)
-        let rightFeedItem: NSMenuItem! = settingItem.submenu?.item(withTag: 0)
-        let leftFeedItem: NSMenuItem! = settingItem.submenu?.item(withTag: 1)
-        
-        if right {
-            rightFeedItem.state = NSControl.StateValue.on
-            leftFeedItem.state = NSControl.StateValue.off
-            UserDefaults.standard.set(true, forKey: PAGE_FEED_RIGHT)
-            menuPageFeedClosure(true)
-        } else {
-            rightFeedItem.state = NSControl.StateValue.off
-            leftFeedItem.state = NSControl.StateValue.on
-            UserDefaults.standard.set(false, forKey: PAGE_FEED_RIGHT)
-            menuPageFeedClosure(false)
-        }
-    }
-    
-    func toggleSearchChildEnableItem(enable: Bool) {
-        let settingItem: NSMenuItem! = mainMenu.item(withTag: 3)
-        let searchChildEnableItem: NSMenuItem! = settingItem.submenu?.item(withTag: 2)
-        
-        if enable {
-            searchChildEnableItem.state = NSControl.StateValue.off
-            UserDefaults.standard.set(false, forKey: SEARCH_CHILD_ENABLE)
-            menuSearchChildEnableClosure(false)
-        } else {
-            searchChildEnableItem.state = NSControl.StateValue.on
-            UserDefaults.standard.set(true, forKey: SEARCH_CHILD_ENABLE)
-            menuSearchChildEnableClosure(true)
-        }
-        
     }
     
     //help
