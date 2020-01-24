@@ -103,7 +103,6 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         //pakapo
         appDelegate.menuQuitPakapoClosure = {
             self.saveLastViewPageURL()
-            NSApplication.shared.terminate(self)
         }
 
         //file

@@ -60,6 +60,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var menuFullScreenClosure: (() -> Void)!
 
     // MARK: - appdelegate
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        menuQuitPakapoClosure()
+        return NSApplication.TerminateReply.terminateNow
+    }
+    
     func applicationWillFinishLaunching(_ notification: Notification) {
         initFullScreenMode()
     }
@@ -99,10 +104,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if slideshowSpeed == 0 {
             UserDefaults.standard.set(2.0, forKey: AppDelegate.SLIDESHOW_SPEED)
         }
-    }
-
-    func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
     }
 
     // MARK: - menu
@@ -155,6 +156,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     @IBAction func menuQuitApplication(_ sender: Any) {
         menuQuitPakapoClosure()
+        NSApplication.shared.terminate(self)
     }
     
     //file
