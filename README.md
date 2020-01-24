@@ -2,7 +2,21 @@
 ![128](https://user-images.githubusercontent.com/57989544/71253968-bcd90200-236c-11ea-949a-aeb713279217.png)
 
 Mac OS用の少機能イメージビューアです  
-Mac OSで愛用していた偉大なcooViewerが、catalinaの登場により利用出来なくなってしまいました  
+Mac OSで愛用していた偉大なcooViewerが、~~catalinaの登場により利用出来なくなってしまいました~~  
+
+**----- 追記 -----**
+
+作者様が[64bitに対応して下さいました](https://github.com/coo-ona/cooViewer)  
+cooViewerの代替アプリを探してこのページに辿り着いた方は  
+上記リンクから64bit対応版のcooViewerをお試し頂く方が幸せになれると思います  
+改めて作者様、有難うございます  
+
+cooViewerが復活されたので、本アプリの存在意義は無くなった気もしますが  
+自分にとって必要最低限のアプリがあってもいいかなとも思いますので  
+Repositoryを削除する等は特に考えていません
+
+**----- 追記ここまで -----**
+
 色々と代替アプリを探してみたのですが、しっくり来るのが見つからなかったので  
 主に自分の使っていた機能の範囲で、cooViewerっぽいものを作りました
 
@@ -143,7 +157,7 @@ tmp_dir
     - B1.jpg
 
 ## 謝辞
-- coo様(cooViewer開発者)
+- [coo-ona](https://github.com/coo-ona/)様(cooViewer開発者)
 - [codelynx](https://github.com/codelynx)様(ZUnzip作者)
 
 ## Licence
