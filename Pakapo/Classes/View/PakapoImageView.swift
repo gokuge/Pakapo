@@ -442,7 +442,7 @@ extension PakapoImageView {
         let toDirURL = URL(fileURLWithPath: specifiedDirPath.path + "/" + currentDirURL.lastPathComponent())
 
         //保存先の存在チェック
-        if fileManager.fileExists(atPath: specifiedDirPath.path) {
+        if fileManager.fileExists(atPath: toDirURL.path) {
             //指定したURLが存在した。一旦それを削除する
             do {
                 try fileManager.removeItem(at: toDirURL)
