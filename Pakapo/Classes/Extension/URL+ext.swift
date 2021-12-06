@@ -27,4 +27,9 @@ extension URL {
         
         return false
     }
+    
+    func lastPathComponent() -> String {
+        let nsstringPath = path as NSString
+        return nsstringPath.lastPathComponent
+    }
 }

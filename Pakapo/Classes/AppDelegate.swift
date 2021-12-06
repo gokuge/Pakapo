@@ -25,7 +25,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let FIRST_LAUNCH: String = "firstLaunch"
     static let PAGE_FEED_RIGHT: String = "pageFeedRight"
     static let SEARCH_CHILD_ENABLE: String = "searchChildEnable"
-    static let SLIDESHOW_SPEED: String = "slideshowSpeed"
+    static let SLIDESHOW_SPEED: String = "SpecifiedDir"
+    static let SPECIFIED_DIR: String = "slideshowSpeed"
     let VIEW_STYLE: String = "viewStyle"
     
     @IBOutlet weak var mainMenu: NSMenu!
@@ -46,6 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     //edit
     var menuCopyOpenClosure: (() -> Void)!
+    var menuMoveSpecifiedDirClosure: (() -> Void)!
     
     //slideshow
     var menuSlideshowClosure: (() -> Void)!
@@ -84,8 +86,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         initOpenRecentDirectories()
         initViewStyle()
 
+        //初期値
         UserDefaults.standard.set(true, forKey: AppDelegate.PAGE_FEED_RIGHT)
         UserDefaults.standard.set(true, forKey: AppDelegate.SEARCH_CHILD_ENABLE)
+        UserDefaults.standard.set(nil, forKey: AppDelegate.SPECIFIED_DIR)
         UserDefaults.standard.set(2.0, forKey: AppDelegate.SLIDESHOW_SPEED)
         
         UserDefaults.standard.set("finishFirstLaunch", forKey: FIRST_LAUNCH)
@@ -220,6 +224,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     //edit
     @IBAction func menuCopy(_ sender: Any) {
         menuCopyOpenClosure()
+    }
+    
+    @IBAction func moveSpecifiedDir(_ sender: Any) {
+        menuMoveSpecifiedDirClosure()
     }
     
     //slideshow

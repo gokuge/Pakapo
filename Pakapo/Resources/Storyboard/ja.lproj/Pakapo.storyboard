@@ -107,6 +107,12 @@
                                                 <action selector="menuCopy:" target="Voe-Tx-rLC" id="ykY-5T-B8W"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="指定場所へコピー" keyEquivalent="c" id="kfj-e4-2E9">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES"/>
+                                            <connections>
+                                                <action selector="moveSpecifiedDir:" target="Voe-Tx-rLC" id="21F-V8-DpF"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -114,8 +120,7 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="スライドショウ" id="19S-fA-7oj">
                                     <items>
-                                        <menuItem title="開始/停止" id="AUd-Js-Efi">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="開始/停止" keyEquivalent="g" id="AUd-Js-Efi">
                                             <connections>
                                                 <action selector="menuSlideshow:" target="Voe-Tx-rLC" id="pTu-Bw-mwF"/>
                                             </connections>
@@ -348,11 +353,41 @@
                                     <action selector="searchChildEnableChange:" target="OpA-WQ-Kiq" id="HBi-nH-ffZ"/>
                                 </connections>
                             </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v1r-CM-am1">
+                                <rect key="frame" x="18" y="216" width="55" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="指定場所:" id="oim-4z-tOS">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aTu-D7-a3z">
+                                <rect key="frame" x="363" y="209" width="65" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="開く" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gMk-cw-IWa">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="openSpecifiedDir:" target="OpA-WQ-Kiq" id="qY3-zW-EP0"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f6g-PF-mHv">
+                                <rect key="frame" x="77" y="216" width="286" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" alignment="left" id="aLz-EP-pOP">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="pageFeedPopUpButton" destination="Xxm-x9-bff" id="HFj-zJ-v1I"/>
                         <outlet property="searchChildEnableCheckBox" destination="IEQ-RM-QYj" id="PuQ-Vf-xvE"/>
+                        <outlet property="specifiedDirPathLabel" destination="f6g-PF-mHv" id="JDq-FP-3Bv"/>
                     </connections>
                 </viewController>
                 <customObject id="ndw-4u-QLz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

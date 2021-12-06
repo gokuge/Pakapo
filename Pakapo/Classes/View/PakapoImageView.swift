@@ -20,6 +20,7 @@ class PakapoImageView: NSView {
     }
     
     var getFileURLClosure:(() -> URL?)!
+    var getFilesURLClosure:(() -> [URL]?)!
     var getDirURLClosure:(() -> URL?)!
     var leftClickClosure:(() -> Void)!
     var rightClickClosure:(() -> Void)!
@@ -419,6 +420,53 @@ extension PakapoImageView {
         
         NSPasteboard.general.clearContents()
         NSPasteboard.general.writeObjects([unwrappedFileURL as NSPasteboardWriting])
+    }
+    
+    @objc func clickMoveSpecifiedDirClosure() {
+        //指定場所と現在地を取得
+        guard let specifiedDirPath = UserDefaults.standard.url(forKey: AppDelegate.SPECIFIED_DIR),
+            let currentDirURL = getDirURLClosure(),
+            let currentFiles = getFilesURLClosure() else {
+            return
+        }
+        
+        //指定場所の存在チェック
+        let fileManager = FileManager.default
+
+        if !fileManager.fileExists(atPath: specifiedDirPath.path) {
+            //指定したURLが存在しない
+            return
+        }
+        
+        //指定場所も現在地も取得できたのでコピー
+        let toDirURL = URL(fileURLWithPath: specifiedDirPath.path + "/" + currentDirURL.lastPathComponent())
+
+        //保存先の存在チェック
+        if fileManager.fileExists(atPath: specifiedDirPath.path) {
+            //指定したURLが存在した。一旦それを削除する
+            do {
+                try fileManager.removeItem(at: toDirURL)
+            } catch {
+                return
+            }
+        }
+        
+        //保存先にDirectoryを作成
+        do {
+            try fileManager.createDirectory(at: toDirURL, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+            return
+        }
+
+        //Directory作成後にファイルをコピー
+        for fromFileURL in currentFiles {
+            let toFileURL = URL(fileURLWithPath: toDirURL.path + "/" + fromFileURL.lastPathComponent())
+            do {
+                try fileManager.copyItem(at: fromFileURL, to: toFileURL)
+            } catch {
+                return
+            }
+        }
     }
 
     @objc func clickShowDir() {

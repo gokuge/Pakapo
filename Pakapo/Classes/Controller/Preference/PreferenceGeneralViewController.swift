@@ -12,6 +12,7 @@ class PreferenceGeneralViewController: NSViewController {
     
     @IBOutlet weak var pageFeedPopUpButton: NSPopUpButton!
     @IBOutlet weak var searchChildEnableCheckBox: NSButton!
+    @IBOutlet weak var specifiedDirPathLabel: NSTextField!
     
     // MARK: - init
     override func viewWillAppear() {
@@ -22,6 +23,7 @@ class PreferenceGeneralViewController: NSViewController {
     func willMakeView() {
         setPageFeed(pageFeedRight: UserDefaults.standard.bool(forKey: AppDelegate.PAGE_FEED_RIGHT))
         setSearchChildEnable(enable: UserDefaults.standard.bool(forKey: AppDelegate.SEARCH_CHILD_ENABLE))
+        setSpecifiedDir()
     }
     
     @IBAction func pageFeedChange(_ sender: Any) {
@@ -56,5 +58,46 @@ class PreferenceGeneralViewController: NSViewController {
             searchChildEnableCheckBox.state = NSControl.StateValue.off
             UserDefaults.standard.set(false, forKey: AppDelegate.SEARCH_CHILD_ENABLE)
         }
+    }
+    
+    @IBAction func openSpecifiedDir(_ sender: Any) {
+        openPanel()
+    }
+    
+    func openPanel() {
+        guard let window = self.view.window else {
+            return
+        }
+
+        let openImagePanel: NSOpenPanel = NSOpenPanel()
+
+        openImagePanel.allowsMultipleSelection = false
+        openImagePanel.canCreateDirectories    = false
+        openImagePanel.canChooseDirectories    = true
+        openImagePanel.canChooseFiles          = false
+
+        //読み込み可能なファイルのみ対象とする(画像 + zip)
+        openImagePanel.allowedFileTypes        = NSImage.imageTypes + ["zip"]
+        
+        openImagePanel.beginSheetModal(for: window, completionHandler: { (response) in
+
+            if response != NSApplication.ModalResponse.OK {
+                return
+            }
+            
+            guard let unwrappedURL = openImagePanel.url else {
+                return
+            }
+            UserDefaults.standard.set(unwrappedURL, forKey: AppDelegate.SPECIFIED_DIR)
+            self.specifiedDirPathLabel.stringValue = unwrappedURL.path
+        })
+    }
+    
+    func setSpecifiedDir() {
+        guard let saved = UserDefaults.standard.url(forKey: AppDelegate.SPECIFIED_DIR) else {
+            return
+        }
+                
+        specifiedDirPathLabel.stringValue = saved.path
     }
 }

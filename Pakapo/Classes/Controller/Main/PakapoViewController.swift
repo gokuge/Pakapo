@@ -48,6 +48,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             pakapoImageView.getFileURLClosure = {
                 return self.pakapoImageModel.getViewPageURL()
             }
+            
+            pakapoImageView.getFilesURLClosure = {
+                return self.pakapoImageModel.fileContents
+            }
 
             pakapoImageView.getDirURLClosure = {
                 return self.pakapoImageModel.currentDirURL
@@ -132,6 +136,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             self.pakapoImageView.clickCopyFile()
         }
         
+        appDelegate.menuMoveSpecifiedDirClosure = {
+            self.pushMoveSpecifiedDir()
+        }
+        
         //slideshow
         appDelegate.menuSlideshowClosure = {
             self.pushSlideshowStart()
@@ -214,7 +222,7 @@ extension PakapoViewController {
         guard let window = self.view.window else {
             return
         }
-
+        
         let openImagePanel: NSOpenPanel = NSOpenPanel()
 
         openImagePanel.allowsMultipleSelection = false
@@ -312,15 +320,53 @@ extension PakapoViewController {
 extension PakapoViewController {
     // MARK: - key event
     override func keyDown(with event: NSEvent) {
-//        print(String(format: "keyCode:%d", event.keyCode))
-//        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
+        print(String(format: "keyCode:%d", event.keyCode))
+        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
+//
+//        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
+//        case [.command] where event.characters == "l",
+//             [.command, .shift] where event.characters == "l":
+//            print("command-l or command-shift-l")
+//        default:
+//            break
+//        }
+        
+        //command
+        var keyDownCommandKey: Bool = false
+        if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == [.command] {
+            keyDownCommandKey = true
+        }
+        
+        //Shift
+        var keyDownShiftKey: Bool = false
+        if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == [.shift] {
+            keyDownShiftKey = true
+        }
+        
+        //Alt Option
+        var keyDownOptionKey: Bool = false
+        if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == [.option] {
+            keyDownOptionKey = true
+        }
         
         switch Int(event.keyCode) {
         case 5:
-            //g
-            pushSlideshowStart()
+            //command + g
+            if keyDownCommandKey {
+                pushSlideshowStart()
+            }
+        case 8:
+            //Option + c
+            if keyDownOptionKey {
+                pushMoveSpecifiedDir()
+            }
         case 53:
             pushEsc()
+        case 94:
+            //shift + _
+            if keyDownShiftKey {
+                pushMoveSpecifiedDir()
+            }
         case 123:
             pushLeftArrow()
         case 124:
@@ -389,5 +435,9 @@ extension PakapoViewController {
         })
 
         self.pushNextPage()
+    }
+    
+    func pushMoveSpecifiedDir() {
+        self.pakapoImageView.clickMoveSpecifiedDirClosure()
     }
 }
