@@ -25,8 +25,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let FIRST_LAUNCH: String = "firstLaunch"
     static let PAGE_FEED_RIGHT: String = "pageFeedRight"
     static let SEARCH_CHILD_ENABLE: String = "searchChildEnable"
-    static let SLIDESHOW_SPEED: String = "SpecifiedDir"
-    static let SPECIFIED_DIR: String = "slideshowSpeed"
+    static let SLIDESHOW_SPEED: String = "slideshowSpeed"
+    static let SPECIFIED_DIR: String = "specifiedDir"
     let VIEW_STYLE: String = "viewStyle"
     
     @IBOutlet weak var mainMenu: NSMenu!
