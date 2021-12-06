@@ -320,16 +320,8 @@ extension PakapoViewController {
 extension PakapoViewController {
     // MARK: - key event
     override func keyDown(with event: NSEvent) {
-        print(String(format: "keyCode:%d", event.keyCode))
-        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
-//
-//        switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
-//        case [.command] where event.characters == "l",
-//             [.command, .shift] where event.characters == "l":
-//            print("command-l or command-shift-l")
-//        default:
-//            break
-//        }
+//        print(String(format: "keyCode:%d", event.keyCode))
+//        print(String(format: "key:%@", event.charactersIgnoringModifiers!))
         
         //command
         var keyDownCommandKey: Bool = false
