@@ -110,7 +110,7 @@
                                         <menuItem title="指定場所へコピー" keyEquivalent="c" id="kfj-e4-2E9">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES"/>
                                             <connections>
-                                                <action selector="moveSpecifiedDir:" target="Voe-Tx-rLC" id="21F-V8-DpF"/>
+                                                <action selector="copyToSpecifiedDir:" target="Voe-Tx-rLC" id="21F-V8-DpF"/>
                                             </connections>
                                         </menuItem>
                                     </items>

@@ -52,7 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     //edit
     var menuCopyOpenClosure: (() -> Void)!
-    var menuMoveSpecifiedDirClosure: (() -> Void)!
+    var menuCopyToSpecifiedDirClosure: (() -> Void)!
     
     //slideshow
     var menuSlideshowClosure: (() -> Void)!
@@ -233,8 +233,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menuCopyOpenClosure()
     }
     
-    @IBAction func moveSpecifiedDir(_ sender: Any) {
-        menuMoveSpecifiedDirClosure()
+    @IBAction func copyToSpecifiedDir(_ sender: Any) {
+        menuCopyToSpecifiedDirClosure()
     }
     
     //slideshow

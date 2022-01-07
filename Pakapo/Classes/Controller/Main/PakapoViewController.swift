@@ -153,8 +153,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             self.pakapoImageView.clickCopyFile()
         }
         
-        appDelegate.menuMoveSpecifiedDirClosure = {
-            self.pushMoveSpecifiedDir()
+        appDelegate.menuCopyToSpecifiedDirClosure = {
+            self.pushCopyToSpecifiedDir()
         }
         
         //slideshow
@@ -464,14 +464,14 @@ extension PakapoViewController {
         case 8:
             //Option + c
             if keyDownOptionKey {
-                pushMoveSpecifiedDir()
+                pushCopyToSpecifiedDir()
             }
         case 53:
             pushEsc()
         case 94:
             //shift + _
             if keyDownShiftKey {
-                pushMoveSpecifiedDir()
+                pushCopyToSpecifiedDir()
             }
         case 123:
             pushLeftArrow()
@@ -543,7 +543,7 @@ extension PakapoViewController {
         self.pushNextPage()
     }
     
-    func pushMoveSpecifiedDir() {
+    func pushCopyToSpecifiedDir() {
         //指定場所と現在地を取得
         guard let specifiedDirPath = UserDefaults.standard.url(forKey: AppDelegate.SPECIFIED_DIR),
             let currentDirURL = pakapoImageModel.currentDirURL else {
@@ -554,7 +554,7 @@ extension PakapoViewController {
         let fileManager = FileManager.default
 
         if !fileManager.fileExists(atPath: specifiedDirPath.path) {
-            //指定したURLが存在しない
+            //指定場所のURLが存在しない
             return
         }
         
@@ -562,9 +562,18 @@ extension PakapoViewController {
         let toDirURL = URL(fileURLWithPath: specifiedDirPath.path + "/" + currentDirURL.lastPathComponent())
         
         do {
+            /*
+                保存先に既に存在していた場合、エラーとなりcatchに入る
+                コピーしようとしているものと、既に存在しているもの、どちらが真なのかは操作者にしかわからない
+                コピーしようとしているものを真とし、保存先から一度削除して確実にコピーさせても良いが
+                それでは保存済みを示す為にPageTextを色付けしている意味があまりない
+             
+                ひとまずは削除->上書きではなく、コピー失敗として既に存在しているものを真とする
+            */
             try fileManager.copyItem(at: currentDirURL, to: toDirURL)
         } catch {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
+            return
         }
 
         //指定場所へのコピーが済んだので表示を更新
