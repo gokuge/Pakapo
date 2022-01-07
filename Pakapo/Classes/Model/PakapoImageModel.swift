@@ -98,7 +98,7 @@ class PakapoImageModel: NSObject {
                     continue
                 }
                 
-                //fileContentsにはDirectoryPath/file.jpgの様なpathが入っている
+                //fileContentsには表示中のDirectoryPath/file.jpgの様なpathが入っている
                 fileContents!.append(content)
             }
             
@@ -136,25 +136,29 @@ class PakapoImageModel: NSObject {
                     continue
                 }
                 
+                //sortFilesはencodeされていない日本語などのディレクトリ名やファイル名が入る可能性があるので、encodeをした上でURLを生成する
+                //日本語のままencodeされていない、encodeが不十分の場合はfileURLがnilになるので注意
                 guard let path = file.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
                     let fileURL = URL(string: path) else {
                     //zipの中のエイリアスは対象外にしておく
                     continue
                 }
                 
-                //ディレクトリは除外。zunzipのfilesは解凍したディレクトリの全てのパスを返すので、ファイルパスだけを保存すればいい
+                //ディレクトリは除外
                 if fileURL.absoluteString.hasSuffix("/") {
                     continue
                 }
 
+                //隠しファイルは除外
                 if fileURL.lastPathComponent.hasPrefix(".") {
                     continue
                 }
                 
+                //zipの中にzipがある場合は再起
                 if isZipFilePath(url: fileURL) {
                     makeArchiveContents(archiveURL: fileURL)
                 }
-                                
+                //fileURLを保存。保存されるURLはzipの中身だけ。zipの中身のDirectory名/file.jpg の様な形。非zipをとは違い表示中のDirectoryPathは含まれない
                 if fileURL.isImageTypeURL() {
                     fileContents!.append(fileURL)
                 }
@@ -165,6 +169,8 @@ class PakapoImageModel: NSObject {
                 return
             }
             currentDirURL = archiveURL
+            
+            //zipContentsは展開済みデータとなる。zip内の移動時はzipContentsのfileURLを指定し、データを抜き出して使用する
             zipContents = unzip
 
         } catch {
