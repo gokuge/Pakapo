@@ -98,7 +98,7 @@ class PakapoImageModel: NSObject {
                     continue
                 }
                 
-                //file
+                //fileContentsにはDirectoryPath/file.jpgの様なpathが入っている
                 fileContents!.append(content)
             }
             
@@ -136,7 +136,8 @@ class PakapoImageModel: NSObject {
                     continue
                 }
                 
-                guard let fileURL = URL(string: file) else {
+                guard let path = file.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed),
+                    let fileURL = URL(string: path) else {
                     //zipの中のエイリアスは対象外にしておく
                     continue
                 }

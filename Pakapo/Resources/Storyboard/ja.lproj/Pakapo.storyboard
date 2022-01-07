@@ -382,11 +382,41 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7jL-6x-i9B">
+                                <rect key="frame" x="18" y="192" width="68" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="ページ表示:" id="Cr2-rD-hKw">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n3i-Fl-28h">
+                                <rect key="frame" x="95" y="188" width="89" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <popUpButtonCell key="cell" type="push" title="なし" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="LoC-Ya-eWP" id="RZx-kB-Ixc">
+                                    <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="menu"/>
+                                    <menu key="menu" id="htR-qF-HYE">
+                                        <items>
+                                            <menuItem title="なし" state="on" id="LoC-Ya-eWP"/>
+                                            <menuItem title="左上" tag="1" id="alj-qL-YUe"/>
+                                            <menuItem title="右上" tag="2" id="pqz-JQ-Iix"/>
+                                            <menuItem title="左下" tag="3" id="yX5-oU-RvL"/>
+                                            <menuItem title="右下" tag="4" id="9jf-il-gGM"/>
+                                        </items>
+                                    </menu>
+                                </popUpButtonCell>
+                                <connections>
+                                    <action selector="showPageModeChange:" target="OpA-WQ-Kiq" id="zbf-kA-g6D"/>
+                                </connections>
+                            </popUpButton>
                         </subviews>
                     </view>
                     <connections>
                         <outlet property="pageFeedPopUpButton" destination="Xxm-x9-bff" id="HFj-zJ-v1I"/>
                         <outlet property="searchChildEnableCheckBox" destination="IEQ-RM-QYj" id="PuQ-Vf-xvE"/>
+                        <outlet property="showPageModePopUpButton" destination="n3i-Fl-28h" id="xCc-4k-e4T"/>
                         <outlet property="specifiedDirPathLabel" destination="f6g-PF-mHv" id="JDq-FP-3Bv"/>
                     </connections>
                 </viewController>

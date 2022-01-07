@@ -13,6 +13,7 @@ class PreferenceGeneralViewController: NSViewController {
     @IBOutlet weak var pageFeedPopUpButton: NSPopUpButton!
     @IBOutlet weak var searchChildEnableCheckBox: NSButton!
     @IBOutlet weak var specifiedDirPathLabel: NSTextField!
+    @IBOutlet weak var showPageModePopUpButton: NSPopUpButton!
     
     // MARK: - init
     override func viewWillAppear() {
@@ -24,6 +25,7 @@ class PreferenceGeneralViewController: NSViewController {
         setPageFeed(pageFeedRight: UserDefaults.standard.bool(forKey: AppDelegate.PAGE_FEED_RIGHT))
         setSearchChildEnable(enable: UserDefaults.standard.bool(forKey: AppDelegate.SEARCH_CHILD_ENABLE))
         setSpecifiedDir()
+        setShowPageMode(index: UserDefaults.standard.integer(forKey: AppDelegate.SHOW_PAGE_MODE))
     }
     
     @IBAction func pageFeedChange(_ sender: Any) {
@@ -71,6 +73,10 @@ class PreferenceGeneralViewController: NSViewController {
 
         let openImagePanel: NSOpenPanel = NSOpenPanel()
 
+        if let specifiedDirPath = UserDefaults.standard.url(forKey: AppDelegate.SPECIFIED_DIR) {
+            openImagePanel.directoryURL = specifiedDirPath
+        }
+
         openImagePanel.allowsMultipleSelection = false
         openImagePanel.canCreateDirectories    = false
         openImagePanel.canChooseDirectories    = true
@@ -99,5 +105,24 @@ class PreferenceGeneralViewController: NSViewController {
         }
                 
         specifiedDirPathLabel.stringValue = saved.path
+    }
+    
+    @IBAction func showPageModeChange(_ sender: Any) {
+        let showPageButton = sender as! NSPopUpButton
+        setShowPageMode(index: showPageButton.selectedItem!.tag)
+        
+        NotificationCenter.default.post(name: AppDelegate.CHANGE_SHOW_PAGE_MODE_NOTIFY, object: nil)
+    }
+    
+    func setShowPageMode(index: Int) {
+        showPageModePopUpButton.itemArray[0].state = NSControl.StateValue.off
+        showPageModePopUpButton.itemArray[1].state = NSControl.StateValue.off
+        showPageModePopUpButton.itemArray[2].state = NSControl.StateValue.off
+        showPageModePopUpButton.itemArray[3].state = NSControl.StateValue.off
+        showPageModePopUpButton.itemArray[4].state = NSControl.StateValue.off
+        
+        showPageModePopUpButton.selectItem(withTag: index)
+        showPageModePopUpButton.itemArray[index].state = NSControl.StateValue.on
+        UserDefaults.standard.set(index, forKey: AppDelegate.SHOW_PAGE_MODE)
     }
 }

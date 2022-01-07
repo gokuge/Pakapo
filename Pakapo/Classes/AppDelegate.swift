@@ -22,12 +22,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     var preferencesWindowController: NSWindowController?
     
+    //Notify
+    static let CHANGE_SHOW_PAGE_MODE_NOTIFY = NSNotification.Name(rawValue: "changeShowPageModeNotify")
+    
+    //Preference
     let FIRST_LAUNCH: String = "firstLaunch"
     static let PAGE_FEED_RIGHT: String = "pageFeedRight"
     static let SEARCH_CHILD_ENABLE: String = "searchChildEnable"
     static let SLIDESHOW_SPEED: String = "slideshowSpeed"
     static let SPECIFIED_DIR: String = "specifiedDir"
     let VIEW_STYLE: String = "viewStyle"
+    static let SHOW_PAGE_MODE: String = "showPageMode"
     
     @IBOutlet weak var mainMenu: NSMenu!
     
@@ -70,7 +75,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
         initFullScreenMode()
     }
-    
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         if UserDefaults.standard.string(forKey: FIRST_LAUNCH) == nil {
             initFirstLaunchMenu()
@@ -91,6 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         UserDefaults.standard.set(true, forKey: AppDelegate.SEARCH_CHILD_ENABLE)
         UserDefaults.standard.set(nil, forKey: AppDelegate.SPECIFIED_DIR)
         UserDefaults.standard.set(2.0, forKey: AppDelegate.SLIDESHOW_SPEED)
+        UserDefaults.standard.set(0, forKey: AppDelegate.SHOW_PAGE_MODE)
         
         UserDefaults.standard.set("finishFirstLaunch", forKey: FIRST_LAUNCH)
     }
@@ -109,7 +115,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             UserDefaults.standard.set(2.0, forKey: AppDelegate.SLIDESHOW_SPEED)
         }
     }
-
+    
     // MARK: - menu
     func menuWillOpen(_ menu: NSMenu) {
         
@@ -134,6 +140,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         guard let window = NSApplication.shared.mainWindow else {
             return
         }
+        
         if window.title == "環境設定" {
             window.close()
             preferencesWindowController = nil

@@ -16,9 +16,16 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     var pakapoImageView: PakapoImageView!
     let pakapoImageModel: PakapoImageModel = PakapoImageModel()
     
+    var pageText: NSTextField!
+    
     var slideshowTimer: Timer?
     
     // MARK: - init
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initAppNotification()
+    }
+    
     override func viewWillAppear() {
         super.viewWillAppear()
         willMakeView()
@@ -31,6 +38,16 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
 
     func willMakeView() {
         view.window?.delegate = self
+    }
+    
+    // MARK: - notify
+    func initAppNotification() {
+        //環境設定でページ表示設定が変更された場合に通知を受け取る
+        NotificationCenter.default.addObserver(self, selector: #selector(changeShowPageModeNotify), name: AppDelegate.CHANGE_SHOW_PAGE_MODE_NOTIFY, object: nil)
+    }
+
+    @objc func changeShowPageModeNotify() {
+        updatePageText()
     }
 
     // MARK: - makeView
@@ -179,6 +196,95 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         pakapoImageView.setImage(image: image)
         
         view.window?.title = pakapoImageModel.getViewPageTitle()
+        
+        updatePageText()
+    }
+    
+    func updatePageText() {
+        guard let window = view.window else {
+            return
+        }
+        
+        let showPageMode = UserDefaults.standard.integer(forKey: AppDelegate.SHOW_PAGE_MODE)
+        
+        //初期値は右下とする
+        let pageTextHeight: CGFloat = 30
+        var pageTextY: CGFloat = 0
+        var pageTextAlignment: NSTextAlignment = .right
+        
+        switch showPageMode {
+        case 1:
+            //左上
+            pageTextY = view.frame.size.height - pageTextHeight
+            pageTextAlignment = .left
+        case 2:
+            //右上
+            pageTextY = view.frame.size.height - pageTextHeight
+        case 3:
+            //左下
+            pageTextAlignment = .left
+        case 4:
+            //右下
+            break
+        default:
+            //なし(showPageMode == 0)相当
+            pageText.removeFromSuperview()
+            pageText = nil
+            return
+        }
+
+        if pageText == nil {
+            pageText = NSTextField()
+
+            pageText.isBordered = false
+            pageText.isEditable = false
+            pageText.isSelectable = false
+            pageText.backgroundColor = NSColor.clear
+            window.contentView?.addSubview(pageText)
+        }
+        
+        //現在地と表示中のディレクトリのカウントを取得。存在しなければページ数を出す必要はない
+        guard let index = pakapoImageModel.fileContentsIndex,
+              let count = pakapoImageModel.fileContents?.count else {
+                
+            pageText.removeFromSuperview()
+            pageText = nil
+            return
+        }
+        
+        pageText.stringValue = String(format: "%d/%d", index + 1, count)
+        pageText.font = NSFont.systemFont(ofSize: 25)
+
+        //設定画面での変更時や、フルスクリーンモードか否かでwindowのサイズが変わるので常に表示位置を更新
+        pageText.alignment = pageTextAlignment
+        pageText.frame = CGRect(x: 0, y: pageTextY, width: view.frame.size.width, height: pageTextHeight)
+
+
+        //保存済みチェック。保存先や現在地が存在しない場合は未保存とみなす
+        //未保存はlightGray。保存済みは薄い緑(#a6eda6)
+        pageText.textColor = NSColor.lightGray
+        if let specifiedDirPath = UserDefaults.standard.url(forKey: AppDelegate.SPECIFIED_DIR),
+            let currentDirURL = pakapoImageModel.currentDirURL {
+            
+            //指定場所の存在チェック
+            let fileManager = FileManager.default
+
+            if !fileManager.fileExists(atPath: specifiedDirPath.path) {
+                //指定したURLが存在しない
+                return
+            }
+            
+            //指定場所 + 現在地のパスで保存済みパスを生成
+            let savedDirURL = URL(fileURLWithPath: specifiedDirPath.path + "/" + currentDirURL.lastPathComponent())
+
+            //保存先の存在チェック
+            if !fileManager.fileExists(atPath: savedDirURL.path) {
+                //未保存
+                return
+            }
+            
+            pageText.textColor = NSColor(red: 166/255, green: 237/255, blue: 166/255, alpha: 1)
+        }
     }
     
     // MARK: -
@@ -215,6 +321,8 @@ extension PakapoViewController {
                                                   height: view.frame.height),
                                     changeStyle: nil
         )
+        
+        updatePageText()
     }
     
     // MARK: - window
@@ -224,6 +332,10 @@ extension PakapoViewController {
         }
         
         let openImagePanel: NSOpenPanel = NSOpenPanel()
+        
+        if let rootDirPath = pakapoImageModel.getRootDirectoryURL() {
+            openImagePanel.directoryURL = rootDirPath
+        }
 
         openImagePanel.allowsMultipleSelection = false
         openImagePanel.canCreateDirectories    = false
@@ -269,6 +381,8 @@ extension PakapoViewController {
             //cooViewerっぽくフルスクリーン
             fullScreenSizeMode(window: window)
         }
+        
+        updatePageText()
     }
     
     func defaultWindowSizeMode(window: NSWindow) {
@@ -430,6 +544,30 @@ extension PakapoViewController {
     }
     
     func pushMoveSpecifiedDir() {
-        self.pakapoImageView.clickMoveSpecifiedDirClosure()
+        //指定場所と現在地を取得
+        guard let specifiedDirPath = UserDefaults.standard.url(forKey: AppDelegate.SPECIFIED_DIR),
+            let currentDirURL = pakapoImageModel.currentDirURL else {
+            return
+        }
+        
+        //指定場所の存在チェック
+        let fileManager = FileManager.default
+
+        if !fileManager.fileExists(atPath: specifiedDirPath.path) {
+            //指定したURLが存在しない
+            return
+        }
+        
+        //保存先
+        let toDirURL = URL(fileURLWithPath: specifiedDirPath.path + "/" + currentDirURL.lastPathComponent())
+        
+        do {
+            try fileManager.copyItem(at: currentDirURL, to: toDirURL)
+        } catch {
+            print(error.localizedDescription)
+        }
+
+        //指定場所へのコピーが済んだので表示を更新
+        updatePageText()
     }
 }
