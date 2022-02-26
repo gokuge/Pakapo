@@ -32,4 +32,19 @@ extension URL {
         let nsstringPath = path as NSString
         return nsstringPath.lastPathComponent
     }
+    
+    func isEqual(url: URL) -> Bool {
+        
+        //現状Pakapoで使っているのはaddingPercentEncoding(withAllowedCharacters: .urlPathAllowed)のみなので、単純に比較する
+        guard let strA: String = self.absoluteString.removingPercentEncoding,
+              let strB: String = url.absoluteString.removingPercentEncoding else {
+                return false
+        }
+        
+        if strA != strB {
+            return false
+        }
+        
+        return true
+    }
 }

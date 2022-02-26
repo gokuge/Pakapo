@@ -324,20 +324,12 @@ extension PakapoImageModel {
         }
 
         //前回保存したファイルのURLと現状確保してあるDirectory内のファイル群を比較してindexを作成する
-        guard let unwrappedPageURLStr = pageURL.absoluteString.removingPercentEncoding else {
-            return nil
-        }
-        
         var isMatch = false
-        for (index, file) in unwrappedFileContents.enumerated() {
+        for (index, fileURL) in unwrappedFileContents.enumerated() {
             fileContentsIndex = index
-            currentDirURL = file.deletingLastPathComponent()
+            currentDirURL = fileURL.deletingLastPathComponent()
 
-            guard let unwrappedFileContentsURLStr = file.absoluteString.removingPercentEncoding else {
-                continue
-            }
-            
-            if unwrappedPageURLStr == unwrappedFileContentsURLStr {
+            if pageURL.isEqual(url: fileURL) {
                 isMatch = true
                 break
             }
@@ -496,26 +488,20 @@ extension PakapoImageModel {
         
         //以前directoryを調べた事があるならその時点まで持っていく
         
-        guard let unwrappedLastDisplayChildDirURL = lastSearchedDirURL,
-              let lastSearchedDirURLStr = unwrappedLastDisplayChildDirURL.absoluteString.removingPercentEncoding else {
+        guard let unwrappedLastDisplayChildDirURL = lastSearchedDirURL else {
             //以前検索したDirectoryは無し。頭から調べる
             return unwrappedDirContents
         }
         
-        //dirContents内のURLとlastSearchedDirURLは同じ場所を示しているがencodeされたURLが食い違う場合があるので、デコードした上で比較する
         var isMatch = false
         var lastDisplayChildDirIndex: Int = 0
         for (index, dirURL) in unwrappedDirContents.enumerated() {
             lastDisplayChildDirIndex = index
-            guard let unwrappedDirContentsURLStr = dirURL.absoluteString.removingPercentEncoding else {
-                continue
-            }
             
-            if lastSearchedDirURLStr == unwrappedDirContentsURLStr {
+            if unwrappedLastDisplayChildDirURL.isEqual(url: dirURL) {
                 isMatch = true
                 break
             }
-
         }
         
         if !isMatch {
@@ -541,22 +527,16 @@ extension PakapoImageModel {
         
         //以前directoryを調べた事があるならその位置まで持っていく
         
-        guard let unwrappedLastDisplayChildDirURL = lastSearchedDirURL,
-              let lastSearchedDirURLStr = unwrappedLastDisplayChildDirURL.absoluteString.removingPercentEncoding else {
+        guard let unwrappedLastDisplayChildDirURL = lastSearchedDirURL else {
             //以前検索した子Directoryは無し。そのまま返す
             return unwrappedDirContents.reversed()
         }
         
-        //dirContents内のURLとlastSearchedDirURLは同じ場所を示しているがencodeされたURLが食い違う場合があるので、デコードした上で比較する
         var isMatch = false
         var lastDisplayChildDirIndex: Int = 0
         for (index, dirURL) in unwrappedDirContents.enumerated() {
             lastDisplayChildDirIndex = index
-            guard let unwrappedDirContentsURLStr = dirURL.absoluteString.removingPercentEncoding else {
-                continue
-            }
-            
-            if lastSearchedDirURLStr == unwrappedDirContentsURLStr {
+            if unwrappedLastDisplayChildDirURL.isEqual(url: dirURL) {
                 isMatch = true
                 break
             }
