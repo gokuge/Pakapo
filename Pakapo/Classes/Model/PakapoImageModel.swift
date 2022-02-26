@@ -32,6 +32,8 @@ class PakapoImageModel: NSObject {
     var zipContents: ZUnzip?
     var lastZipPageURL: URL?
     
+    var isTrialReadingMode : Bool = false
+    
     public override init() {
         super.init()
         if let root = getRootDirectoryURL() {
@@ -321,26 +323,31 @@ extension PakapoImageModel {
             }
         }
 
-        //indexの更新
-        fileContentsIndex = unwrappedFileContents.firstIndex(of: pageURL)
-        
-        //本来ありえないはずだが、前回終了時に保存したURLと、refreshContentsで取得した同じfilepathが違う場合がある
-        //どうも日本語がencodeされている部分が違うっぽいが原因不明
-        //これが起こった場合、fileContentsIndexとcurrentDirが有効な値になっていないので、file名で見てリカバリする
-        if fileContentsIndex == nil {
-            for (index, file) in unwrappedFileContents.enumerated() {
-                if contentURL.lastPathComponent == file.lastPathComponent {
-                    fileContentsIndex = index
-                    currentDirURL = file.deletingLastPathComponent()
-                    break
-                }
-            }
-            //ファイル名でのリカバリにも失敗。読み直してもらうしかなさそう
-            if fileContentsIndex == nil {
-                return nil
-            }
+        //前回保存したファイルのURLと現状確保してあるDirectory内のファイル群を比較してindexを作成する
+        guard let unwrappedPageURLStr = pageURL.absoluteString.removingPercentEncoding else {
+            return nil
         }
         
+        var isMatch = false
+        for (index, file) in unwrappedFileContents.enumerated() {
+            fileContentsIndex = index
+            currentDirURL = file.deletingLastPathComponent()
+
+            guard let unwrappedFileContentsURLStr = file.absoluteString.removingPercentEncoding else {
+                continue
+            }
+            
+            if unwrappedPageURLStr == unwrappedFileContentsURLStr {
+                isMatch = true
+                break
+            }
+        }
+        if !isMatch {
+            //一致するものがなかった。読み直し
+            return nil
+        }
+        
+        //一致はしたが。有効なImage化ができなかった
         guard let unwrappedImage = getValidImage(fileURL: pageURL) else {
             return nil
         }
@@ -490,18 +497,39 @@ extension PakapoImageModel {
         //以前directoryを調べた事があるならその時点まで持っていく
         
         guard let unwrappedLastDisplayChildDirURL = lastSearchedDirURL,
-              let unwrappedLastDisplayChildDirIndex = unwrappedDirContents.firstIndex(of: unwrappedLastDisplayChildDirURL) else {
+              let lastSearchedDirURLStr = unwrappedLastDisplayChildDirURL.absoluteString.removingPercentEncoding else {
             //以前検索したDirectoryは無し。頭から調べる
             return unwrappedDirContents
         }
         
-        if !unwrappedDirContents.indices.contains(unwrappedLastDisplayChildDirIndex + 1) {
+        //dirContents内のURLとlastSearchedDirURLは同じ場所を示しているがencodeされたURLが食い違う場合があるので、デコードした上で比較する
+        var isMatch = false
+        var lastDisplayChildDirIndex: Int = 0
+        for (index, dirURL) in unwrappedDirContents.enumerated() {
+            lastDisplayChildDirIndex = index
+            guard let unwrappedDirContentsURLStr = dirURL.absoluteString.removingPercentEncoding else {
+                continue
+            }
+            
+            if lastSearchedDirURLStr == unwrappedDirContentsURLStr {
+                isMatch = true
+                break
+            }
+
+        }
+        
+        if !isMatch {
+            //一致するものがなかった。頭から調べる
+            return unwrappedDirContents
+        }
+        
+        if !unwrappedDirContents.indices.contains(lastDisplayChildDirIndex + 1) {
             //現状のDirectoryではもう検索対象のDirectoryがない
             return nil
         }
         
         //次の検索対象となるDirectoryのみを返す
-        unwrappedDirContents.removeSubrange(0...unwrappedLastDisplayChildDirIndex)
+        unwrappedDirContents.removeSubrange(0...lastDisplayChildDirIndex)
         return unwrappedDirContents
     }
     
@@ -514,19 +542,39 @@ extension PakapoImageModel {
         //以前directoryを調べた事があるならその位置まで持っていく
         
         guard let unwrappedLastDisplayChildDirURL = lastSearchedDirURL,
-              let unwrappedLastDisplayChildDirIndex = unwrappedDirContents.firstIndex(of: unwrappedLastDisplayChildDirURL) else {
+              let lastSearchedDirURLStr = unwrappedLastDisplayChildDirURL.absoluteString.removingPercentEncoding else {
             //以前検索した子Directoryは無し。そのまま返す
             return unwrappedDirContents.reversed()
         }
         
+        //dirContents内のURLとlastSearchedDirURLは同じ場所を示しているがencodeされたURLが食い違う場合があるので、デコードした上で比較する
+        var isMatch = false
+        var lastDisplayChildDirIndex: Int = 0
+        for (index, dirURL) in unwrappedDirContents.enumerated() {
+            lastDisplayChildDirIndex = index
+            guard let unwrappedDirContentsURLStr = dirURL.absoluteString.removingPercentEncoding else {
+                continue
+            }
+            
+            if lastSearchedDirURLStr == unwrappedDirContentsURLStr {
+                isMatch = true
+                break
+            }
+
+        }
         
-        if !unwrappedDirContents.indices.contains(unwrappedLastDisplayChildDirIndex - 1) {
+        if !isMatch {
+            //一致するものがなかった。そのまま返す
+            return unwrappedDirContents.reversed()
+        }
+        
+        if !unwrappedDirContents.indices.contains(lastDisplayChildDirIndex - 1) {
             //現状のDirectoryではもう検索対象のDirectoryがない
             return nil
         }
         
         //前に表示すべき子Directoryがある場合、自分自身から後を削除
-        unwrappedDirContents.removeSubrange(unwrappedLastDisplayChildDirIndex...unwrappedDirContents.count - 1)
+        unwrappedDirContents.removeSubrange(lastDisplayChildDirIndex...unwrappedDirContents.count - 1)
 
         return unwrappedDirContents.reversed()
     }
@@ -802,13 +850,23 @@ extension PakapoImageModel {
                 saveURL = saveURL.deletingLastPathComponent()
             }
         }
-                
-        UserDefaults.standard.set(saveURL, forKey: ROOT_DIRECTORY_URL)
+
+        //試読モードの場合はルートの保存をしない
+        if isTrialReadingMode {
+            UserDefaults.standard.set(saveURL, forKey: ROOT_DIRECTORY_URL)
+        }
+        
         rootDirURL = saveURL
         return true
     }
     
     func getRootDirectoryURL() -> URL? {
+        
+        //既にrootが存在するならそれを返す
+        if let unwrappedRootDirURL = rootDirURL {
+            return unwrappedRootDirURL
+        }
+        
         guard let unwrappedURL = UserDefaults.standard.url(forKey: ROOT_DIRECTORY_URL) else {
             return nil
         }
@@ -830,6 +888,11 @@ extension PakapoImageModel {
     }
     
     func saveLastViewPageURL() {
+        //試読モードの場合は現在地の保存をしない
+        if isTrialReadingMode {
+            return
+        }
+        
         guard let fileURL = getViewPageURL() else {
             return
         }

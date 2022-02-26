@@ -466,6 +466,11 @@ extension PakapoViewController {
             if keyDownOptionKey {
                 pushCopyToSpecifiedDir()
             }
+        case 17:
+            //command + t
+            if keyDownCommandKey {
+                pushTrialReadingMode()
+            }
         case 53:
             pushEsc()
         case 94:
@@ -578,5 +583,10 @@ extension PakapoViewController {
 
         //指定場所へのコピーが済んだので表示を更新
         updatePageText()
+    }
+    
+    func pushTrialReadingMode() {
+        //試読モードのトグル
+        pakapoImageModel.isTrialReadingMode = !pakapoImageModel.isTrialReadingMode
     }
 }
