@@ -169,6 +169,12 @@
                                                 <action selector="menuViewStyleSpread:" target="Voe-Tx-rLC" id="8nX-oc-IPF"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="TYW-kO-7PX"/>
+                                        <menuItem title="試読モード" tag="7" keyEquivalent="t" id="ioK-i2-6OK">
+                                            <connections>
+                                                <action selector="menuViewToggleTrialReadingMode:" target="Voe-Tx-rLC" id="XbD-2F-GS1"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

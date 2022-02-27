@@ -184,6 +184,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
                                              changeStyle: PakapoImageView.ViewStyle(rawValue: viewStyle)!
             )
         }
+        
+        appDelegate.menuToggleTrialReadingModeClosure = {
+            self.toggleTrialReadingMode()
+        }
 
         //window
         appDelegate.menuFullScreenClosure = {
@@ -466,11 +470,6 @@ extension PakapoViewController {
             if keyDownOptionKey {
                 pushCopyToSpecifiedDir()
             }
-        case 17:
-            //command + t
-            if keyDownCommandKey {
-                pushTrialReadingMode()
-            }
         case 53:
             pushEsc()
         case 94:
@@ -585,7 +584,7 @@ extension PakapoViewController {
         updatePageText()
     }
     
-    func pushTrialReadingMode() {
+    func toggleTrialReadingMode() {
         //試読モードのトグル
         pakapoImageModel.isTrialReadingMode = !pakapoImageModel.isTrialReadingMode
     }

@@ -62,6 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var menuZoomOutClosure: (() -> Void)!
     var menuResetZoomClosure: (() -> Void)!
     var menuChangeViewStyleClosure: ((_ viewStyle: Int) -> Void)!
+    var menuToggleTrialReadingModeClosure: (() -> Void)!
 
     //window
     var menuFullScreenClosure: (() -> Void)!
@@ -271,6 +272,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         selectViewStyle(tag: (sender as! NSMenuItem).tag)
     }
     
+    @IBAction func menuViewToggleTrialReadingMode(_ sender: Any) {
+        refreshToggleState(menuTag: menuTag.view.rawValue, tag: (sender as! NSMenuItem).tag)
+        menuToggleTrialReadingModeClosure()
+    }
+    
     func initViewStyle() {
         refreshViewStyle(tag: UserDefaults.standard.integer(forKey: VIEW_STYLE))
     }
@@ -294,6 +300,23 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
             
             item.state = NSControl.StateValue.on
+        }
+    }
+    
+    func refreshToggleState(menuTag: Int, tag: Int) {
+        let viewItem: NSMenuItem! = mainMenu.item(withTag: menuTag)
+        
+        for item in viewItem.submenu!.items {
+            
+            if item.tag != tag {
+                continue
+            }
+            
+            if item.state == .on {
+                item.state = .off
+            } else {
+                item.state = .on
+            }
         }
     }
     
