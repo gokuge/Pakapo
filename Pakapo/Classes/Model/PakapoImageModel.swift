@@ -832,7 +832,7 @@ extension PakapoImageModel {
         }
 
         //試読モードの場合はルートの保存をしない
-        if isTrialReadingMode {
+        if !isTrialReadingMode {
             UserDefaults.standard.set(saveURL, forKey: ROOT_DIRECTORY_URL)
         }
         
