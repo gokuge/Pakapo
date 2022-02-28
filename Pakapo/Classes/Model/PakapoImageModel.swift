@@ -801,7 +801,7 @@ extension PakapoImageModel {
 
 extension PakapoImageModel {
     // MARK: - UserDefault
-    func saveRootDirectoryURL(root: URL) -> Bool {
+    func updateRootDirectoryURL(root: URL) -> Bool {
         var isDir: ObjCBool = false
         if !FileManager.default.fileExists(atPath: root.path, isDirectory: &isDir) {
             //指定したURLが存在しないってことはこのタイミングではないはず
@@ -816,7 +816,7 @@ extension PakapoImageModel {
             - /Usersの様な場所で選択された場合、削除せず選択された所をrootとする(component.count == 2)
          */
 
-        var saveURL = root
+        var tmpRootDirURL = root
         
         let component = root.pathComponents
 
@@ -824,19 +824,14 @@ extension PakapoImageModel {
             // /Volume を選択してもpathComponentsは2なので基本的にないはず
             return false
         } else if component.count > 2 {
-            saveURL = saveURL.deletingLastPathComponent()
+            tmpRootDirURL = tmpRootDirURL.deletingLastPathComponent()
             
             if !isDir.boolValue {
-                saveURL = saveURL.deletingLastPathComponent()
+                tmpRootDirURL = tmpRootDirURL.deletingLastPathComponent()
             }
         }
-
-        //試読モードの場合はルートの保存をしない
-        if !isTrialReadingMode {
-            UserDefaults.standard.set(saveURL, forKey: ROOT_DIRECTORY_URL)
-        }
         
-        rootDirURL = saveURL
+        rootDirURL = tmpRootDirURL
         return true
     }
     
@@ -873,6 +868,10 @@ extension PakapoImageModel {
             return
         }
         
+        //rootを保存
+        UserDefaults.standard.set(rootDirURL, forKey: ROOT_DIRECTORY_URL)
+        
+        //ファイルの場所を保存
         guard let fileURL = getViewPageURL() else {
             return
         }

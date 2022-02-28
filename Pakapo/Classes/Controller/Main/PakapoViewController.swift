@@ -296,7 +296,7 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     /// 指定されたURLでModelの読み込みを開始する
     /// - Parameter url: openPanelやD&Dで開かれたファイル/ディレクトリのURL
     func loadStartingPointImage(url: URL) {
-        let result = self.pakapoImageModel.saveRootDirectoryURL(root: url)
+        let result = self.pakapoImageModel.updateRootDirectoryURL(root: url)
         
         if !result {
             //システムのroot等を選択された場合。あまり考えたくないので無効扱い
