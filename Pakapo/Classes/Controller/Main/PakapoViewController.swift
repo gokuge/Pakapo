@@ -466,9 +466,14 @@ extension PakapoViewController {
                 pushSlideshowStart()
             }
         case 8:
-            //Option + c
+            //option + c
             if keyDownOptionKey {
                 pushCopyToSpecifiedDir()
+            }
+        case 51:
+            //opthion or shift + delete
+            if keyDownOptionKey || keyDownShiftKey {
+                pushRemoveToSpecifiedDir()
             }
         case 53:
             pushEsc()
@@ -580,6 +585,38 @@ extension PakapoViewController {
             return
         }
 
+        //指定場所へのコピーが済んだので表示を更新
+        updatePageText()
+    }
+    
+    func pushRemoveToSpecifiedDir() {
+        //指定場所と現在地を取得
+        guard let specifiedDirPath = UserDefaults.standard.url(forKey: AppDelegate.SPECIFIED_DIR),
+            let currentDirURL = pakapoImageModel.currentDirURL else {
+            return
+        }
+        
+        //指定場所の存在チェック
+        let fileManager = FileManager.default
+
+        if !fileManager.fileExists(atPath: specifiedDirPath.path) {
+            //指定場所のURLが存在しない
+            return
+        }
+        
+        //指定場所も現在地も取得できたのでコピー
+        let toDirURL = URL(fileURLWithPath: specifiedDirPath.path + "/" + currentDirURL.lastPathComponent())
+
+        //保存先の存在チェック
+        if fileManager.fileExists(atPath: toDirURL.path) {
+            //指定したURLが存在した。削除する
+            do {
+                try fileManager.removeItem(at: toDirURL)
+            } catch {
+                return
+            }
+        }
+        
         //指定場所へのコピーが済んだので表示を更新
         updatePageText()
     }
