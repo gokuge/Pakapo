@@ -87,18 +87,13 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             }
 
             pakapoImageView.dropClosure = {(url: URL) in
-                self.loadStartingPointImage(url: url)
+                self.newOpenPage(url: url)
             }
                                     
             window.contentView?.addSubview(pakapoImageView)
         }
   
-        if let unwrappedURL = pakapoImageModel.loadLastViewPageURL(),
-           let unwrappedImage = pakapoImageModel.getStartingPointImage(contentURL: unwrappedURL) {
-            self.setImageView(image: unwrappedImage)
-        } else {
-            openPanel()
-        }
+        loadLastViewPage()
         
         //キー入力有効化
         window.makeFirstResponder(self)
@@ -293,9 +288,8 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
     
     // MARK: -
     
-    /// 指定されたURLでModelの読み込みを開始する
-    /// - Parameter url: openPanelやD&Dで開かれたファイル/ディレクトリのURL
-    func loadStartingPointImage(url: URL) {
+    //Parameter url: openPanelやD&Dで開かれたファイル/ディレクトリのURL
+    func newOpenPage(url: URL) {
         let result = self.pakapoImageModel.updateRootDirectoryURL(root: url)
         
         if !result {
@@ -306,7 +300,16 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
         self.setImageView(image: self.pakapoImageModel.getStartingPointImage(contentURL: url))
     }
     
-    /// 終了時の表示中のURL保存をModelにわたす
+    func loadLastViewPage() {
+        if let unwrappedURL = pakapoImageModel.loadLastViewPageURL(),
+           let unwrappedImage = pakapoImageModel.getStartingPointImage(contentURL: unwrappedURL) {
+            self.setImageView(image: unwrappedImage)
+        } else {
+            openPanel()
+        }
+    }
+    
+    // 終了時の表示中、試読モード開始時のURLを保存させる
     func saveLastViewPageURL() {
         pakapoImageModel.saveLastViewPageURL()
     }
@@ -359,7 +362,7 @@ extension PakapoViewController {
                 return
             }
 
-            self.loadStartingPointImage(url: unwrappedURL)
+            self.newOpenPage(url: unwrappedURL)
         })
     }
     
@@ -622,7 +625,19 @@ extension PakapoViewController {
     }
     
     func toggleTrialReadingMode() {
-        //試読モードのトグル
+        if !pakapoImageModel.isTrialReadingMode {
+            //現状試読モードではないので試読モードへ
+            
+            //試読モード解除時に現在地へ戻すためにセーブしておく
+            saveLastViewPageURL()
+        } else {
+            //現状試読モードなので、解除
+
+            //試読モード開始時の場所へ戻す
+            loadLastViewPage()
+        }
+        
+        //諸々作業した後にトグル
         pakapoImageModel.isTrialReadingMode = !pakapoImageModel.isTrialReadingMode
     }
 }
