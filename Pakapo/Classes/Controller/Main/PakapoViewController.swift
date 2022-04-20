@@ -227,8 +227,10 @@ class PakapoViewController: NSViewController, NSWindowDelegate {
             break
         default:
             //なし(showPageMode == 0)相当
-            pageText.removeFromSuperview()
-            pageText = nil
+            if pageText != nil {
+                pageText.removeFromSuperview()
+                pageText = nil
+            }
             return
         }
 
@@ -558,6 +560,7 @@ extension PakapoViewController {
     func pushCopyToSpecifiedDir() {
         //指定場所と現在地を取得
         guard let specifiedDirPath = UserDefaults.standard.url(forKey: AppDelegate.SPECIFIED_DIR),
+            let rootDirURL = pakapoImageModel.rootDirURL,
             let currentDirURL = pakapoImageModel.currentDirURL else {
             return
         }
@@ -567,6 +570,11 @@ extension PakapoViewController {
 
         if !fileManager.fileExists(atPath: specifiedDirPath.path) {
             //指定場所のURLが存在しない
+            return
+        }
+        
+        //指定場所 = 現在地の場合は何もしない
+        if rootDirURL.isEqual(url: specifiedDirPath) {
             return
         }
         
@@ -595,6 +603,7 @@ extension PakapoViewController {
     func pushRemoveToSpecifiedDir() {
         //指定場所と現在地を取得
         guard let specifiedDirPath = UserDefaults.standard.url(forKey: AppDelegate.SPECIFIED_DIR),
+            let rootDirURL = pakapoImageModel.rootDirURL,
             let currentDirURL = pakapoImageModel.currentDirURL else {
             return
         }
@@ -604,6 +613,11 @@ extension PakapoViewController {
 
         if !fileManager.fileExists(atPath: specifiedDirPath.path) {
             //指定場所のURLが存在しない
+            return
+        }
+        
+        //指定場所 = 現在地の場合は何もしない
+        if rootDirURL.isEqual(url: specifiedDirPath) {
             return
         }
         
