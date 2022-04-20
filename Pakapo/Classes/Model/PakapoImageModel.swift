@@ -8,6 +8,11 @@
 
 import Cocoa
 
+struct ContentsCache {
+    var dirContentsCache: [URL]?
+    var fileContentsCache: [URL]?
+}
+
 class PakapoImageModel: NSObject {
     
     let ROOT_DIRECTORY_URL: String = "rootDirectoryURL"
@@ -16,16 +21,24 @@ class PakapoImageModel: NSObject {
     let OPEN_RECENT_DIRECTORIES: String = "openRecentDirectories"
     let OPEN_RECENT_MAX_COUNT: Int = 10
     
+    //ルートに設定したURL
     var rootDirURL: URL?
+    //ルート直下のディレクトリ配列
     var rootDirectories: [URL]?
     
+    //今見ているディレクトリのURL
     var currentDirURL: URL?
-    
+    //今見ているディレクトリのファイル配列
     var fileContents: [URL]?
+    //今見ているファイルのインデックス
     var fileContentsIndex: Int?
-
+    //今見ているディレクトリと同階層にあるディレクトリ配列
     var dirContents: [URL]?
+    //今見ているディレクトリと同階層にあるディレクトリ配列のどこまで表示したか(indexに近い役割)
     var lastSearchedDirURL: URL?
+    
+    //makeContentsで一度生成されたdirContentsとfileContentsのセットをキャッシュしておく
+    var contentsCacheDir: [URL: ContentsCache] = [:]
 
     var aliasMapperDic: [URL:URL] = [:]
     
@@ -52,6 +65,17 @@ class PakapoImageModel: NSObject {
     }
     
     func makeContents(dirURL: URL) {
+        
+        //Cacheされているデータがあればそれを使う。Cacheしているものが手動で削除される可能性はあるが、その時は次の有効ディレクトリ/ファイルへ飛ぶので問題ない
+        if let unwrapedContentsCache = contentsCacheDir[dirURL] {
+            //dirContentsとfileContentsは存在しなければ空配列ではなくnilでいて欲しいのでnilチェックは行わず代入
+            dirContents = unwrapedContentsCache.dirContentsCache
+            fileContents = unwrapedContentsCache.fileContentsCache
+            
+            currentDirURL = dirURL
+            return
+        }
+        
         do {
             var tmpDir: URL = dirURL
             
@@ -61,6 +85,7 @@ class PakapoImageModel: NSObject {
                 aliasMapperDic.updateValue(dirURL, forKey: aliasOriginalDirURL)
             }
 
+            //このソート結構時間かかる
             let contentUrls = try FileManager.default.contentsOfDirectory(at: tmpDir, includingPropertiesForKeys: nil)
             let sortContens = contentUrls.sorted { a, b in
                 return a.lastPathComponent.localizedStandardCompare(b.lastPathComponent) == ComparisonResult.orderedAscending
@@ -104,15 +129,22 @@ class PakapoImageModel: NSObject {
                 fileContents!.append(content)
             }
             
+            var contentsCache: ContentsCache = ContentsCache()
+            
             if dirContents!.count == 0 {
                 dirContents = nil
+            } else {
+                contentsCache.dirContentsCache = dirContents
             }
             
             if fileContents!.count == 0 {
                 fileContents = nil
+            } else {
+                contentsCache.fileContentsCache = fileContents
             }
             
             currentDirURL = dirURL
+            contentsCacheDir[dirURL] = contentsCache
             
         } catch {
             //Permissionでコケる場合がある。コケてもfileContentsとdirContentsが無いので次の有効なファイルを探しにいくので問題はない
