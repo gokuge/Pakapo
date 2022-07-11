@@ -20,7 +20,7 @@ extension URL {
         for type in types {
             let typeComponents = type.components(separatedBy: ".")
 
-            if lastPath.contains(typeComponents.last!) {
+            if lastPath.lowercased().contains(typeComponents.last!) {
                 return true
             }
         }
